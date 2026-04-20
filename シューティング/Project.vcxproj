@@ -162,8 +162,9 @@
     <ClInclude Include="Src\Application\Attack\Shot.h" />
     <ClInclude Include="Src\Application\Common\CommonAPI.h" />
     <ClInclude Include="Src\Application\Common\CommonTexture.h" />
-    <ClInclude Include="Src\Application\Enemy\EnemyBase.h" />
+    <ClInclude Include="Src\Application\Enemy\EnemyMoveBase.h" />
     <ClInclude Include="Src\Application\Enemy\EnemyManager.h" />
+    <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove1.h" />
     <ClInclude Include="Src\Application\Info.h" />
     <ClInclude Include="Src\Application\Input\Input.h" />
     <ClInclude Include="Src\Application\Prayer\Player.h" />
@@ -204,8 +205,9 @@
     <ClCompile Include="Src\Application\Attack\Shot.cpp" />
     <ClCompile Include="Src\Application\Common\CommonAPI.cpp" />
     <ClCompile Include="Src\Application\Common\CommonTexture.cpp" />
-    <ClCompile Include="Src\Application\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Src\Application\Enemy\EnemyMoveBase.cpp" />
     <ClCompile Include="Src\Application\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove1.cpp" />
     <ClCompile Include="Src\Application\Info.cpp" />
     <ClCompile Include="Src\Application\Input\Input.cpp" />
     <ClCompile Include="Src\Application\Prayer\Player.cpp" />

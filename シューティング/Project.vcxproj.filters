@@ -79,6 +79,9 @@
     <Filter Include="Src\Application\Enemy">
       <UniqueIdentifier>{0a221ff9-3ddb-4255-84af-c472dc3e3934}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Enemy\EnemyMove">
+      <UniqueIdentifier>{5038fb73-5808-43e9-9cac-7e50fa0976f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -219,11 +222,14 @@
     <ClInclude Include="Src\Application\Common\CommonAPI.h">
       <Filter>Src\Application\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Enemy\EnemyBase.h">
+    <ClInclude Include="Src\Application\Enemy\EnemyMoveBase.h">
       <Filter>Src\Application\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Enemy\EnemyManager.h">
       <Filter>Src\Application\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove1.h">
+      <Filter>Src\Application\Enemy\EnemyMove</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -335,11 +341,14 @@
     <ClCompile Include="Src\Application\Common\CommonAPI.cpp">
       <Filter>Src\Application\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Enemy\EnemyBase.cpp">
+    <ClCompile Include="Src\Application\Enemy\EnemyMoveBase.cpp">
       <Filter>Src\Application\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Enemy\EnemyManager.cpp">
       <Filter>Src\Application\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove1.cpp">
+      <Filter>Src\Application\Enemy\EnemyMove</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,21 @@
 #include "Shot.h"
 #include"Application/Common/CommonAPI.h"
 
-void C_Shot::ShotManager(ShotType a_type, KdTexture* a_tex, ShotTextureAngle a_texangle, Math::Vector2 a_animmaxnum,Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
+C_Shot::C_Shot()
 {
+	
+}
+
+
+void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum,Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
+{
+	SetTexture(a_texturetype);
+
 	switch (a_type)
 	{
 	case ShotType::NormalShot:
 		//初期化
-		NormalShotInit(a_tex,a_texangle,a_animmaxnum, a_rect, a_pos, target);
+		NormalShotInit(a_texturetype,a_animmaxnum, a_rect, a_pos, target);
 		break;
 	case ShotType::ShotNum:
 		break;
@@ -16,13 +24,15 @@ void C_Shot::ShotManager(ShotType a_type, KdTexture* a_tex, ShotTextureAngle a_t
 	}
 }
 
-void Shot::Init(ShotType a_type, KdTexture* a_tex, ShotTextureAngle a_texangle, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
+void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
 {
 	switch (a_type)
 	{
 	case ShotType::NormalShot:
 
-		tex = a_tex;
+		//画像設定セット
+		SetTextureSetting(a_texturetype);
+
 		rect = a_rect;
 		speed = 3;
 		pos = a_pos;
@@ -37,9 +47,6 @@ void Shot::Init(ShotType a_type, KdTexture* a_tex, ShotTextureAngle a_texangle, 
 		anim = { 0,0 };
 		animmaxnum = a_animmaxnum;
 
-		//向き調整用
-		texangle = GetAngleAdjustment(a_texangle);
-
 		scalemat = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 		rotatemat = Math::Matrix::CreateRotationZ(angle+texangle);
 		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -52,6 +59,7 @@ void Shot::Init(ShotType a_type, KdTexture* a_tex, ShotTextureAngle a_texangle, 
 		break;
 	}
 }
+
 
 void C_Shot::Update()
 {
@@ -71,10 +79,23 @@ void C_Shot::Draw()
 	}
 }
 
-void C_Shot::NormalShotInit(KdTexture* a_tex, ShotTextureAngle a_texangle, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
+void C_Shot::SetTexture(ShotTextureType type)
+{
+	//元画像が何か、画像と元画像角度をセットする
+	switch (type)
+	{
+	case ShotTextureType::Bolt:
+		m_tex.Load("Texture/Player/Attack/Bolt.png");
+		break;
+	default:
+		break;
+	}
+}
+
+void C_Shot::NormalShotInit(ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
 {
 	m_normalshot.emplace_back();
-	m_normalshot.back().Init(ShotType::NormalShot, a_tex,a_texangle,a_animmaxnum, a_rect, a_pos, target);
+	m_normalshot.back().Init(ShotType::NormalShot, a_texturetype,a_animmaxnum, a_rect, a_pos, target);
 }
 
 void C_Shot::NormalShotUpdate()
@@ -103,7 +124,7 @@ void C_Shot::NormalShotUpdate()
 		}
 
 		m_normalshot[i].scalemat = Math::Matrix::CreateScale(m_normalshot[i].scale.x, m_normalshot[i].scale.y, 1);
-		m_normalshot[i].rotatemat = Math::Matrix::CreateRotationZ(m_normalshot[i].angle+m_normalshot[i].texangle);
+		m_normalshot[i].rotatemat = Math::Matrix::CreateRotationZ(m_normalshot[i].angle + m_normalshot[i].texangle);
 		m_normalshot[i].transmat = Math::Matrix::CreateTranslation(m_normalshot[i].pos.x, m_normalshot[i].pos.y, 0);
 		m_normalshot[i].mat = m_normalshot[i].scalemat * m_normalshot[i].rotatemat * m_normalshot[i].transmat;
 
@@ -113,6 +134,7 @@ void C_Shot::NormalShotUpdate()
 		{
 			m_normalshot.erase(m_normalshot.begin() + i);
 		}
+
 	}
 }
 
@@ -124,7 +146,7 @@ void C_Shot::NormalShotDraw()
 		if (m_normalshot[i].alive)
 		{
 			SHADER.m_spriteShader.SetMatrix(m_normalshot[i].mat);
-			SHADER.m_spriteShader.DrawTex(m_normalshot[i].tex, 0, 0, 
+			SHADER.m_spriteShader.DrawTex(&m_tex, 0, 0, 
 				&Math::Rectangle((int)m_normalshot[i].anim.x*m_normalshot[i].rect.x, (int)m_normalshot[i].anim.y * m_normalshot[i].rect.y, m_normalshot[i].rect.x, m_normalshot[i].rect.y), 
 				&m_normalshot[i].color);
 		}
@@ -132,25 +154,36 @@ void C_Shot::NormalShotDraw()
 }
 
 
-float Shot::GetAngleAdjustment(ShotTextureAngle type)
+void Shot::SetTextureSetting(ShotTextureType type)
 {
+	ShotTextureAngle angle;
+
+	//元画像が何か、画像と元画像角度をセットする
 	switch (type)
 	{
-	case ShotTextureAngle::Top:
-		return -DirectX::XM_PIDIV2;
-		break;
-	case ShotTextureAngle::Bottom:
-		return  DirectX::XM_PIDIV2;
-		break;
-	case ShotTextureAngle::Left:
-		return  DirectX::XM_PI;
-		break;
-	case ShotTextureAngle::Right:
-		return  0.0f;
+	case ShotTextureType::Bolt: 
+		angle = ShotTextureAngle::Left;
 		break;
 	default:
 		break;
 	}
 
-	return 0.0f;
+
+	switch (angle)
+	{
+	case ShotTextureAngle::Top:
+		texangle= -DirectX::XM_PIDIV2;
+		break;
+	case ShotTextureAngle::Bottom:
+		texangle=  DirectX::XM_PIDIV2;
+		break;
+	case ShotTextureAngle::Left:
+		texangle= DirectX::XM_PI;
+		break;
+	case ShotTextureAngle::Right:
+		texangle=  0.0f;
+		break;
+	default:
+		break;
+	}
 }

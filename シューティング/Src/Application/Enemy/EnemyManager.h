@@ -1,8 +1,25 @@
 #pragma once
-#include"Application/Enemy/EnemyBase.h"
+#include"Application/Enemy/EnemyMoveBase.h"
 #include<vector>
 
 using namespace std;
+
+enum class EnemyType
+{
+	s,
+};
+
+enum class EnemyMovePattern
+{
+	Pattern1,
+	Pattern2
+};
+
+enum class MovePatternDefault
+{
+	p1Default,
+	p2Default,
+};
 
 class C_EnemyManager
 {
@@ -13,10 +30,14 @@ public:
 	void Update();
 	void Draw();
 
+	//“G¶¬
+	//type 
+	void EnemySpworn(EnemyType type,EnemyMovePattern movepattern,int num);
+
 private:
 
 	//“G‚Ü‚Æ‚ß
-	vector<C_EnemyBase> m_enemys;
+	vector<C_EnemyMoveBase> m_enemys;
 
 
 //ƒVƒ“ƒOƒ‹ƒgƒ“

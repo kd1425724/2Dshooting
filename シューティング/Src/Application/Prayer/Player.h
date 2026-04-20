@@ -40,9 +40,8 @@ private:
 
 	//’e
 	C_Shot m_shot;
-	KdTexture m_normalshottex;
 	//”­ŽËŠÔŠu
-	int m_shotInterval;
+	int m_shotinterval;
 
 };
 

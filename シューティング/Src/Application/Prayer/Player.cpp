@@ -55,15 +55,12 @@ void C_Player::Draw()
 
 void C_Player::Release()
 {
-	m_normalshottex.Release();
+
 }
 
 void C_Player::ShotInit()
 {
-	//íe
-	m_normalshottex.Load("Texture/Player/Attack/Bolt.png");
-
-	m_shotInterval = 0;
+	m_shotinterval = 0;
 }
 
 void C_Player::ShotUpdate()
@@ -72,23 +69,23 @@ void C_Player::ShotUpdate()
 	m_shot.Update();
 
 	//í èÌçUåÇ
-	if (m_shotInterval <= 0)
+	if (m_shotinterval <= 0)
 	{
 		if (Input.GetPlayerKey(PlayerKeyType::NormalShot))
 		{
-			m_shot.ShotManager(ShotType::NormalShot, &m_normalshottex, ShotTextureAngle::Left, { 4,0 }, { 48,32 },
+			m_shot.ShotManager(ShotType::NormalShot,ShotTextureType::Bolt, { 4,0 }, { 48,32 },
 				m_pos, { m_pos.x,m_pos.y + 100 });
-			m_shotInterval = (int)PlayerShotInterval::NormalShot;
+			m_shotinterval = (int)PlayerShotInterval::NormalShot;
 		}
 	}
 
 	//í èÌçUåÇî≠éÀä‘äuå∏è≠
-	if (m_shotInterval > 0)
+	if (m_shotinterval > 0)
 	{
-		m_shotInterval--;
-		if (m_shotInterval <= 0)
+		m_shotinterval--;
+		if (m_shotinterval <= 0)
 		{
-			m_shotInterval = 0;
+			m_shotinterval = 0;
 		}
 	}
 }
