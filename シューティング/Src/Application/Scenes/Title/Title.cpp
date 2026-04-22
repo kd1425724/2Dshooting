@@ -7,6 +7,11 @@ void C_Title::TextureLoad()
 	m_titleui.TextureLoad();
 }
 
+void C_Title::Release()
+{
+
+}
+
 void C_Title::Init()
 {
 	//テクスチャロード

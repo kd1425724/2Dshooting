@@ -1,6 +1,7 @@
 #include "Player.h"
 #include"Application/Common/CommonTexture.h"
 #include"Application/Input/Input.h"
+#include"Application/Attack/Shot.h"
 
 void C_Player::Init()	
 {
@@ -47,7 +48,7 @@ void C_Player::Update()
 }
 void C_Player::Draw()
 {
-	m_shot.Draw();
+	m_shot->Draw();
 
 	SHADER.m_spriteShader.SetMatrix(m_mat);
 	SHADER.m_spriteShader.DrawTex(&CommonTex.GetPlayerTex(), 0, 0, &CommonTex.GetPlayerRect(), &m_color);
@@ -55,25 +56,31 @@ void C_Player::Draw()
 
 void C_Player::Release()
 {
-
+	if (m_shot)
+	{
+		delete m_shot;
+		m_shot = nullptr;
+	}
 }
 
 void C_Player::ShotInit()
 {
+	m_shot = new C_Shot();
+
 	m_shotinterval = 0;
 }
 
 void C_Player::ShotUpdate()
 {
 	//çUåÇUpdate
-	m_shot.Update();
+	m_shot->Update();
 
 	//í èÌçUåÇ
 	if (m_shotinterval <= 0)
 	{
 		if (Input.GetPlayerKey(PlayerKeyType::NormalShot))
 		{
-			m_shot.ShotManager(ShotType::NormalShot,ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+			m_shot->ShotManager(ShotType::NormalShot,ShotTextureType::Bolt, { 4,0 }, { 48,32 },
 				m_pos, { m_pos.x,m_pos.y + 100 });
 			m_shotinterval = (int)PlayerShotInterval::NormalShot;
 		}

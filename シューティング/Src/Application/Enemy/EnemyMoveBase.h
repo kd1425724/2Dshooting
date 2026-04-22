@@ -1,18 +1,23 @@
 #pragma once
 
+class C_Player;
+enum class MovePatternDefault;
+class C_Shot;
+
 class C_EnemyMoveBase
 {
 public:
-	C_EnemyMoveBase();
+	C_EnemyMoveBase(){}
 	~C_EnemyMoveBase(){}
 
-	virtual void Init(KdTexture* tex,Math::Vector2 rect, Math::Vector2 animmaxnum);
+	virtual void Init(KdTexture* tex,Math::Vector2 rect, Math::Vector2 animmaxnum, Math::Vector2 enemypos,MovePatternDefault default,C_Player* player){}
 	virtual void Update();
 	virtual void Draw();
 
-	virtual void Release();
-
 protected:
+
+	//解放処理
+	virtual void Release();
 
 	//テクスチャ
 	KdTexture* m_tex;
@@ -40,6 +45,9 @@ protected:
 	int m_shotinterval;
 	//攻撃間隔時間
 	int m_shotintervaltime;
+
+	//ショット用
+	C_Shot* m_shot;
 
 private:
 

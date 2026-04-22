@@ -42,7 +42,7 @@ private:
 	
 	C_SceneManager() 
 	{
-		scenes.push(CreateScene(SceneType::Title));
+		scenes.push(CreateScene(SceneType::Game));
 		scenes.top()->Init();
 	}
 

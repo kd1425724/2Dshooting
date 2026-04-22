@@ -130,7 +130,7 @@ void C_Shot::NormalShotUpdate()
 
 
 		//îÕàÕäOÇ…èoÇΩÇÁè¡ãé
-		if (COMMONAPI.OutOfPlayArea(m_normalshot[i].pos, m_normalshot[i].rect / 2))
+		if (COMMONAPI.OutOfPlayAreaPlusMargin(m_normalshot[i].pos, m_normalshot[i].rect / 2))
 		{
 			m_normalshot.erase(m_normalshot.begin() + i);
 		}

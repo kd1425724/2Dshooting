@@ -9,13 +9,15 @@ public:
 	bool OutOfScreen(Math::Vector2 pos, Math::Vector2 radius);
 	//プレイエリア内判定
 	bool OutOfPlayArea(Math::Vector2 pos, Math::Vector2 radius);
+	//画面外判定
+	bool OutOfScreenPlusMargin(Math::Vector2 pos, Math::Vector2 radius);
+	//プレイエリア内判定
+	bool OutOfPlayAreaPlusMargin(Math::Vector2 pos, Math::Vector2 radius);
 
 private:
 
 	//画面外判定余剰分
 	const float margin = 100.0f;
-
-	
 
 
 //シングルトン

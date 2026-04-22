@@ -12,12 +12,15 @@ public:
 	void Update()override;
 	void Draw()override;
 
-	//画像ロード
-	void TextureLoad()override;
-
 	void StartButtonProcess();
 
 private:
+
+	//画像ロード
+	void TextureLoad()override;
+
+	//リリース
+	void Release()override;
 
 	//Ui
 	C_TitleUi m_titleui;

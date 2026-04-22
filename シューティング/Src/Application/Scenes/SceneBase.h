@@ -10,10 +10,15 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
+	
+
+protected:
+
 	//画像ロード
 	virtual void TextureLoad();
 
-protected:
+	//リリース
+	virtual void Release();
 
 private:
 

@@ -29,6 +29,7 @@ void C_SceneManager::push(SceneType type,bool popflg)
 {
     FEED.FeedOutInit(30,[this,type,popflg]()
         {
+            //popフラグがtrueなら今のシーンを消す
             if (popflg)
             {
                 scenes.pop();

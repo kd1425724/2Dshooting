@@ -13,4 +13,9 @@ public:
 
 private:
 
+
+	void TextureLoad()override;
+
+	void Release()override;
+
 };

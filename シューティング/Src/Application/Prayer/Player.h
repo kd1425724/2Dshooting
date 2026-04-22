@@ -1,5 +1,6 @@
 #pragma once
-#include"Application/Attack/Shot.h"
+
+class C_Shot;
 
 enum class PlayerShotInterval
 {
@@ -22,6 +23,8 @@ public:
 	void ShotInit();
 	void ShotUpdate();
 
+	Math::Vector2 GetPlayerPos() { return m_pos; }
+
 private:
 
 	//座標
@@ -37,9 +40,11 @@ private:
 	Math::Matrix m_mat;
 	//カラー
 	Math::Color m_color;
+	//生存フラグ
+	bool m_alive;
 
 	//弾
-	C_Shot m_shot;
+	C_Shot* m_shot;
 	//発射間隔
 	int m_shotinterval;
 

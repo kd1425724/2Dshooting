@@ -18,3 +18,7 @@ void C_SceneBase::Draw()
 	return;
 }
 
+void C_SceneBase::Release()
+{
+	return;
+}

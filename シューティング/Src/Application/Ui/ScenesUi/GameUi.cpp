@@ -25,8 +25,6 @@ void C_GameUi::Update()
 
 void C_GameUi::Draw()
 {
-	BackGroundDraw();
-
 	HUDDraw();
 }
 

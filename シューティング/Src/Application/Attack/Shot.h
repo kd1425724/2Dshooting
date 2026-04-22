@@ -72,6 +72,7 @@ public:
 
 	//指定した弾を発射
 	//a_type...どの弾か
+	//a_texturetype...どの弾画像か
 	//a_animmaxnum...画像のアニメーション最大値
 	//a_rect...画像の切り取り範囲
 	//a_pos...発生位置
