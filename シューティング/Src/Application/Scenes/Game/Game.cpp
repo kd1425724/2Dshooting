@@ -3,6 +3,7 @@
 #include"Application/Ui/ScenesUi/GameUi.h"
 #include"Application/Prayer/Player.h"
 #include"Application/Enemy/EnemyManager.h"
+#include"Application/Skill/SkillManager.h"
 
 void C_Game::TextureLoad()
 {
@@ -11,11 +12,14 @@ void C_Game::TextureLoad()
 
 void C_Game::Init()
 {
-	m_gameui = new C_GameUi();
+	m_gameui =std::make_shared<C_GameUi>();
 
-	m_player = new C_Player();
+	m_player = std::make_shared<C_Player>();
 
-	m_enemymanager = new C_EnemyManager();
+	m_enemymanager = std::make_shared<C_EnemyManager>();
+
+	//スキル管理作成
+	m_skillmanager = std::make_shared<C_SkillManager>();
 
 	TextureLoad();
 
@@ -25,10 +29,15 @@ void C_Game::Init()
 
 	m_enemymanager->Init(m_player);
 
+	m_skillmanager->Init();
+	m_skillmanager->SetEnemyManager(m_enemymanager);
+
 	//判定時間
 	m_JudgmentTime = 0;
 	//判定何回目かカウント
 	m_JudgmenCount = 0;
+
+	m_enemymanager->BossSpworn();
 }
 
 void C_Game::Update()
@@ -41,6 +50,9 @@ void C_Game::Update()
 
 	//Ui
 	m_gameui->Update();
+
+	//スキル管理
+	m_skillmanager->Update();
 
 	if (m_JudgmentTime >= 0)
 	{
@@ -73,6 +85,8 @@ void C_Game::Draw()
 	//プレイヤー描画
 	m_player->Draw();
 
+	m_skillmanager->Draw();
+
 
 	//Ui「最後」
 	m_gameui->Draw();
@@ -92,21 +106,4 @@ void C_Game::SpwornMnager()
 
 void C_Game::Release()
 {
-	if (m_player)
-	{
-		delete m_player;
-		m_player = nullptr;
-	}
-
-	if (m_enemymanager)
-	{
-		delete m_enemymanager;
-		m_enemymanager = nullptr;
-	}
-
-	if (m_gameui)
-	{
-		delete m_gameui;
-		m_gameui = nullptr;
-	}
 }

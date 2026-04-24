@@ -1,5 +1,6 @@
 #include "GameUi.h"
 #include"Application/Common/CommonTexture.h"
+#include"Application/Info.h"
 
 void C_GameUi::TextureLoad()
 {
@@ -70,32 +71,27 @@ void C_GameUi::BackGroundDraw()
 void C_GameUi::HUDInit()
 {
 	//ã§í 
-	m_HUDarearect = { 0,0,350,720 };
+	m_HUDarearect = { 0,0,INFO.HUDAreaWidth ,INFO.HUDAreaHeight };
 	m_HUDareascale = { 1.0f,1.0f };
 	m_HUDareacolor = { 1.0f,1.0f,1.0f,1 };
 
-	//ç∂
-	m_HUDareapos[LeftArea] = { -465,0 };
-
-	//âE
-	m_HUDareapos[RightArea] = { 465,0 };
+	
+	m_HUDareapos = { 0,(float)INFO.ScrHeight / 2 - INFO.HUDAreaHeight / 2 };
 }
 
 void C_GameUi::HUDUpdate()
 {
-	for (int i = 0; i < HUDAreaNum; i++)
-	{
-		m_HUDareascalemat = Math::Matrix::CreateScale(m_HUDareascale.x, m_HUDareascale.y, 1);
-		m_HUDareatransmat[i] = Math::Matrix::CreateTranslation(m_HUDareapos[i].x, m_HUDareapos[i].y, 0);
-		m_HUDareamat[i] = m_HUDareascalemat * m_HUDareatransmat[i];
-	}
+	
+	m_HUDareascalemat = Math::Matrix::CreateScale(m_HUDareascale.x, m_HUDareascale.y, 1);
+	m_HUDareatransmat = Math::Matrix::CreateTranslation(m_HUDareapos.x, m_HUDareapos.y, 0);
+	m_HUDareamat = m_HUDareascalemat * m_HUDareatransmat;
+	
 }
 
 void C_GameUi::HUDDraw()
 {
-	for (int i = 0; i < HUDAreaNum; i++)
-	{
-		SHADER.m_spriteShader.SetMatrix(m_HUDareamat[i]);
-		SHADER.m_spriteShader.DrawTex(&m_HUDareatex, 0, 0, &m_HUDarearect, &m_HUDareacolor);
-	}
+	
+	SHADER.m_spriteShader.SetMatrix(m_HUDareamat);
+	SHADER.m_spriteShader.DrawTex(&m_HUDareatex, 0, 0, &m_HUDarearect, &m_HUDareacolor);
+	
 }

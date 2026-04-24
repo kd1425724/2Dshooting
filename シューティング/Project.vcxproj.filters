@@ -73,14 +73,35 @@
     <Filter Include="Src\Application\Effect">
       <UniqueIdentifier>{a594d8be-7e61-4424-ad79-08c47f0cfdd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Attack">
-      <UniqueIdentifier>{57e04b24-6efd-4534-9744-4013708cd893}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Enemy">
       <UniqueIdentifier>{0a221ff9-3ddb-4255-84af-c472dc3e3934}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Application\Enemy\EnemyMove">
       <UniqueIdentifier>{5038fb73-5808-43e9-9cac-7e50fa0976f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Enemy\EnemyMove\EnemyMove1">
+      <UniqueIdentifier>{5099d5a6-0708-4cdf-96c6-9e6f8114f7c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Enemy\EnemyMove\EnemyMove2">
+      <UniqueIdentifier>{393319d2-4655-4e18-be8d-ac2623e1c035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Enemy\Boss">
+      <UniqueIdentifier>{39813365-97ef-416c-92af-df64c4cfe944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Enemy\Boss\Boss">
+      <UniqueIdentifier>{46fa74c3-1b6c-47b3-93a5-f82fbafbb155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Enemy\Boss\SubBoss">
+      <UniqueIdentifier>{a51a72b1-2d11-4a01-b08e-34d73fdb7dce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Skill">
+      <UniqueIdentifier>{57e04b24-6efd-4534-9744-4013708cd893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Skill\Shot">
+      <UniqueIdentifier>{fadf7b37-5636-4e77-87bd-c2273446a4f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Skill\EnemyGenerate">
+      <UniqueIdentifier>{f2ac801c-b71a-4ba2-84cd-96df0b0be143}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -216,9 +237,6 @@
     <ClInclude Include="Src\Application\Common\CommonTexture.h">
       <Filter>Src\Application\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Attack\Shot.h">
-      <Filter>Src\Application\Attack</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Common\CommonAPI.h">
       <Filter>Src\Application\Common</Filter>
     </ClInclude>
@@ -228,8 +246,32 @@
     <ClInclude Include="Src\Application\Enemy\EnemyManager.h">
       <Filter>Src\Application\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove1.h">
-      <Filter>Src\Application\Enemy\EnemyMove</Filter>
+    <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove1\EnemyMove1.h">
+      <Filter>Src\Application\Enemy\EnemyMove\EnemyMove1</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove2\EnemyMove2.h">
+      <Filter>Src\Application\Enemy\EnemyMove\EnemyMove2</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\Boss\BossBase.h">
+      <Filter>Src\Application\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\Boss\Boss\Boss.h">
+      <Filter>Src\Application\Enemy\Boss\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\Boss\SubBoss\SubBoss.h">
+      <Filter>Src\Application\Enemy\Boss\SubBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Skill\SkillManager.h">
+      <Filter>Src\Application\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Skill\Shot\Shot.h">
+      <Filter>Src\Application\Skill\Shot</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Skill\EnemyGenetate\EnemyGenerate.h">
+      <Filter>Src\Application\Skill\EnemyGenerate</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Skill\SkillBase.h">
+      <Filter>Src\Application\Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -335,9 +377,6 @@
     <ClCompile Include="Src\Application\Common\CommonTexture.cpp">
       <Filter>Src\Application\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Attack\Shot.cpp">
-      <Filter>Src\Application\Attack</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Common\CommonAPI.cpp">
       <Filter>Src\Application\Common</Filter>
     </ClCompile>
@@ -347,8 +386,32 @@
     <ClCompile Include="Src\Application\Enemy\EnemyManager.cpp">
       <Filter>Src\Application\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove1.cpp">
-      <Filter>Src\Application\Enemy\EnemyMove</Filter>
+    <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove1\EnemyMove1.cpp">
+      <Filter>Src\Application\Enemy\EnemyMove\EnemyMove1</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove2\EnemyMove2.cpp">
+      <Filter>Src\Application\Enemy\EnemyMove\EnemyMove2</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\Boss\BossBase.cpp">
+      <Filter>Src\Application\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\Boss\Boss\Boss.cpp">
+      <Filter>Src\Application\Enemy\Boss\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\Boss\SubBoss\SubBoss.cpp">
+      <Filter>Src\Application\Enemy\Boss\SubBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Skill\SkillManager.cpp">
+      <Filter>Src\Application\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Skill\Shot\Shot.cpp">
+      <Filter>Src\Application\Skill\Shot</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Skill\EnemyGenetate\EnemyGenerate.cpp">
+      <Filter>Src\Application\Skill\EnemyGenerate</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Skill\SkillBase.cpp">
+      <Filter>Src\Application\Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

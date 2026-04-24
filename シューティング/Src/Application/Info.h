@@ -10,9 +10,13 @@ public:
 	static const int ScrWidth = 1280;
 	static const int ScrHeight = 720;
 
+	//HUDエリア設定
+	static const int HUDAreaWidth = 1280;
+	static const int HUDAreaHeight = 120;
+
 	//プレイ画面設定
-	static const int PlayAreaWidth = 580;
-	static const int PlayAreaHeight = 720;
+	static const int PlayAreaWidth = 1280;
+	static const int PlayAreaHeight = ScrHeight-HUDAreaHeight;
 
 	////////////
 

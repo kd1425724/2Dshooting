@@ -4,6 +4,7 @@
 class C_GameUi;
 class C_Player;
 class C_EnemyManager;
+class C_SkillManager;
 
 enum class GameMode
 {
@@ -43,12 +44,15 @@ private:
 	void Release()override;
 
 	//Ui
-	C_GameUi* m_gameui=nullptr;
+	std::shared_ptr<C_GameUi> m_gameui=nullptr;
 
 	//プレイヤー
-	C_Player* m_player=nullptr;
+	std::shared_ptr<C_Player> m_player = nullptr;
 
 	//敵
-	C_EnemyManager* m_enemymanager=nullptr;
+	std::shared_ptr<C_EnemyManager> m_enemymanager=nullptr;
+
+	//スキル管理
+	std::shared_ptr<C_SkillManager> m_skillmanager = nullptr;
 
 };

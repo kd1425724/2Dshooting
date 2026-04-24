@@ -7,7 +7,7 @@ C_Shot::C_Shot()
 }
 
 
-void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum,Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
+void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum,Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed)
 {
 	SetTexture(a_texturetype);
 
@@ -15,7 +15,7 @@ void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Ve
 	{
 	case ShotType::NormalShot:
 		//初期化
-		NormalShotInit(a_texturetype,a_animmaxnum, a_rect, a_pos, target);
+		NormalShotInit(a_texturetype,a_animmaxnum, a_rect, a_pos, target,movespeed);
 		break;
 	case ShotType::ShotNum:
 		break;
@@ -24,7 +24,24 @@ void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Ve
 	}
 }
 
-void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
+void C_Shot::ShotManager(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed)
+{
+	SetTexture(a_texturetype);
+
+	switch (a_type)
+	{
+	case ShotType::NormalShot:
+		//初期化
+		NormalShotInit(a_texturetype, a_animmaxnum, a_rect, a_pos, a_angle,movespeed);
+		break;
+	case ShotType::ShotNum:
+		break;
+	default:
+		break;
+	}
+}
+
+void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed)
 {
 	switch (a_type)
 	{
@@ -34,7 +51,7 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		SetTextureSetting(a_texturetype);
 
 		rect = a_rect;
-		speed = 3;
+		speed = movespeed;
 		pos = a_pos;
 		angle = atan2(target.y - pos.y, target.x - pos.x);
 		move.x = cosf(angle) * speed;
@@ -49,6 +66,42 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 
 		scalemat = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 		rotatemat = Math::Matrix::CreateRotationZ(angle+texangle);
+		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		mat = scalemat * rotatemat * transmat;
+
+		break;
+	case ShotType::ShotNum:
+		break;
+	default:
+		break;
+	}
+}
+
+void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed)
+{
+	switch (a_type)
+	{
+	case ShotType::NormalShot:
+
+		//画像設定セット
+		SetTextureSetting(a_texturetype);
+
+		rect = a_rect;
+		speed = movespeed;
+		pos = a_pos;
+		angle = a_angle;
+		move.x = cosf(angle) * speed;
+		move.y = sinf(angle) * speed;
+		color = { 1,1,1,1 };
+		alive = true;
+		scale = { 1,1 };
+
+		//アニメーション用
+		anim = { 0,0 };
+		animmaxnum = a_animmaxnum;
+
+		scalemat = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		rotatemat = Math::Matrix::CreateRotationZ(angle + texangle);
 		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 		mat = scalemat * rotatemat * transmat;
 
@@ -92,10 +145,17 @@ void C_Shot::SetTexture(ShotTextureType type)
 	}
 }
 
-void C_Shot::NormalShotInit(ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target)
+void C_Shot::NormalShotInit(ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed)
 {
 	m_normalshot.emplace_back();
-	m_normalshot.back().Init(ShotType::NormalShot, a_texturetype,a_animmaxnum, a_rect, a_pos, target);
+	m_normalshot.back().Init(ShotType::NormalShot, a_texturetype,a_animmaxnum, a_rect, a_pos, target,movespeed);
+}
+
+void C_Shot::NormalShotInit(ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed)
+{
+	m_normalshot.emplace_back();
+	m_normalshot.back().Init(ShotType::NormalShot, a_texturetype, a_animmaxnum, a_rect, a_pos, a_angle,movespeed);
+
 }
 
 void C_Shot::NormalShotUpdate()
@@ -156,7 +216,7 @@ void C_Shot::NormalShotDraw()
 
 void Shot::SetTextureSetting(ShotTextureType type)
 {
-	ShotTextureAngle angle;
+	ShotTextureAngle angle= ShotTextureAngle::Left;
 
 	//元画像が何か、画像と元画像角度をセットする
 	switch (type)

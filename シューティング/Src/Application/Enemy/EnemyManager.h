@@ -4,32 +4,28 @@
 using namespace std;
 
 class C_EnemyMoveBase;
+enum class PosPattern;
+enum class MovePattern;
 
 enum class EnemyType
 {
 	s,
+	SubBoss,
+	Boss
 };
-
-enum class EnemyMovePattern
+enum class EnemyMoveType
 {
-	Pattern1,
-	Pattern2
-};
-
-enum class MovePatternDefault
-{
-	p1Default1_Right,
-	p1Default2_Left,
-	p1Default3_Left,
-	p2Default1,
-	p2Default2,
+	Type1,
+	Type2,
+	Type3
 };
 
 struct Enemy
 {
 	EnemyType type;
-	EnemyMovePattern movepattern;
-	MovePatternDefault Default;
+	EnemyMoveType movetype;
+	PosPattern pospattern;
+	MovePattern movepattern;
 };
 
 
@@ -41,13 +37,18 @@ public:
 	C_EnemyManager() {}
 	~C_EnemyManager() { Release(); }
 
-	void Init(C_Player* player);
+	void Init(std::shared_ptr<C_Player> player);
 	void Update();
 	void Draw();
 
 	//敵生成
-	//type 
 	void EnemySpworn(int judgmentcount);
+
+	//ボス生成
+	void BossSpworn();
+
+	//スキル敵生成用
+	void SkillEnemySpworn(Math::Vector2 pos);
 
 private:
 
@@ -62,11 +63,8 @@ private:
 
 	void SpwornEnemyLoad();
 
-	//敵座標設定
-	Math::Vector2 GetEnemyPos(MovePatternDefault enemypostype,int i);
-
 	//インスタンス取得用
-	C_Player* m_player;
+	std::shared_ptr<C_Player> m_player;
 
 	//敵まとめ
 	vector<C_EnemyMoveBase*> m_enemys;
@@ -75,5 +73,18 @@ private:
 	KdTexture& GetEnemyTexture(EnemyType type);
 	//画像セット用
 	KdTexture m_enemytex;
+
+	//サブボス用
+	KdTexture m_subbosstex;
+	KdTexture m_subbossmovetex;
+	KdTexture m_subbossenginetex;
+	KdTexture m_subbossdeathtex;
+
+
+	//ボス用
+	KdTexture m_bosstex;
+	KdTexture m_bossmovetex;
+	KdTexture m_bossenginetex;
+	KdTexture m_bossdeathtex;
 };
 

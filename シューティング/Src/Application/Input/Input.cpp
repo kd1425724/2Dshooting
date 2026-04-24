@@ -3,6 +3,7 @@
 
 C_Input::~C_Input()
 {
+
 	PlayerKeySave();
 }
 
@@ -79,7 +80,8 @@ void C_Input::PlayerKeySave()
 	"‰ºˆÚ“®",
 	"¶ˆÚ“®",
 	"‰EˆÚ“®",
-	"’ÊíUŒ‚"
+	"’ÊíUŒ‚",
+	"ƒXƒLƒ‹"
 	};
 
 	if (fopen_s(&fp, "Data/PlayerData/PlayerKeyData.csv", "w") == 0)
@@ -104,7 +106,8 @@ void C_Input::PlayerDefaultKeySet()
 						(int)PlayerKeyDefaultType::Bottom,
 						(int)PlayerKeyDefaultType::Left,
 						(int)PlayerKeyDefaultType::Right,
-						(int)PlayerKeyDefaultType::NormalShot};
+						(int)PlayerKeyDefaultType::NormalShot,
+						(int)PlayerKeyDefaultType::Skill};
 
 	for (int i = 0; i < num; i++)
 	{

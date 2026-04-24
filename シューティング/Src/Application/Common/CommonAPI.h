@@ -17,7 +17,7 @@ public:
 private:
 
 	//画面外判定余剰分
-	const float margin = 100.0f;
+	const float margin = 500.0f;
 
 
 //シングルトン

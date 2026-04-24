@@ -11,15 +11,13 @@ bool C_CommonAPI::OutOfScreen(Math::Vector2 pos, Math::Vector2 radius)
 	}
 
 	return false;
-
-	return false;
 }
 
 bool C_CommonAPI::OutOfPlayArea(Math::Vector2 pos, Math::Vector2 radius)
 {
 	//画面外に出たら
 	if (pos.x + radius.x < -INFO.PlayAreaWidth / 2 || pos.x - radius.x > INFO.PlayAreaWidth / 2 ||
-		pos.y + radius.y < -INFO.PlayAreaHeight / 2 || pos.y - radius.y > INFO.PlayAreaHeight / 2)
+		pos.y + radius.y < -INFO.PlayAreaHeight / 2 - INFO.HUDAreaHeight || pos.y - radius.y > INFO.PlayAreaHeight / 2 - INFO.HUDAreaHeight)
 	{
 		return true;
 	}
@@ -43,7 +41,7 @@ bool C_CommonAPI::OutOfPlayAreaPlusMargin(Math::Vector2 pos, Math::Vector2 radiu
 {
 	//画面外に出たら
 	if (pos.x + radius.x + margin < -INFO.PlayAreaWidth / 2 || pos.x - radius.x - margin > INFO.PlayAreaWidth / 2 ||
-		pos.y + radius.y + margin < -INFO.PlayAreaHeight / 2 || pos.y - radius.y - margin > INFO.PlayAreaHeight / 2)
+		pos.y + radius.y + margin < -INFO.PlayAreaHeight / 2-INFO.HUDAreaHeight || pos.y - radius.y - margin > INFO.PlayAreaHeight / 2 - INFO.HUDAreaHeight)
 	{
 		return true;
 	}

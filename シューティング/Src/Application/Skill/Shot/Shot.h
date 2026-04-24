@@ -56,8 +56,10 @@ struct Shot
 	Math::Vector2 animmaxnum;
 	float animspeed;
 
-	//初期化
-	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target);
+	//初期化（targetpos指定バージョン）
+	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target,int movespeed);
+	//初期化（angle指定バージョン）
+	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed);
 };
 
 
@@ -77,7 +79,9 @@ public:
 	//a_rect...画像の切り取り範囲
 	//a_pos...発生位置
 	//a_target...狙い
-	void ShotManager(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target);
+	void ShotManager(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed);
+	//アングル指定バージョン
+	void ShotManager(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed);
 
 	
 
@@ -94,7 +98,9 @@ private:
 	vector<Shot> m_normalshot;
 
 	//一発発射
-	void NormalShotInit(ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target);
+	void NormalShotInit(ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed);
+	//アングル指定バージョン
+	void NormalShotInit(ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed);
 	void NormalShotUpdate();
 	void NormalShotDraw();
 

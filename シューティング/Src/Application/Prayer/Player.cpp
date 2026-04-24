@@ -1,17 +1,18 @@
 #include "Player.h"
 #include"Application/Common/CommonTexture.h"
 #include"Application/Input/Input.h"
-#include"Application/Attack/Shot.h"
+#include"../Skill/Shot/Shot.h"
+#include"Application/Info.h"
 
 void C_Player::Init()	
 {
 	ShotInit();
 
 	//座標
-	m_pos = { 0,0 };
+	m_pos = { -300,0 - (float)INFO.HUDAreaHeight };
 	//移動量
 	m_move = { 0.0f,0.0f };
-	m_movespeed = { 5.0f,5.0f };
+	m_movespeed = { 9.0f,9.0f };
 	//サイズ
 	m_scale = { 1.5f,1.5f };
 	//カラー
@@ -80,8 +81,8 @@ void C_Player::ShotUpdate()
 	{
 		if (Input.GetPlayerKey(PlayerKeyType::NormalShot))
 		{
-			m_shot->ShotManager(ShotType::NormalShot,ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-				m_pos, { m_pos.x,m_pos.y + 100 });
+			m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+				m_pos, { m_pos.x + 100,m_pos.y },7);
 			m_shotinterval = (int)PlayerShotInterval::NormalShot;
 		}
 	}
