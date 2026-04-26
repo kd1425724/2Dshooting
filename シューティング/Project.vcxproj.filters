@@ -103,6 +103,15 @@
     <Filter Include="Src\Application\Skill\EnemyGenerate">
       <UniqueIdentifier>{f2ac801c-b71a-4ba2-84cd-96df0b0be143}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Enemy\EnemyMove\EnemyMove3">
+      <UniqueIdentifier>{0868172a-c932-4c91-bffb-3c49b4992580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Skill\Laser1">
+      <UniqueIdentifier>{482b6725-250c-4f30-af8f-0308ab61535e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Skill\Barrier">
+      <UniqueIdentifier>{67314bac-317c-420e-8c42-70718408ab03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -273,6 +282,15 @@
     <ClInclude Include="Src\Application\Skill\SkillBase.h">
       <Filter>Src\Application\Skill</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove3\EnemyMove3.h">
+      <Filter>Src\Application\Enemy\EnemyMove\EnemyMove3</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Skill\Laser1\Laser.h">
+      <Filter>Src\Application\Skill\Laser1</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Skill\Barrier\Barrier.h">
+      <Filter>Src\Application\Skill\Barrier</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -412,6 +430,15 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Skill\SkillBase.cpp">
       <Filter>Src\Application\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove3\EnemyMove3.cpp">
+      <Filter>Src\Application\Enemy\EnemyMove\EnemyMove3</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Skill\Laser1\Laser.cpp">
+      <Filter>Src\Application\Skill\Laser1</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Skill\Barrier\Barrier.cpp">
+      <Filter>Src\Application\Skill\Barrier</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

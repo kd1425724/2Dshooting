@@ -23,7 +23,9 @@ public:
 	void ShotInit();
 	void ShotUpdate();
 
-	Math::Vector2 GetPlayerPos() { return m_pos; }
+	Math::Vector2 GetPos() { return m_pos; }
+
+	Math::Vector2 GetRadius() { return m_rect * m_scale / 2; }
 
 private:
 
@@ -42,9 +44,11 @@ private:
 	Math::Color m_color;
 	//¶‘¶ƒtƒ‰ƒO
 	bool m_alive;
+	//Ø‚èæ‚è”ÍˆÍ
+	Math::Vector2 m_rect;
 
 	//’e
-	C_Shot* m_shot;
+	std::shared_ptr<C_Shot> m_shot;
 	//”­ËŠÔŠu
 	int m_shotinterval;
 

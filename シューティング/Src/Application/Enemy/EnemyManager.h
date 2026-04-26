@@ -4,8 +4,11 @@
 using namespace std;
 
 class C_EnemyMoveBase;
+class C_SkillManager;
+
 enum class PosPattern;
 enum class MovePattern;
+enum class UseType;
 
 enum class EnemyType
 {
@@ -41,6 +44,9 @@ public:
 	void Update();
 	void Draw();
 
+	//スキル管理取得用
+	void SetSkillManager(std::shared_ptr<C_SkillManager> skillmanager) { m_skillmanager = skillmanager; }
+
 	//敵生成
 	void EnemySpworn(int judgmentcount);
 
@@ -48,7 +54,7 @@ public:
 	void BossSpworn();
 
 	//スキル敵生成用
-	void SkillEnemySpworn(Math::Vector2 pos);
+	void SkillEnemySpworn(Math::Vector2 pos,UseType type);
 
 private:
 
@@ -56,7 +62,7 @@ private:
 	void Release();
 
 	//判定回数
-	static const int JudgmentNum = 120 / 5 * 10;
+	static const int JudgmentNum = 5;// 120 / 5 * 10;
 	
 	//保存用
 	Enemy m_spworntype[JudgmentNum];
@@ -67,7 +73,12 @@ private:
 	std::shared_ptr<C_Player> m_player;
 
 	//敵まとめ
-	vector<C_EnemyMoveBase*> m_enemys;
+	vector<std::shared_ptr<C_EnemyMoveBase>> m_enemys;
+
+	//スキル用
+	vector<std::shared_ptr<C_EnemyMoveBase>> m_skillenemys;
+
+	std::shared_ptr<C_SkillManager> m_skillmanager;
 
 	//敵画像セット
 	KdTexture& GetEnemyTexture(EnemyType type);

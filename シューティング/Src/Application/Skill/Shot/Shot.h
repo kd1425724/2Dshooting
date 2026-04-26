@@ -14,47 +14,37 @@ enum class ShotTextureType
 	Bolt,
 
 };
-
-//元画像の向き
-enum class ShotTextureAngle
-{
-	Top,		//上
-	Bottom,		//下
-	Left,		//左
-	Right 		//右
-};
-
 struct Shot
 {
 	//座標
-	Math::Vector2 pos;
+	Math::Vector2 pos = {0,0};
 	//移動量
-	Math::Vector2 move;
+	Math::Vector2 move = {0,0};
 	//スピード
-	float speed;
+	float speed = 0;
 	//フラグ
 	bool alive = false;
 	//サイズ
-	Math::Vector2 scale;
+	Math::Vector2 scale = { 1,1 };
 	//行列
 	Math::Matrix scalemat;
 	Math::Matrix transmat;
 	Math::Matrix rotatemat;
 	Math::Matrix mat;
 	//切り取り範囲
-	Math::Vector2 rect;
+	Math::Vector2 rect = { 0,0 };
 	//カラー
-	Math::Color color;
+	Math::Color color = { 1,1,1,1 };
 	//角度
-	float angle;
+	float angle = 0;
 	//テクスチャ設定セット
 	void SetTextureSetting(ShotTextureType type);
-	float texangle;
+	float texangle=0;
 
 	//アニメーション用
-	Math::Vector2 anim;
-	Math::Vector2 animmaxnum;
-	float animspeed;
+	Math::Vector2 anim = { 0,0 };
+	Math::Vector2 animmaxnum = { 0,0 };
+	float animspeed=0;
 
 	//初期化（targetpos指定バージョン）
 	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target,int movespeed);
@@ -95,7 +85,7 @@ private:
 	void SetTexture(ShotTextureType type);
 
 	//通常ショット（弾一発）
-	vector<Shot> m_normalshot;
+	vector<std::shared_ptr<Shot>> m_normalshot;
 
 	//一発発射
 	void NormalShotInit(ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed);

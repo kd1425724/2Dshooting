@@ -168,6 +168,7 @@
     <ClInclude Include="Src\Application\Enemy\EnemyManager.h" />
     <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove1\EnemyMove1.h" />
     <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove2\EnemyMove2.h" />
+    <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove3\EnemyMove3.h" />
     <ClInclude Include="Src\Application\Info.h" />
     <ClInclude Include="Src\Application\Input\Input.h" />
     <ClInclude Include="Src\Application\Prayer\Player.h" />
@@ -178,7 +179,9 @@
     <ClInclude Include="Src\Application\Scenes\SceneBase.h" />
     <ClInclude Include="Src\Application\Scenes\SceneManager.h" />
     <ClInclude Include="Src\Application\Scenes\Title\Title.h" />
+    <ClInclude Include="Src\Application\Skill\Barrier\Barrier.h" />
     <ClInclude Include="Src\Application\Skill\EnemyGenetate\EnemyGenerate.h" />
+    <ClInclude Include="Src\Application\Skill\Laser1\Laser.h" />
     <ClInclude Include="Src\Application\Skill\Shot\Shot.h" />
     <ClInclude Include="Src\Application\Skill\SkillBase.h" />
     <ClInclude Include="Src\Application\Skill\SkillManager.h" />
@@ -218,6 +221,7 @@
     <ClCompile Include="Src\Application\Enemy\EnemyManager.cpp" />
     <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove1\EnemyMove1.cpp" />
     <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove2\EnemyMove2.cpp" />
+    <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove3\EnemyMove3.cpp" />
     <ClCompile Include="Src\Application\Info.cpp" />
     <ClCompile Include="Src\Application\Input\Input.cpp" />
     <ClCompile Include="Src\Application\Prayer\Player.cpp" />
@@ -228,7 +232,9 @@
     <ClCompile Include="Src\Application\Scenes\SceneBase.cpp" />
     <ClCompile Include="Src\Application\Scenes\SceneManager.cpp" />
     <ClCompile Include="Src\Application\Scenes\Title\Title.cpp" />
+    <ClCompile Include="Src\Application\Skill\Barrier\Barrier.cpp" />
     <ClCompile Include="Src\Application\Skill\EnemyGenetate\EnemyGenerate.cpp" />
+    <ClCompile Include="Src\Application\Skill\Laser1\Laser.cpp" />
     <ClCompile Include="Src\Application\Skill\Shot\Shot.cpp" />
     <ClCompile Include="Src\Application\Skill\SkillBase.cpp" />
     <ClCompile Include="Src\Application\Skill\SkillManager.cpp" />

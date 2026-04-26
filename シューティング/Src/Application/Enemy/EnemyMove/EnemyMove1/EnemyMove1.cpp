@@ -4,9 +4,14 @@
 #include"../../../Skill/Shot/Shot.h"
 #include"Application/Common/CommonAPI.h"
 #include"Application/Info.h"
+#include"../../../Skill/SkillManager.h"
 
 void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::shared_ptr<C_Player> player,int i)
 {
+	//スキル初期化
+	m_skillmanager = nullptr;
+	m_skilltype = SkillType::None;
+
 	//プレイヤーのインスタンス
 	m_player = move(player);
 
@@ -81,7 +86,7 @@ void C_EnemyMove1::Update()
 		if (m_shotinterval <= 0)
 		{
 			m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-				m_pos, m_player->GetPlayerPos(),6);//{ m_pos.x,m_pos.y - 100 });
+				m_pos, m_player->GetPos(),6);//{ m_pos.x,m_pos.y - 100 });
 
 			m_shotinterval = m_shotintervaltime;
 		}

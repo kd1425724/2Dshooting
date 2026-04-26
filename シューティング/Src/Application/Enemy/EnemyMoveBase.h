@@ -3,6 +3,10 @@
 class C_Player;
 enum class MovePatternDefault;
 class C_Shot;
+class C_SkillManager;
+
+enum class UseType;
+enum class SkillType;
 
 enum class PosPattern
 {
@@ -24,7 +28,37 @@ enum class MovePattern
 class C_EnemyMoveBase
 {
 public:
-	C_EnemyMoveBase(){}
+	C_EnemyMoveBase()
+	{
+		m_tex = nullptr;
+		m_enginetex = nullptr;
+		m_movetex = nullptr;
+		m_deathtex = nullptr;
+
+		m_alive = true;
+
+		m_pos = { 0, 0 };
+		m_move = { 0, 0 };
+		m_movespeed = { 0, 0 };
+		m_scale = { 1, 1 };
+
+		m_anim = { 0, 0 };
+		m_animmaxnum = { 0, 0 };
+
+		m_engineanim = { 0, 0 };
+		m_deathanim = { 0, 0 };
+		m_moveanim = { 0, 0 };
+
+		m_shotinterval = 0;
+		m_shotintervaltime = 0;
+
+		m_angle = 0.0f;
+
+		m_skilltype = (SkillType)0;
+		m_usetype = (UseType)0;
+
+		m_skillmanager = nullptr;
+	}
 	~C_EnemyMoveBase(){}
 
 	virtual void Init(PosPattern pospattern,MovePattern movepattern ,std::shared_ptr<C_Player> player,int i){}
@@ -42,6 +76,7 @@ public:
 	//ボス用
 	virtual void Init(){}
 	virtual void Init(Math::Vector2 pos){}
+	virtual void Init(Math::Vector2 pos,UseType type,int i){}
 
 
 	//座標取得用
@@ -59,6 +94,11 @@ public:
 	void SetDeathTex(KdTexture* tex) { m_deathtex = tex; }
 	//行動用テクスチャ
 	void SetMoveTex(KdTexture* tex) { m_movetex = tex; }
+
+	//スキル用
+	SkillType GetSkillType() { return m_skilltype; }
+
+	void SetSkillManager(std::shared_ptr<C_SkillManager> skillmanager) { m_skillmanager = skillmanager; }
 
 protected:
 
@@ -112,6 +152,13 @@ protected:
 	Math::Vector2 m_engineanim;
 	Math::Vector2 m_deathanim;
 	Math::Vector2 m_moveanim;
+
+	//スキル用
+	std::shared_ptr<C_SkillManager> m_skillmanager;
+
+	SkillType m_skilltype;
+
+	UseType m_usetype;
 
 private:
 

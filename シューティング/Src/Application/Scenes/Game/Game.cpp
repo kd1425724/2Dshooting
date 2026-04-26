@@ -4,7 +4,7 @@
 #include"Application/Prayer/Player.h"
 #include"Application/Enemy/EnemyManager.h"
 #include"Application/Skill/SkillManager.h"
-
+#include"Application/Skill/SkillBase.h"
 void C_Game::TextureLoad()
 {
 	m_gameui->TextureLoad();
@@ -21,6 +21,8 @@ void C_Game::Init()
 	//スキル管理作成
 	m_skillmanager = std::make_shared<C_SkillManager>();
 
+	m_enemymanager->SetSkillManager(m_skillmanager);
+
 	TextureLoad();
 
 	m_gameui->Init();
@@ -29,8 +31,10 @@ void C_Game::Init()
 
 	m_enemymanager->Init(m_player);
 
-	m_skillmanager->Init();
+
 	m_skillmanager->SetEnemyManager(m_enemymanager);
+	m_skillmanager->SetPlayer(m_player);
+	m_skillmanager->Init();
 
 	//判定時間
 	m_JudgmentTime = 0;
@@ -48,12 +52,13 @@ void C_Game::Update()
 	//敵
 	m_enemymanager->Update();
 
-	//Ui
-	m_gameui->Update();
-
 	//スキル管理
 	m_skillmanager->Update();
 
+	//Ui
+	m_gameui->Update();
+
+	
 	if (m_JudgmentTime >= 0)
 	{
 		m_JudgmentTime--;
@@ -63,7 +68,7 @@ void C_Game::Update()
 			m_JudgmentTime = m_JudgmentCoolTime;
 
 			//5秒ごとに敵生成
-			SpwornMnager();
+			//SpwornMnager();
 		}
 	}
 
@@ -78,6 +83,8 @@ void C_Game::Draw()
 	//背景「最初」
 	m_gameui->BackGroundDraw();
 
+	//スキル描画
+	m_skillmanager->Draw();
 
 	//敵描画
 	m_enemymanager->Draw();
@@ -85,7 +92,9 @@ void C_Game::Draw()
 	//プレイヤー描画
 	m_player->Draw();
 
-	m_skillmanager->Draw();
+
+	//スキル描画（プレイヤーや敵の上に描画されるもの）
+	m_skillmanager->TopDraw();
 
 
 	//Ui「最後」

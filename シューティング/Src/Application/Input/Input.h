@@ -7,7 +7,7 @@ enum class PlayerKeyType
 	Left,			//左移動
 	Right,			//右移動
 	NormalShot,		//通常攻撃
-	Skill,		//スキル
+	Skill,			//スキル
 	PlayerKeyNum	//数
 };
 
@@ -48,6 +48,8 @@ public:
 	//プレイヤーキー取得用
 	SHORT GetPlayerKey(PlayerKeyType playerkeytype) { return GetAsyncKeyState(m_playerkey[(int)playerkeytype]) & 0x8000; }
 	
+	bool GetPlayerKeyFlg(PlayerKeyType playerkeytype) { return m_playerkeyflg[(int)playerkeytype]; }
+	
 	//プレイヤーデフォルトキーセット用
 	void PlayerDefaultKeySet();
 
@@ -61,6 +63,8 @@ private:
 	
 	//プレイヤーキー
 	int m_playerkey[(int)PlayerKeyType::PlayerKeyNum];
+
+	int m_playerkeyflg[(int)PlayerKeyType::PlayerKeyNum];
 
 	 
 //シングルトン

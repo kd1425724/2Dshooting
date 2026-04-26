@@ -17,6 +17,9 @@ void C_Player::Init()
 	m_scale = { 1.5f,1.5f };
 	//ƒJƒ‰[
 	m_color = { 1,1,1,1 };
+	//Ø‚èæ‚è”ÍˆÍ
+	m_rect = { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height };
+
 }
 void C_Player::Update()
 {
@@ -57,16 +60,11 @@ void C_Player::Draw()
 
 void C_Player::Release()
 {
-	if (m_shot)
-	{
-		delete m_shot;
-		m_shot = nullptr;
-	}
 }
 
 void C_Player::ShotInit()
 {
-	m_shot = new C_Shot();
+	m_shot = std::make_shared<C_Shot>();
 
 	m_shotinterval = 0;
 }

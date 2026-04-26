@@ -11,12 +11,24 @@ public:
 	void Update()	override;
 	void Draw()		override;
 
-	void SetEnemyManager(std::shared_ptr<C_EnemyManager> manager) { m_manager = manager; }
+	void SetEnemyMagager(std::shared_ptr<C_EnemyManager> manager)override { m_enemymanager = manager; }
+
+	//“GŽæ“¾—p
+	void SetEnemy(std::shared_ptr<C_EnemyMoveBase> enemybase)override { m_enemy = enemybase; }
 
 	void SkillActivate()override;
 
+	//“G—p
+	void EnemySkillActivate()override;
+
+	bool IsTopDraw()override { return false; }
+
 private:
 
-	std::shared_ptr<C_EnemyManager> m_manager;
+	std::shared_ptr<C_EnemyManager> m_enemymanager;
+
+	std::shared_ptr<C_EnemyMoveBase> m_enemy;
+
+
 
 };

@@ -7,9 +7,6 @@ public:
 	C_SubBoss() {}
 	~C_SubBoss() { Release(); }
 
-	//ŽG‹›“G—p‚È‚Ì‚ÅŽg‚í‚È‚¢
-	void Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i)override {}
-
 	void Init(Math::Vector2 pos)		override;
 	void Update()	override;
 	void Draw()		override;

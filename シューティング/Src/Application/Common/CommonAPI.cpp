@@ -48,3 +48,25 @@ bool C_CommonAPI::OutOfPlayAreaPlusMargin(Math::Vector2 pos, Math::Vector2 radiu
 
 	return false;
 }
+
+float C_CommonAPI::GetTextureAngleAdjustment(TextureAngle angle)
+{
+	switch (angle)
+	{
+	case TextureAngle::Top:
+		return -DirectX::XM_PIDIV2;
+
+	case TextureAngle::Bottom:
+		return	DirectX::XM_PIDIV2;
+
+	case TextureAngle::Left:
+		return  DirectX::XM_PI;
+		
+	case TextureAngle::Right:
+		return 0.0f;
+		
+	default:
+		return 0.0f;
+		break;
+	}
+}

@@ -5,9 +5,15 @@
 #include"../../../Skill/Shot/Shot.h"
 #include"Application/Common/CommonAPI.h"
 #include"Application/Input/Input.h"
+#include"../../../Skill/SkillManager.h"
 
 void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i)
 {
+	//スキル初期化
+	m_skillmanager = nullptr;
+
+	m_skilltype = SkillType::None;
+
 	//プレイヤーのインスタンス
 	m_player = move(player);
 
@@ -80,39 +86,39 @@ void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::sha
 	m_shotinterval = 0;
 
 	//固有行動
-	m_inherentmove = InherentMove::Start;
+	m_inherentmove = InherentMove2::Start;
 	//ストップカウント
 	m_stopcount = 0;
 }
 void C_EnemyMove2::Update()
 {
-	if (m_inherentmove == InherentMove::Start)
+	if (m_inherentmove == InherentMove2::Start)
 	{
 		m_pos += m_move;
 
 		if (m_pos.x < m_shotpos.x)
 		{
-			m_inherentmove = InherentMove::Stop;
+			m_inherentmove = InherentMove2::Stop;
 			m_move = { 0,0 };
 			m_stopcount = m_stopcountmax;
 		}
 	}
-	else if (m_inherentmove == InherentMove::Stop)
+	else if (m_inherentmove == InherentMove2::Stop)
 	{
 		m_stopcount--;
 
 		if (m_stopcount < 0)
 		{
-			m_inherentmove = InherentMove::Shot;
+			m_inherentmove = InherentMove2::Shot;
 
-			m_angle = atan2(m_player->GetPlayerPos().y - m_pos.y, m_player->GetPlayerPos().x - m_pos.x);
+			m_angle = atan2(m_player->GetPos().y - m_pos.y, m_player->GetPos().x - m_pos.x);
 			m_move.x = cosf(m_angle) * m_movespeed.x;
 			m_move.y = sinf(m_angle) * m_movespeed.y;
 		}
 	}
-	else if (m_inherentmove == InherentMove::Shot)
+	else if (m_inherentmove == InherentMove2::Shot)
 	{
-		m_shotangle = atan2(m_player->GetPlayerPos().y - m_pos.y, m_player->GetPlayerPos().x - m_pos.x) - DirectX::XMConvertToRadians(90);
+		m_shotangle = atan2(m_player->GetPos().y - m_pos.y, m_player->GetPos().x - m_pos.x) - DirectX::XMConvertToRadians(90);
 
 		for (int i = 0; i < 5; i++)
 		{
@@ -127,22 +133,22 @@ void C_EnemyMove2::Update()
 
 		m_stopcount = m_stopcountmax;
 
-		m_inherentmove = InherentMove::Stop2;
+		m_inherentmove = InherentMove2::Stop2;
 	}
-	else if (m_inherentmove == InherentMove::Stop2)
+	else if (m_inherentmove == InherentMove2::Stop2)
 	{
 		m_stopcount--;
 
 		if (m_stopcount < 0)
 		{
-			m_inherentmove = InherentMove::ReStart;
+			m_inherentmove = InherentMove2::ReStart;
 
-			m_angle = atan2(m_player->GetPlayerPos().y - m_pos.y, m_player->GetPlayerPos().x - m_pos.x);
+			m_angle = atan2(m_player->GetPos().y - m_pos.y, m_player->GetPos().x - m_pos.x);
 			m_move.x = cosf(m_angle) * m_movespeed.x*2;
 			m_move.y = sinf(m_angle) * m_movespeed.y*2;
 		}
 	}
-	else if(m_inherentmove==InherentMove::ReStart)
+	else if(m_inherentmove==InherentMove2::ReStart)
 	{
 		m_pos += m_move;
 	}
@@ -152,10 +158,12 @@ void C_EnemyMove2::Update()
 }
 void C_EnemyMove2::Draw()
 {
-	SHADER.m_spriteShader.SetMatrix(m_mat);
+	m_shot->Draw();
+
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
 	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_tex,0,0,&Math::Rectangle(0,0,m_rect.x,m_rect.y), &m_color);
 	
-	m_shot->Draw();
+	
 }
 void C_EnemyMove2::Release()
 {

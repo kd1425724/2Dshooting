@@ -11,7 +11,7 @@ public:
 
 	//ƒvƒŒƒCƒ„[
 	const KdTexture& GetPlayerTex()const { return m_playertex; }
-	const Math::Rectangle& GetPlayerRect()const { return m_playerrect; }
+	const Math::Rectangle GetPlayerRect()const { return m_playerrect; }
 
 private:
 

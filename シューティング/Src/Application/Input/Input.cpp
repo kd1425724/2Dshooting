@@ -15,6 +15,11 @@ void C_Input::Init()
 	//クリックフラグ
 	m_mouseclickflg = false;
 
+	for (int i = 0; i < (int)PlayerKeyType::PlayerKeyNum; i++)
+	{
+		m_playerkeyflg[i] = false;
+	}
+
 	//プレイヤーキーロード
 	PlayerKeyLoad();
 }
@@ -31,6 +36,18 @@ void C_Input::Update(HWND hwnd)
 	else
 	{
 		m_mouseclickflg = false;
+	}
+
+	for (int i = 0; i < (int)PlayerKeyType::PlayerKeyNum; i++)
+	{
+		if (GetAsyncKeyState(m_playerkey[i])&0x8000)
+		{
+			m_playerkeyflg[i] = true;
+		}
+		else
+		{
+			m_playerkeyflg[i] = false;
+		}
 	}
 }
 void C_Input::Draw()

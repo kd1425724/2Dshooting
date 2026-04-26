@@ -2,8 +2,11 @@
 #include"Application/Common/CommonAPI.h"
 #include"Application/Enemy/EnemyMove/EnemyMove1/EnemyMove1.h"
 #include"Application/Enemy/EnemyMove/EnemyMove2/EnemyMove2.h"
+#include"Application/Enemy/EnemyMove/EnemyMove3/EnemyMove3.h"
 #include"Application/Enemy/Boss/Boss/Boss.h"
 #include"Application/Enemy/Boss/SubBoss/SubBoss.h"
+#include"../Skill/SkillBase.h"
+
 
 void C_EnemyManager::Init(std::shared_ptr<C_Player> player)
 {
@@ -25,11 +28,9 @@ void C_EnemyManager::Init(std::shared_ptr<C_Player> player)
 }
 void C_EnemyManager::Release()
 {
-	if (&m_enemys)
-	{
-		delete &m_enemys;
-		m_player = nullptr;
-	}
+
+	m_player = nullptr;
+	
 
 	m_enemytex.Release();
 	m_subbosstex.Release();
@@ -148,9 +149,26 @@ void C_EnemyManager::Update()
 			if (COMMONAPI.OutOfPlayAreaPlusMargin(m_enemys[i]->GetPos(),m_enemys[i]->GetRadius())||
 				!m_enemys[i]->GetAlive())
 			{
-				delete m_enemys[i];
-
 				m_enemys.erase(m_enemys.begin() + i);
+
+				i--;
+
+				continue;
+			}
+		}
+	}
+	if (!m_skillenemys.empty())
+	{
+		for (int i = 0; i < m_skillenemys.size(); i++)
+		{
+			m_skillenemys[i]->Update();
+
+			if (COMMONAPI.OutOfPlayAreaPlusMargin(m_skillenemys[i]->GetPos(),m_skillenemys[i]->GetRadius())||
+				!m_skillenemys[i]->GetAlive())
+			{
+				m_skillenemys.erase(m_skillenemys.begin() + i);
+
+				i--;
 
 				continue;
 			}
@@ -166,6 +184,14 @@ void C_EnemyManager::Draw()
 			m_enemys[i]->Draw();
 		}
 	}
+
+	if (!m_skillenemys.empty())
+	{
+		for (int i = 0; i < m_skillenemys.size(); i++)
+		{
+			m_skillenemys[i]->Draw();
+		}
+	}
 }
 void C_EnemyManager::EnemySpworn(int judgmentcount)
 {
@@ -174,23 +200,26 @@ void C_EnemyManager::EnemySpworn(int judgmentcount)
 	case EnemyMoveType::Type1:
 		for (int i = 0; i < 3; i++)
 		{
-			m_enemys.emplace_back(new C_EnemyMove1());
+			m_enemys.emplace_back(std::make_shared<C_EnemyMove1>());
 
 			m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(m_spworntype[judgmentcount].type),
 				{ 64,64 }, { 0,0 });
 
 			m_enemys.back()->Init(m_spworntype[judgmentcount].pospattern, m_spworntype[judgmentcount].movepattern,
 				m_player,i);
+
+			m_enemys.back()->SetSkillManager(m_skillmanager);
 		}
 		break;
 	case EnemyMoveType::Type2:
-		m_enemys.emplace_back(new C_EnemyMove2());
+		m_enemys.emplace_back(std::make_shared<C_EnemyMove2>());
 
 		m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(m_spworntype[judgmentcount].type),
 			{ 64,64 }, { 0,0 });
 
 		m_enemys.back()->Init(m_spworntype[judgmentcount].pospattern, m_spworntype[judgmentcount].movepattern,
 			m_player, NULL);
+		m_enemys.back()->SetSkillManager(m_skillmanager);
 		break;
 	case EnemyMoveType::Type3:
 		break;
@@ -207,25 +236,49 @@ void C_EnemyManager::BossSpworn()
 	m_enemys.back()->Init();*/
 
 	//É{ÉX
-	m_enemys.emplace_back(new C_Boss());
+	m_enemys.emplace_back(std::make_shared<C_Boss>());
 	m_enemys.back()->Init();
-	m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss), { 128,128 }, { NULL,NULL });
+	m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss), 
+		{ 128,128 }, { NULL,NULL });
 	m_enemys.back()->SetMoveTex(&m_bossmovetex);
 	m_enemys.back()->SetEngineTex(&m_bossenginetex);
 	m_enemys.back()->SetDeathTex(&m_bossdeathtex);
+
+	m_enemys.back()->SetSkillManager(m_skillmanager);
 }
 
-void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos)
+void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type)
 {
-	for (int i = 0; i < 4; i++)
+	switch (type)
 	{
-		//ë¸é~Ç‹Ç¡ÇƒëŒèÃÇ…å¸Ç©Ç¡Çƒë≈Ç¬
-		m_enemys.emplace_back(new C_EnemyMove3());
+	case UseType::Player:
+		for (int i = 0; i < 4; i++)
+		{
+			//ë¸é~Ç‹Ç¡ÇƒëŒèÃÇ…å¸Ç©Ç¡Çƒë≈Ç¬
+			m_skillenemys.emplace_back(std::make_shared<C_EnemyMove3>());
 
-		m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::s),
-			{ 64,64 }, { 0,0 });
+			m_skillenemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::s),
+				{ 64,64 }, { 0,0 });
 
-		m_enemys.back()->Init(pos);
+			m_skillenemys.back()->Init(pos, type, i);
+		}
+		break;
+	case UseType::Enemy:
+		for (int i = 0; i < 4; i++)
+		{
+			//ë¸é~Ç‹Ç¡ÇƒëŒèÃÇ…å¸Ç©Ç¡Çƒë≈Ç¬
+			m_enemys.emplace_back(std::make_shared<C_EnemyMove3>());
+
+			m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::s),
+				{ 64,64 }, { 0,0 });
+
+			m_enemys.back()->Init(pos, type, i);
+
+			m_enemys.back()->SetSkillManager(m_skillmanager);
+		}
+		break;
+	default:
+		break;
 	}
 }
 
@@ -240,6 +293,7 @@ KdTexture& C_EnemyManager::GetEnemyTexture(EnemyType type)
 	case EnemyType::Boss:
 		return m_bosstex;
 	default:
+		return m_enemytex;
 		break;
 	}
 }

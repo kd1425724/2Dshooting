@@ -1,7 +1,7 @@
 #pragma once
 #include"Application/Enemy/EnemyMoveBase.h"
 
-enum class InherentMove
+enum class InherentMove2
 {
 	Start,
 	Stop,
@@ -28,7 +28,7 @@ private:
 	void Release()override;
 
 	//固有行動
-	InherentMove m_inherentmove;
+	InherentMove2 m_inherentmove;
 
 	//ストップカウント
 	static const int m_stopcountmax = 1 * 60;
