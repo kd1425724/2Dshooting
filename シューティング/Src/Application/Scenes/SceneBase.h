@@ -4,7 +4,7 @@ class C_SceneBase
 {
 public:
 	C_SceneBase(){}
-	~C_SceneBase(){}
+	virtual ~C_SceneBase(){}
 
 	virtual void Init();
 	virtual void Update();

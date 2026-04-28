@@ -1,5 +1,5 @@
 #include "Barrier.h"
-#include"../../Prayer/Player.h"
+#include"../../Player/Player.h"
 #include "../../Enemy/EnemyMoveBase.h"
 #include"../../Common/CommonAPI.h"
 

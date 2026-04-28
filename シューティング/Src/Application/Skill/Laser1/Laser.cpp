@@ -1,6 +1,6 @@
 #include "Laser.h"
 #include "Application/Enemy/EnemyMoveBase.h"
-#include "../../Prayer/Player.h"
+#include "../../Player/Player.h"
 #include"../../Common/CommonAPI.h"
 
 C_Laser::C_Laser()

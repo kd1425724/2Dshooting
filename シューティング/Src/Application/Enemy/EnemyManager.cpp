@@ -231,9 +231,16 @@ void C_EnemyManager::EnemySpworn(int judgmentcount)
 void C_EnemyManager::BossSpworn()
 {
 	//サブボス
-	/*m_enemys.emplace_back(new C_SubBoss());
-	m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss), { 128,128 }, { NULL,NULL });
-	m_enemys.back()->Init();*/
+	for (int i = 0; i < 2; i++)
+	{
+		m_enemys.emplace_back(new C_SubBoss());
+		m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss), { 128,128 }, { NULL,NULL });
+		m_enemys.back()->SetMoveTex(&m_subbossmovetex);
+		m_enemys.back()->SetEngineTex(&m_subbossenginetex);
+		m_enemys.back()->SetDeathTex(&m_subbossdeathtex);
+		m_enemys.back()->Init({ 700,(float)0 - 60 + 200 - (i * 400) });
+		m_enemys.back()->SetSkillManager(m_skillmanager);
+	}
 
 	//ボス
 	m_enemys.emplace_back(std::make_shared<C_Boss>());

@@ -1,6 +1,6 @@
 #include "EnemyGenerate.h"
 #include"../../Enemy/EnemyManager.h"
-#include"../../Prayer/Player.h"
+#include"../../Player/Player.h"
 #include"../../Enemy/EnemyMoveBase.h"
 
 void C_EnemyGenerate::Init()

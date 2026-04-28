@@ -5,7 +5,7 @@ class C_GameUi :public C_ScenesUiBase
 {
 public:
 	C_GameUi() {}
-	~C_GameUi() {}
+	~C_GameUi() override{}
 
 	void Init()		override;
 	void Update()	override;

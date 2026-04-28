@@ -16,7 +16,7 @@ class C_Game:public C_SceneBase
 {
 public:
 	C_Game() { Release(); }
-	~C_Game(){}
+	~C_Game()override{}
 
 	void Init()override;
 	void Update()override;

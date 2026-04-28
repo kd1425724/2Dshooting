@@ -12,7 +12,7 @@ class C_EnemyMove3 :public C_EnemyMoveBase
 {
 public:
 	C_EnemyMove3() { }
-	~C_EnemyMove3() { Release(); }
+	~C_EnemyMove3() override{ Release(); }
 
 	void Init(Math::Vector2 pos, UseType type, int i)override;
 	void Update()override;

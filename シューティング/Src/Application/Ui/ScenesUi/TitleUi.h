@@ -11,7 +11,7 @@ class C_TitleUi:public C_ScenesUiBase
 {
 public:
 	C_TitleUi(){}
-	~C_TitleUi(){}
+	~C_TitleUi()override{}
 
 	void Init()override;
 	void Update()override;

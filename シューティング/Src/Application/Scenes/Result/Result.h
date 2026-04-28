@@ -5,7 +5,7 @@ class C_Result:public C_SceneBase
 {
 public:
 	C_Result(){}
-	~C_Result(){}
+	~C_Result()override{}
 
 	void Init()override;
 	void Update()override;

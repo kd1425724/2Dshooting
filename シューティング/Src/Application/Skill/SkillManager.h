@@ -25,13 +25,15 @@ public:
 	void Draw();
 	void TopDraw();
 
+	void Release();
+
 	//プレイヤースキルセット用
 	void SetPlayerSkill(SkillType skilltype);
 
 	//敵管理取得用
 	void SetEnemyManager(std::shared_ptr<C_EnemyManager> manager) { m_enemymanager = manager; }
 	//敵スキル発動用
-	void SetUseSkill(SkillType skilltype, std::shared_ptr<C_EnemyMoveBase> enemybase);
+	void SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyMoveBase> enemybase);
 
 	void SetPlayer(std::shared_ptr<C_Player> player) { m_player = player; }
 

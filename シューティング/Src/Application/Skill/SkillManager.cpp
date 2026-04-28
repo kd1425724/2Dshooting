@@ -6,6 +6,12 @@
 #include"../Input/Input.h"
 #include"../Enemy/EnemyMoveBase.h"
 
+void C_SkillManager::Release()
+{
+	m_lasertex->Release();
+	m_barriertex->Release();
+}
+
 void C_SkillManager::Init() 
 {
 	//ÉåÅ[ÉUÅ[
@@ -123,7 +129,7 @@ void C_SkillManager::SetPlayerSkill(SkillType skilltype)
 	}	
 }
 
-void C_SkillManager::SetUseSkill(SkillType skilltype, std::shared_ptr<C_EnemyMoveBase> enemybase)
+void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyMoveBase> enemybase)
 {
 	switch (skilltype)
 	{

@@ -17,7 +17,7 @@ public:
 		m_usetype = UseType::Player;
 		m_player = nullptr;
 	}
-	~C_SkillBase(){}
+	virtual ~C_SkillBase(){}
 
 	virtual void Init();
 	virtual void Update();
@@ -35,12 +35,12 @@ public:
 	virtual void SetEnemy(std::shared_ptr<C_EnemyMoveBase> enemybase) {}
 
 	//プレイヤーインスタンス取得用
-	virtual void SetPlayer(std::shared_ptr<C_Player> player) { m_player = player; }
+	void SetPlayer(std::shared_ptr<C_Player> player) { m_player = player; }
 
 	//画像設定
 	virtual void SetTexture(std::shared_ptr<KdTexture> tex){}
 
-	//画像が順番調整
+	//画像描画順調整
 	virtual bool IsTopDraw() = 0;
 
 protected:

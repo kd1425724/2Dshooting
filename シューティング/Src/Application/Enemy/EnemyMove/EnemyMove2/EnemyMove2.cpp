@@ -1,6 +1,6 @@
 #include"Application/Enemy/EnemyMove/EnemyMove2/EnemyMove2.h"
 #include"Application/Info.h"
-#include"Application/Prayer/Player.h"
+#include"../../../Player/Player.h"
 #include"Application/Enemy/EnemyManager.h"
 #include"../../../Skill/Shot/Shot.h"
 #include"Application/Common/CommonAPI.h"

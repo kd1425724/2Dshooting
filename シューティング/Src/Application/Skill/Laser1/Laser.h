@@ -7,7 +7,7 @@ class C_Laser : public C_SkillBase
 {
 public:
     C_Laser();
-    ~C_Laser();
+    ~C_Laser()override;
 
     void Init() override;
     void Update() override;

@@ -33,7 +33,7 @@ class C_ScenesUiBase
 {
 public:
 	C_ScenesUiBase() { m_frametex.Load("Texture/Ui/IsOnTopFrame.png"); }
-	~C_ScenesUiBase(){}
+	virtual ~C_ScenesUiBase(){}
 
 	virtual void Init();
 	virtual void Update();

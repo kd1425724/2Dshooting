@@ -1,10 +1,14 @@
 #include "Boss.h"
 #include"../../../Skill/Shot/Shot.h"
 #include"../../../Skill/SkillManager.h"
+#include"../../../Common/CommonAPI.h"
+
 void C_Boss::Init()
 {
 	//プレイヤーのインスタンス
 	//m_player = move(player);
+
+	m_skilltype = SkillType::None;
 
 	m_skillmanager = nullptr;
 
@@ -34,7 +38,7 @@ void C_Boss::Init()
 	//発射間隔
 	m_shotinterval = 0;
 
-	m_texangle = DirectX::XMConvertToRadians(90);
+	m_texangle = DirectX::XMConvertToRadians(180);
 
 	//エンジン用
 	m_engineanim = { 0,0 };
@@ -48,7 +52,7 @@ void C_Boss::Init()
 	m_pattern = Pattern::Start;
 
 	//行動パターン
-	m_actionpattern = ActionPattern::p1_EnemyGenerate;
+	m_actionpattern = BossActionPattern::p1_EnemyGenerate;
 
 	//固有行動
 	//m_inherentmove = InherentMove::Start;
@@ -126,7 +130,7 @@ void C_Boss::Update()
 	}
 
 	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
-	m_rotatemat = Math::Matrix::CreateRotationZ(m_texangle);
+	m_rotatemat = Math::Matrix::CreateRotationZ(m_texangle+ COMMONAPI.GetTextureAngleAdjustment(TextureAngle::Top));
 	m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
 	m_mat = m_scalemat*m_rotatemat * m_transmat;
 }
@@ -174,7 +178,7 @@ void C_Boss::StartUpdate()
 
 		m_pattern = Pattern::Loop;
 
-		m_actionpattern = ActionPattern::p1_EnemyGenerate;
+		m_actionpattern = BossActionPattern::p1_EnemyGenerate;
 	}
 }
 
@@ -186,16 +190,16 @@ void C_Boss::LoopUpdate()
 {
 	switch (m_actionpattern)
 	{
-	case ActionPattern::p1_EnemyGenerate:
+	case BossActionPattern::p1_EnemyGenerate:
 		p1_EnemyGenerateUpdate();
 		break;
-	case ActionPattern::p2_Laser:
+	case BossActionPattern::p2_Laser:
 		p2_LaserUpdate();
 		break;
-	case ActionPattern::p3_Barrier:
+	case BossActionPattern::p3_Barrier:
 		p3_BarrierUpdate();
 		break;
-	case ActionPattern::p4_SpiralShot:
+	case BossActionPattern::p4_SpiralShot:
 		p4_SpiralUpdate();
 		break;
 	default:
@@ -210,16 +214,16 @@ void C_Boss::LoopDraw()
 {
 	switch (m_actionpattern)
 	{
-	case ActionPattern::p1_EnemyGenerate:
+	case BossActionPattern::p1_EnemyGenerate:
 		p1_EnemyGenerateDrawSprite();
 		break;
-	case ActionPattern::p2_Laser:
+	case BossActionPattern::p2_Laser:
 		p2_LaserDrawSprite();
 		break;
-	case ActionPattern::p3_Barrier:
+	case BossActionPattern::p3_Barrier:
 		p3_BarrierDrawSprite();
 		break;
-	case ActionPattern::p4_SpiralShot:
+	case BossActionPattern::p4_SpiralShot:
 		p4_SpiralDrawSprite();
 		break;
 	default:
@@ -254,23 +258,27 @@ void C_Boss::p1_EnemyGenerateInit()
 {
 	m_enemygeneratetime = EnemyGenerateTime;
 
-	m_skillmanager->SetUseSkill(SkillType::EnemyGenerate, shared_from_this());
+	m_skillmanager->SetEnemySkill(SkillType::EnemyGenerate, shared_from_this());
 }
 
 void C_Boss::p2_LaserInit()
 {
+	m_skilltype = SkillType::Laser;
+
 	m_pattern = Pattern::Death;
 	m_lasertime = LaserTime;
 
-	m_skillmanager->SetUseSkill(SkillType::Laser, shared_from_this());
+	m_skillmanager->SetEnemySkill(SkillType::Laser, shared_from_this());
 }
 
 void C_Boss::p3_BarrierInit()
 {
+	m_skilltype = SkillType::Barrier;
+
 	m_pattern = Pattern::Death;
 	m_barriertime = BarrierTime;
 
-	m_skillmanager->SetUseSkill(SkillType::Barrier, shared_from_this());
+	m_skillmanager->SetEnemySkill(SkillType::Barrier, shared_from_this());
 }
 
 void C_Boss::p4_SpiralInit()
@@ -284,7 +292,7 @@ void C_Boss::p1_EnemyGenerateUpdate()
 
 	if (m_enemygeneratetime < 0)
 	{
-		SetActionPattern(GetRandomPatternExclude(ActionPattern::p1_EnemyGenerate));
+		SetActionPattern(GetRandomPatternExclude(BossActionPattern::p1_EnemyGenerate));
 	}
 }
 
@@ -293,7 +301,7 @@ void C_Boss::p2_LaserUpdate()
 	m_lasertime--;
 	if(m_lasertime<0)
 	{
-		SetActionPattern(GetRandomPatternExclude(ActionPattern::p2_Laser));
+		SetActionPattern(GetRandomPatternExclude(BossActionPattern::p2_Laser));
 	}
 }
 
@@ -302,7 +310,7 @@ void C_Boss::p3_BarrierUpdate()
 	m_barriertime--;
 	if (m_barriertime < 0)
 	{
-		SetActionPattern(GetRandomPatternExclude(ActionPattern::p3_Barrier));
+		SetActionPattern(GetRandomPatternExclude(BossActionPattern::p3_Barrier));
 	}
 }
 
@@ -337,7 +345,7 @@ void C_Boss::p4_SpiralUpdate()
 	m_spiraltime--;
 	if (m_spiraltime <= 0)
 	{
-		SetActionPattern(GetRandomPatternExclude(ActionPattern::p4_SpiralShot));
+		SetActionPattern(GetRandomPatternExclude(BossActionPattern::p4_SpiralShot));
 	}
 }
 
@@ -358,44 +366,44 @@ void C_Boss::p4_SpiralDrawSprite()
 
 }
 
-void C_Boss::SetActionPattern(ActionPattern pattern)
+void C_Boss::SetActionPattern(BossActionPattern pattern)
 {
 	switch (pattern)
 	{
-	case ActionPattern::p1_EnemyGenerate:
-		m_actionpattern = ActionPattern::p1_EnemyGenerate;
+	case BossActionPattern::p1_EnemyGenerate:
+		m_actionpattern = BossActionPattern::p1_EnemyGenerate;
 	
 		p1_EnemyGenerateInit();
 		break;
-	case ActionPattern::p2_Laser:
-		m_actionpattern = ActionPattern::p2_Laser;
+	case BossActionPattern::p2_Laser:
+		m_actionpattern = BossActionPattern::p2_Laser;
 		
 		p2_LaserInit();
 		break;
-	case ActionPattern::p3_Barrier:
-		m_actionpattern = ActionPattern::p3_Barrier;
+	case BossActionPattern::p3_Barrier:
+		m_actionpattern = BossActionPattern::p3_Barrier;
 	
 		p3_BarrierInit();
 		break;
-	case ActionPattern::p4_SpiralShot:
-		m_actionpattern = ActionPattern::p4_SpiralShot;
+	case BossActionPattern::p4_SpiralShot:
+		m_actionpattern = BossActionPattern::p4_SpiralShot;
 		
 		p4_SpiralInit();
 		break;
 	default:
-		m_actionpattern = ActionPattern::p3_Barrier;
+		m_actionpattern = BossActionPattern::p3_Barrier;
 		p3_BarrierInit();
 		break;
 	}
 }
 
-ActionPattern C_Boss::GetRandomPatternExclude(ActionPattern exclude)
+BossActionPattern C_Boss::GetRandomPatternExclude(BossActionPattern exclude)
 {
 	static std::random_device rd;
 	static std::mt19937 mt(rd());
 
 	// 総数（enumの最後）
-	int max = static_cast<int>(ActionPattern::ActionPatternNum);
+	int max = static_cast<int>(BossActionPattern::BossActionPatternNum);
 
 	std::uniform_int_distribution<int> dist(0, max - 2);
 	int r = dist(mt);
@@ -408,5 +416,5 @@ ActionPattern C_Boss::GetRandomPatternExclude(ActionPattern exclude)
 		r++;
 	}
 
-	return static_cast<ActionPattern>(r);
+	return static_cast<BossActionPattern>(r);
 }

@@ -59,7 +59,7 @@ public:
 
 		m_skillmanager = nullptr;
 	}
-	~C_EnemyMoveBase(){}
+	virtual ~C_EnemyMoveBase(){}
 
 	virtual void Init(PosPattern pospattern,MovePattern movepattern ,std::shared_ptr<C_Player> player,int i){}
 	virtual void Update();

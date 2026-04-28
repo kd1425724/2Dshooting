@@ -5,7 +5,7 @@ class C_EnemyGenerate:public C_SkillBase
 {
 public:
 	C_EnemyGenerate(){}
-	~C_EnemyGenerate(){}
+	~C_EnemyGenerate()override{}
 
 	void Init()		override;
 	void Update()	override;

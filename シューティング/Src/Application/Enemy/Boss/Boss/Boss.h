@@ -1,21 +1,13 @@
 #pragma once
 #include"Application/Enemy/Boss/BossBase.h"
 
-enum class Pattern
-{
-	Start,
-	Loop,
-	Death
-
-};
-
-enum class ActionPattern
+enum class BossActionPattern
 {
 	p1_EnemyGenerate,
 	p2_Laser,
 	p3_Barrier,
 	p4_SpiralShot,
-	ActionPatternNum
+	BossActionPatternNum
 };
 class C_Boss:public C_BossBase, public std::enable_shared_from_this<C_Boss>
 {
@@ -39,14 +31,12 @@ private:
 	Pattern m_pattern;
 
 	//ボス行動パターン
-	ActionPattern m_actionpattern;
+	BossActionPattern m_actionpattern;
 
 	//止まる座標
 	Math::Vector2 m_stoppos;
 
 	float m_texangle;
-
-	KdTexture tex;
 
 	//螺旋状に放つ弾用
 	float m_spiralshotangle;
@@ -97,9 +87,9 @@ private:
 	void p4_SpiralDrawSprite();
 
 	//行動パターンセット
-	void SetActionPattern(ActionPattern pattern);
+	void SetActionPattern(BossActionPattern pattern);
 
 	//指定したもの以外の値を返す
-	ActionPattern GetRandomPatternExclude(ActionPattern exclude);
+	BossActionPattern GetRandomPatternExclude(BossActionPattern exclude);
 
 };

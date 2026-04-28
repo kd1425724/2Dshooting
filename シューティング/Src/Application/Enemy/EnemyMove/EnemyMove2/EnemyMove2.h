@@ -14,7 +14,7 @@ class C_EnemyMove2:public C_EnemyMoveBase
 {
 public:
 	C_EnemyMove2(){}
-	~C_EnemyMove2() { Release(); }
+	~C_EnemyMove2()override { Release(); }
 
 	void Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i)override;
 	void Update()	override;

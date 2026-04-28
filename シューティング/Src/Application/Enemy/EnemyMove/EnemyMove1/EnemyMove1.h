@@ -6,7 +6,7 @@ class C_EnemyMove1:public C_EnemyMoveBase
 {
 public:
 	C_EnemyMove1(){}
-	~C_EnemyMove1() { Release(); }
+	~C_EnemyMove1()override { Release(); }
 
 	void Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player,int i)override;
 	void Update()override;

@@ -1,5 +1,5 @@
 #include "EnemyMoveBase.h"
-#include"Application/Prayer/Player.h"
+#include"../Player/Player.h"
 
 void C_EnemyMoveBase::Update()
 {

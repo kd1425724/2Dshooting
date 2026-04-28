@@ -11,7 +11,7 @@ class C_Barrier : public C_SkillBase
 {
 public:
     C_Barrier();
-    ~C_Barrier();
+    ~C_Barrier()override;
 
     void Init() override;
     void Update() override;

@@ -6,7 +6,7 @@ class C_Title:public C_SceneBase
 {
 public:
 	C_Title(){}
-	~C_Title(){}
+	~C_Title()override{}
 
 	void Init()override;
 	void Update()override;

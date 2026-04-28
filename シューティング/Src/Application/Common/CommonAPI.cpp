@@ -69,4 +69,24 @@ float C_CommonAPI::GetTextureAngleAdjustment(TextureAngle angle)
 		return 0.0f;
 		break;
 	}
+
+	switch (angle)
+	{
+	case TextureAngle::Right:
+		return 0.0f;
+
+	case TextureAngle::Top:
+		return -DirectX::XM_PIDIV2;   // -90“x
+
+	case TextureAngle::Left:
+		return DirectX::XM_PI;        // 180“x
+
+	case TextureAngle::Bottom:
+		return DirectX::XM_PIDIV2;    // +90“x
+
+	default:
+		return 0.0f;
+	}
+	
+
 }

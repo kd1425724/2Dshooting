@@ -64,9 +64,6 @@
     <Filter Include="Src\Application\Input">
       <UniqueIdentifier>{ec28b250-fe46-4420-b3f4-bca3776ece25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Prayer">
-      <UniqueIdentifier>{1b5a6d1a-5650-4798-966d-b411ea6b6e3d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Common">
       <UniqueIdentifier>{ceeb87cf-70ab-44bf-90b6-98b697cc68e8}</UniqueIdentifier>
     </Filter>
@@ -111,6 +108,27 @@
     </Filter>
     <Filter Include="Src\Application\Skill\Barrier">
       <UniqueIdentifier>{67314bac-317c-420e-8c42-70718408ab03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Skill\Copy">
+      <UniqueIdentifier>{e5e00cf9-77fb-491d-af96-466a1ea0a3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Hit">
+      <UniqueIdentifier>{962d6ac3-e468-4610-9c4c-c4fcbb64dbe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Hit\PlayerHit">
+      <UniqueIdentifier>{c27688de-a9d9-4340-903b-00a7e093d004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Hit\EnemyHit">
+      <UniqueIdentifier>{7a0d02d5-f0b4-4e94-9315-f899adba7579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Hit\ShotHit">
+      <UniqueIdentifier>{b27b705d-21c8-45bc-a7f9-9457639ee25d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Hit\SkillHit">
+      <UniqueIdentifier>{cdc1de7c-21c8-44f8-adb3-7568700a1e45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Player">
+      <UniqueIdentifier>{1b5a6d1a-5650-4798-966d-b411ea6b6e3d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -240,9 +258,6 @@
     <ClInclude Include="Src\Application\Input\Input.h">
       <Filter>Src\Application\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Prayer\Player.h">
-      <Filter>Src\Application\Prayer</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Common\CommonTexture.h">
       <Filter>Src\Application\Common</Filter>
     </ClInclude>
@@ -290,6 +305,21 @@
     </ClInclude>
     <ClInclude Include="Src\Application\Skill\Barrier\Barrier.h">
       <Filter>Src\Application\Skill\Barrier</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Skill\Copy\Copy.h">
+      <Filter>Src\Application\Skill\Copy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Hit\HitBase.h">
+      <Filter>Src\Application\Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Hit\HitManager.h">
+      <Filter>Src\Application\Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Hit\PlayerHit\PlayerHit.h">
+      <Filter>Src\Application\Hit\PlayerHit</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Player\Player.h">
+      <Filter>Src\Application\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -389,9 +419,6 @@
     <ClCompile Include="Src\Application\Input\Input.cpp">
       <Filter>Src\Application\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Prayer\Player.cpp">
-      <Filter>Src\Application\Prayer</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Common\CommonTexture.cpp">
       <Filter>Src\Application\Common</Filter>
     </ClCompile>
@@ -439,6 +466,21 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Skill\Barrier\Barrier.cpp">
       <Filter>Src\Application\Skill\Barrier</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Skill\Copy\Copy.cpp">
+      <Filter>Src\Application\Skill\Copy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Hit\HitBase.cpp">
+      <Filter>Src\Application\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Hit\HitManager.cpp">
+      <Filter>Src\Application\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Hit\PlayerHit\PlayerHit.cpp">
+      <Filter>Src\Application\Hit\PlayerHit</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Player\Player.cpp">
+      <Filter>Src\Application\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

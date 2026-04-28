@@ -29,22 +29,22 @@ void C_Player::Update()
 
 	if (Input.GetPlayerKey(PlayerKeyType::Top))
 	{
-		m_move.y = m_movespeed.y;
+		m_move.y = 1.0f;
 	}
 	else if (Input.GetPlayerKey(PlayerKeyType::Bottom))
 	{
-		m_move.y = -m_movespeed.y;
+		m_move.y = -1.0f; 
 	}
 	if (Input.GetPlayerKey(PlayerKeyType::Left))
 	{
-		m_move.x = -m_movespeed.x;
+		m_move.x = -1.0f;
 	}
 	else if (Input.GetPlayerKey(PlayerKeyType::Right))
 	{
-		m_move.x = m_movespeed.x;
+		m_move.x = 1.0f;
 	}
 
-	m_pos += m_move;
+	m_pos += m_move * m_movespeed;
 	
 	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
 	m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);

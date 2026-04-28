@@ -1,5 +1,5 @@
 #include"EnemyMove3.h"
-#include"Application/Prayer/Player.h"
+#include"../../../Player/Player.h"
 #include"Application/Enemy/EnemyManager.h"
 #include"../../../Skill/Shot/Shot.h"
 #include"Application/Common/CommonAPI.h"
