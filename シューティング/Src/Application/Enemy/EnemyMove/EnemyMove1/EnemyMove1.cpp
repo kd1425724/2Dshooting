@@ -5,17 +5,21 @@
 #include"Application/Common/CommonAPI.h"
 #include"Application/Info.h"
 #include"../../../Skill/SkillManager.h"
+#include"../../../Hit/HitManager.h"
+#include"../../../Hit/EnemyHit/Enemy/EnemyHit.h"
 
 void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::shared_ptr<C_Player> player,int i)
 {
 	//スキル初期化
-	m_skillmanager = nullptr;
+	//m_skillmanager = nullptr;
 	m_skilltype = SkillType::None;
 
 	//プレイヤーのインスタンス
 	m_player = move(player);
 
 	m_shot = std::make_shared<C_Shot>();
+
+	m_shot->SetHitManager(m_hitmanager);
 
 	//アニメーション用
 	m_anim = { 0,0 };
@@ -76,10 +80,21 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	m_shotintervaltime = 5 * 60;
 	//発射間隔
 	m_shotinterval = 0;
+
+	m_atk = 5;
+
+	m_hit = std::make_shared<C_EnemyHit>();
+	m_hit->SetType(HitType::Enemy);
+	m_hit->SetRadius(m_rect.x * m_scale.x / 2);
+	m_hit->SetAtk(m_atk);
+	//当たり判定管理に渡す
+	m_hitmanager->AddHit(m_hit);
 }
 
 void C_EnemyMove1::Update()
 {
+	m_hit->SetPos(m_pos);
+
 	//画面内なら
 	if (!COMMONAPI.OutOfPlayArea(m_pos, m_rect * m_scale / 2))
 	{

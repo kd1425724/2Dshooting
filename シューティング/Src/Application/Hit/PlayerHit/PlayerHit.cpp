@@ -17,23 +17,34 @@ void C_PlayerHit::Init()
 
 void C_PlayerHit::Update()
 {
-	// 必要ならここで座標同期など
-	// 例：
-	 if (m_player)
+	//// 必要ならここで座標同期など
+	//// 例：
+	/* if (m_player)
 	 {
 	     SetPos(m_player->GetPos());
-	 }
+	 }*/
 }
 
-void C_PlayerHit::OnHit(C_HitBase* other)
+void C_PlayerHit::OnHit(std::shared_ptr<C_HitBase> other)
 {
-	// 例：あとでここに処理を書く
-	// if (other->GetType() == HitType::EnemyShot)
-	// {
-	//     m_player->Damage(1);
-	// }
-	if (other->GetType() == HitType::Enemy)
+	switch (other->GetType())
 	{
-		//m_isDead = true; // 消える
+	case HitType::Player:
+		break;
+	case HitType::Enemy:
+		m_player->Dameage();
+		break;
+	case HitType::PlayerShot:
+		break;
+	case HitType::S_PlayerBarrier:
+		break;
+	case HitType::S_EnemyBarrier:
+		break;
+	case HitType::S_PlayerLaser:
+		break;
+	case HitType::S_PlayerGenerateEnemy:
+		break;
+	default:
+		break;
 	}
 }

@@ -1,10 +1,9 @@
 #pragma once
 #include<vector>
 
-using namespace std;
-
 class C_EnemyMoveBase;
 class C_SkillManager;
+class C_HitManager;
 
 enum class PosPattern;
 enum class MovePattern;
@@ -56,6 +55,9 @@ public:
 	//スキル敵生成用
 	void SkillEnemySpworn(Math::Vector2 pos,UseType type);
 
+	//当たり判定管理セット
+	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
+
 private:
 
 	//解放処理
@@ -70,15 +72,19 @@ private:
 	void SpwornEnemyLoad();
 
 	//インスタンス取得用
-	std::shared_ptr<C_Player> m_player;
+	std::shared_ptr<C_Player> m_player=nullptr;
 
 	//敵まとめ
-	vector<std::shared_ptr<C_EnemyMoveBase>> m_enemys;
+	std::vector<std::shared_ptr<C_EnemyMoveBase>> m_enemys;
 
 	//スキル用
-	vector<std::shared_ptr<C_EnemyMoveBase>> m_skillenemys;
+	std::vector<std::shared_ptr<C_EnemyMoveBase>> m_skillenemys;
 
-	std::shared_ptr<C_SkillManager> m_skillmanager;
+	//スキル管理用
+	std::shared_ptr<C_SkillManager> m_skillmanager = nullptr;
+
+	//当たり判定管理用
+	std::shared_ptr<C_HitManager> m_hitmanager = nullptr;
 
 	//敵画像セット
 	KdTexture& GetEnemyTexture(EnemyType type);

@@ -6,11 +6,12 @@
 #include"Application/Common/CommonAPI.h"
 #include"Application/Input/Input.h"
 #include"../../../Skill/SkillManager.h"
-
+#include"../../../Hit/HitManager.h"
+#include"../../../Hit/EnemyHit/Enemy/EnemyHit.h"
 void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i)
 {
 	//スキル初期化
-	m_skillmanager = nullptr;
+	//m_skillmanager = nullptr;
 
 	m_skilltype = SkillType::None;
 
@@ -18,6 +19,8 @@ void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::sha
 	m_player = move(player);
 
 	m_shot = std::make_shared<C_Shot>();
+
+	m_shot->SetHitManager(m_hitmanager);
 
 	//アニメーション用
 	m_anim = { 0,0 };
@@ -89,9 +92,20 @@ void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::sha
 	m_inherentmove = InherentMove2::Start;
 	//ストップカウント
 	m_stopcount = 0;
+
+	m_atk = 5;
+
+	m_hit = std::make_shared<C_EnemyHit>();
+	m_hit->SetType(HitType::Enemy);
+	m_hit->SetRadius(m_rect.x * m_scale.x / 2);
+	m_hit->SetAtk(m_atk);
+	//当たり判定管理に渡す
+	m_hitmanager->AddHit(m_hit);
 }
 void C_EnemyMove2::Update()
 {
+	m_hit->SetPos(m_pos);
+
 	if (m_inherentmove == InherentMove2::Start)
 	{
 		m_pos += m_move;

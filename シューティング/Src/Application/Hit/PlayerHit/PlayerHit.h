@@ -7,16 +7,16 @@ class C_PlayerHit : public C_HitBase
 {
 public:
 	C_PlayerHit();
-	virtual ~C_PlayerHit();
+	~C_PlayerHit()override;
 
 	void Init() override;
 	void Update() override;
 
-	void OnHit(C_HitBase* other) override;
+	void OnHit(std::shared_ptr<C_HitBase> other) override;
 
 	// Š—LÒ
-	void SetPlayer(C_Player* player) { m_player = player; }
+	void SetOwner(std::shared_ptr<C_Player> player) { m_player = player; }
 
 private:
-	C_Player* m_player;
+	std::shared_ptr<C_Player> m_player;
 };

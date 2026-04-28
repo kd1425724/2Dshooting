@@ -130,6 +130,12 @@
     <Filter Include="Src\Application\Player">
       <UniqueIdentifier>{1b5a6d1a-5650-4798-966d-b411ea6b6e3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Hit\EnemyHit\Enemy">
+      <UniqueIdentifier>{e439d2fd-1031-40bc-8e6a-2ac9832368c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Hit\SkillHit\BarrierHit">
+      <UniqueIdentifier>{8ead6dd7-e07c-44b9-a9bd-2e9d259d50d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -321,6 +327,12 @@
     <ClInclude Include="Src\Application\Player\Player.h">
       <Filter>Src\Application\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Hit\EnemyHit\Enemy\EnemyHit.h">
+      <Filter>Src\Application\Hit\EnemyHit\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Hit\ShotHit\ShotHit.h">
+      <Filter>Src\Application\Hit\ShotHit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -481,6 +493,12 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Player\Player.cpp">
       <Filter>Src\Application\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Hit\EnemyHit\Enemy\EnemyHit.cpp">
+      <Filter>Src\Application\Hit\EnemyHit\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Hit\ShotHit\ShotHit.cpp">
+      <Filter>Src\Application\Hit\ShotHit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

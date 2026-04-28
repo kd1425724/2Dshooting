@@ -13,11 +13,13 @@ public:
 	void Update();
 
 	// 登録・解除
-	void AddHit(C_HitBase* hit);
+	void AddHit(std::shared_ptr<C_HitBase> hit);
 	void Clear();
 
+	void RemoveHit(std::shared_ptr<C_HitBase> hit);
+
 private:
-	std::vector<C_HitBase*> m_hits;
+	std::vector<std::shared_ptr<C_HitBase>> m_hits;
 
 	// 当たり判定組み合わせチェック
 	bool CanHit(HitType a, HitType b);

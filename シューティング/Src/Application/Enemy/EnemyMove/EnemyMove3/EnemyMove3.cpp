@@ -6,13 +6,15 @@
 #include"Application/Info.h"
 #include"../../../Skill/SkillManager.h"
 #include"../../../Skill/SkillBase.h"
+#include"../../../Hit/HitManager.h"
+#include"../../../Hit/EnemyHit/Enemy/EnemyHit.h"
 
 void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 {
 	m_shot = std::make_shared<C_Shot>();
 
 	//ƒXƒLƒ‹‰Šú‰»
-	m_skillmanager = nullptr;
+	//m_skillmanager = nullptr;
 	m_skilltype = SkillType::None;
 
 	m_usetype = type;
@@ -54,10 +56,39 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 	m_shotinterval = 0;
 
 	m_inherentmove = InherentMove3::Start;
+
+	m_atk = 5;
+
+	//“–‚½‚è”»’è
+	switch (m_usetype)
+	{
+	case UseType::Player:
+		m_hit = std::make_shared<C_EnemyHit>();
+		m_hit->SetType(HitType::S_PlayerGenerateEnemy);
+		m_hit->SetRadius(m_rect.x * m_scale.x / 2);
+		m_hit->SetAtk(m_atk);
+		//“–‚½‚è”»’èŠÇ—‚É“n‚·
+		m_hitmanager->AddHit(m_hit);
+		break;
+	case UseType::Enemy:
+		m_hit = std::make_shared<C_EnemyHit>();
+		m_hit->SetType(HitType::Enemy);
+		m_hit->SetRadius(m_rect.x * m_scale.x / 2);
+		m_hit->SetAtk(m_atk);
+		//“–‚½‚è”»’èŠÇ—‚É“n‚·
+		m_hitmanager->AddHit(m_hit);
+		break;
+	default:
+		break;
+	}
+
+	
 }
 
 void C_EnemyMove3::Update()
 {
+	m_hit->SetPos(m_pos);
+
 	switch (m_inherentmove)
 	{
 	case InherentMove3::Start:

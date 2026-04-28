@@ -2,6 +2,8 @@
 #include"../../../Skill/Shot/Shot.h"
 #include"../../../Skill/SkillManager.h"
 #include"../../../Common/CommonAPI.h"
+#include"../../../Hit/EnemyHit/Enemy/EnemyHit.h"
+#include"../../../Hit/HitManager.h"
 
 void C_Boss::Init()
 {
@@ -10,9 +12,9 @@ void C_Boss::Init()
 
 	m_skilltype = SkillType::None;
 
-	m_skillmanager = nullptr;
 
 	m_shot = std::make_shared<C_Shot>();
+	m_shot->SetHitManager(m_hitmanager);
 
 	//アニメーション用
 	m_anim = { 0,0 };
@@ -61,10 +63,24 @@ void C_Boss::Init()
 
 	m_spiralshotangle = DirectX::XMConvertToRadians(0);
 	m_spiralshotinterval = 0;
+
+	//攻撃力初期化
+	m_atk = 10;
+
+	//当たり判定
+	m_hit = std::make_shared<C_EnemyHit>();
+	m_hit->SetType(HitType::Enemy);
+	m_hit->SetRadius(m_rect.x * m_scale.x / 2);
+	m_hit->SetAtk(m_atk);
+	m_hit->SetOwner(shared_from_this());
+	//当たり判定管理に渡す
+	m_hitmanager->AddHit(m_hit);
 }
 
 void C_Boss::Update()
 {
+	m_hit->SetPos(m_pos);
+
 	switch (m_pattern)
 	{
 	case Pattern::Start:

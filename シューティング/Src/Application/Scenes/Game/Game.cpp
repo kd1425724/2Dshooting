@@ -1,10 +1,12 @@
 #include "Game.h"
 #include"Application/Scenes/SceneManager.h"
 #include"Application/Ui/ScenesUi/GameUi.h"
-#include"Application/Prayer/Player.h"
+#include"../../Player/Player.h"
 #include"Application/Enemy/EnemyManager.h"
 #include"Application/Skill/SkillManager.h"
 #include"Application/Skill/SkillBase.h"
+#include"../../Hit/HitManager.h"
+
 void C_Game::TextureLoad()
 {
 	m_gameui->TextureLoad();
@@ -12,17 +14,30 @@ void C_Game::TextureLoad()
 
 void C_Game::Init()
 {
+	//Ui
 	m_gameui =std::make_shared<C_GameUi>();
 
+	//プレイヤー
 	m_player = std::make_shared<C_Player>();
 
+	//敵管理
 	m_enemymanager = std::make_shared<C_EnemyManager>();
 
 	//スキル管理作成
 	m_skillmanager = std::make_shared<C_SkillManager>();
 
+	//当たり判定管理
+	m_hitmanager = std::make_shared<C_HitManager>();
+
+	//当たり判定管理セット
+	m_player->SetHitManager(m_hitmanager);
+	m_enemymanager->SetHitManager(m_hitmanager);
+
+
+
 	m_enemymanager->SetSkillManager(m_skillmanager);
 
+	//初期化
 	TextureLoad();
 
 	m_gameui->Init();
@@ -30,7 +45,6 @@ void C_Game::Init()
 	m_player->Init();
 
 	m_enemymanager->Init(m_player);
-
 
 	m_skillmanager->SetEnemyManager(m_enemymanager);
 	m_skillmanager->SetPlayer(m_player);
@@ -41,6 +55,8 @@ void C_Game::Init()
 	//判定何回目かカウント
 	m_JudgmenCount = 0;
 
+
+	//ボス生成用（仮）
 	m_enemymanager->BossSpworn();
 }
 
@@ -57,6 +73,9 @@ void C_Game::Update()
 
 	//Ui
 	m_gameui->Update();
+
+	//当たり判定管理
+	m_hitmanager->Update();
 
 	
 	if (m_JudgmentTime >= 0)

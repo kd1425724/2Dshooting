@@ -23,8 +23,8 @@ void C_HitManager::Update()
 
 		for (int j = i + 1; j < size; j++)
 		{
-			C_HitBase* a = m_hits[i];
-			C_HitBase* b = m_hits[j];
+			std::shared_ptr<C_HitBase> a = m_hits[i];
+			std::shared_ptr<C_HitBase> b = m_hits[j];
 
 			// 当たる組み合わせだけ判定
 			if (!CanHit(a->GetType(), b->GetType()))
@@ -33,14 +33,14 @@ void C_HitManager::Update()
 			if (a->IsHit(*b))
 			{
 				// ここで通知
-				// a->OnHit(b);
-				// b->OnHit(a);
+				a->OnHit(b);
+				b->OnHit(a);
 			}
 		}
 	}
 }
 
-void C_HitManager::AddHit(C_HitBase* hit)
+void C_HitManager::AddHit(std::shared_ptr<C_HitBase> hit)
 {
 	m_hits.push_back(hit);
 }
@@ -50,17 +50,38 @@ void C_HitManager::Clear()
 	m_hits.clear();
 }
 
+void C_HitManager::RemoveHit(std::shared_ptr<C_HitBase> hit)
+{
+	//m_hitsの最初から最後からhitを探しそれを消去
+	auto it = std::find(m_hits.begin(), m_hits.end(), hit);
+
+	if (it != m_hits.end())
+	{
+		m_hits.erase(it);
+	}
+}
+
 bool C_HitManager::CanHit(HitType a, HitType b)
 {
-	// 例：当たる組み合わせ
+	// 当たる組み合わせ
+	//プレイヤー
 	if (a == HitType::Player && b == HitType::Enemy) return true;
-	if (a == HitType::Player && b == HitType::EnemyShot) return true;
+	if (a == HitType::Player && b == HitType::S_EnemyBarrier) return true;
+	
+	//プレイヤーショット
 	if (a == HitType::PlayerShot && b == HitType::Enemy) return true;
+	if (a == HitType::PlayerShot && b == HitType::S_EnemyBarrier) return true;
 
 	// 逆もOKにする
+	//プレイヤー
 	if (b == HitType::Player && a == HitType::Enemy) return true;
-	if (b == HitType::Player && a == HitType::EnemyShot) return true;
+	if (b == HitType::Player && a == HitType::S_EnemyBarrier) return true;
 	if (b == HitType::PlayerShot && a == HitType::Enemy) return true;
+
+	//プレイヤーショット
+	if (b == HitType::PlayerShot && a == HitType::Enemy) return true;
+	if (b == HitType::PlayerShot && a == HitType::S_EnemyBarrier) return true;
+
 
 	return false;
 }

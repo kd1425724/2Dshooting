@@ -169,9 +169,11 @@
     <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove1\EnemyMove1.h" />
     <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove2\EnemyMove2.h" />
     <ClInclude Include="Src\Application\Enemy\EnemyMove\EnemyMove3\EnemyMove3.h" />
+    <ClInclude Include="Src\Application\Hit\EnemyHit\Enemy\EnemyHit.h" />
     <ClInclude Include="Src\Application\Hit\HitBase.h" />
     <ClInclude Include="Src\Application\Hit\HitManager.h" />
     <ClInclude Include="Src\Application\Hit\PlayerHit\PlayerHit.h" />
+    <ClInclude Include="Src\Application\Hit\ShotHit\ShotHit.h" />
     <ClInclude Include="Src\Application\Info.h" />
     <ClInclude Include="Src\Application\Input\Input.h" />
     <ClInclude Include="Src\Application\Player\Player.h" />
@@ -226,9 +228,11 @@
     <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove1\EnemyMove1.cpp" />
     <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove2\EnemyMove2.cpp" />
     <ClCompile Include="Src\Application\Enemy\EnemyMove\EnemyMove3\EnemyMove3.cpp" />
+    <ClCompile Include="Src\Application\Hit\EnemyHit\Enemy\EnemyHit.cpp" />
     <ClCompile Include="Src\Application\Hit\HitBase.cpp" />
     <ClCompile Include="Src\Application\Hit\HitManager.cpp" />
     <ClCompile Include="Src\Application\Hit\PlayerHit\PlayerHit.cpp" />
+    <ClCompile Include="Src\Application\Hit\ShotHit\ShotHit.cpp" />
     <ClCompile Include="Src\Application\Info.cpp" />
     <ClCompile Include="Src\Application\Input\Input.cpp" />
     <ClCompile Include="Src\Application\Player\Player.cpp" />

@@ -1,6 +1,8 @@
 #pragma once
 
 class C_Shot;
+class C_PlayerHit;
+class C_HitManager;
 
 enum class PlayerShotInterval
 {
@@ -8,7 +10,7 @@ enum class PlayerShotInterval
 	Num
 };
 
-class C_Player
+class C_Player:public std::enable_shared_from_this<C_Player>
 {
 public:
 	C_Player(){}
@@ -27,7 +29,19 @@ public:
 
 	Math::Vector2 GetRadius() { return m_rect * m_scale / 2; }
 
+	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
+
+	//ダメージ処理
+	void Dameage() { m_Hp--; };
+
 private:
+
+	//ステータス
+	int m_Hp = 3;
+
+	//当たり判定用
+	std::shared_ptr<C_PlayerHit> m_hit;
+	std::shared_ptr<C_HitManager> m_hitmanager;
 
 	//座標
 	Math::Vector2 m_pos;
@@ -51,6 +65,7 @@ private:
 	std::shared_ptr<C_Shot> m_shot;
 	//発射間隔
 	int m_shotinterval;
+
 
 };
 

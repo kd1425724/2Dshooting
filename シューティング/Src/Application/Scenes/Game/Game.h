@@ -5,6 +5,7 @@ class C_GameUi;
 class C_Player;
 class C_EnemyManager;
 class C_SkillManager;
+class C_HitManager;
 
 enum class GameMode
 {
@@ -54,5 +55,8 @@ private:
 
 	//ƒXƒLƒ‹ŠÇ—
 	std::shared_ptr<C_SkillManager> m_skillmanager = nullptr;
+
+	//“–‚½‚è”»’èŠÇ—
+	std::shared_ptr<C_HitManager> m_hitmanager = nullptr;
 
 };

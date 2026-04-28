@@ -3,6 +3,8 @@
 #include"Application/Input/Input.h"
 #include"../Skill/Shot/Shot.h"
 #include"Application/Info.h"
+#include"../Hit/PlayerHit/PlayerHit.h"
+#include"../Hit/HitManager.h"
 
 void C_Player::Init()	
 {
@@ -20,9 +22,21 @@ void C_Player::Init()
 	//切り取り範囲
 	m_rect = { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height };
 
+
+	//当たり判定
+	m_hit = std::make_shared<C_PlayerHit>();
+	m_hit->SetType(HitType::Player);
+	m_hit->SetRadius(m_rect.x * m_scale.x / 2);
+	m_hit->SetOwner(shared_from_this());
+	//当たり判定管理に渡す
+	m_hitmanager->AddHit(m_hit);
+
 }
 void C_Player::Update()
 {
+	//当たり判定用座標セット
+	m_hit->SetPos(m_pos);
+
 	ShotUpdate();
 
 	m_move = { 0,0 };
@@ -65,7 +79,7 @@ void C_Player::Release()
 void C_Player::ShotInit()
 {
 	m_shot = std::make_shared<C_Shot>();
-
+	m_shot->SetHitManager(m_hitmanager);
 	m_shotinterval = 0;
 }
 

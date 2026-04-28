@@ -4,7 +4,7 @@
 
 void C_SubBoss::Init(Math::Vector2 pos)
 {
-	m_skillmanager = nullptr;
+	//m_skillmanager = nullptr;
 
 	m_skilltype = SkillType::None;
 
