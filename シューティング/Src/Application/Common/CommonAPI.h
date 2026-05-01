@@ -25,6 +25,10 @@ public:
 	//‰æ‘œŒü‚«’²®
 	float GetTextureAngleAdjustment(TextureAngle angle);
 
+	//”š•`‰æ—p
+	//startpos...ˆê‚ÌˆÊ
+	void NumDraw(int num,Math::Vector2 startpos,Math::Vector2 scale);
+
 private:
 
 	//‰æ–ÊŠO”»’è—]è•ª

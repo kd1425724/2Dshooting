@@ -6,6 +6,7 @@
 #include"Application/Skill/SkillManager.h"
 #include"Application/Skill/SkillBase.h"
 #include"../../Hit/HitManager.h"
+#include"../../Effect/EffectManager.h"
 
 void C_Game::TextureLoad()
 {
@@ -14,6 +15,8 @@ void C_Game::TextureLoad()
 
 void C_Game::Init()
 {
+	EFFECTMANAGER.Init();
+
 	//Ui
 	m_gameui =std::make_shared<C_GameUi>();
 
@@ -29,13 +32,14 @@ void C_Game::Init()
 	//当たり判定管理
 	m_hitmanager = std::make_shared<C_HitManager>();
 
+	//スキル管理取得
+	m_hitmanager->SetSkillManager(m_skillmanager);
+	m_enemymanager->SetSkillManager(m_skillmanager);
+
 	//当たり判定管理セット
 	m_player->SetHitManager(m_hitmanager);
 	m_enemymanager->SetHitManager(m_hitmanager);
-
-
-
-	m_enemymanager->SetSkillManager(m_skillmanager);
+	m_skillmanager->SetHitManager(m_hitmanager);
 
 	//初期化
 	TextureLoad();
@@ -62,6 +66,8 @@ void C_Game::Init()
 
 void C_Game::Update()
 {
+	
+
 	//プレイヤー
 	m_player->Update();
 
@@ -77,6 +83,7 @@ void C_Game::Update()
 	//当たり判定管理
 	m_hitmanager->Update();
 
+	EFFECTMANAGER.Update();
 	
 	if (m_JudgmentTime >= 0)
 	{
@@ -111,13 +118,26 @@ void C_Game::Draw()
 	//プレイヤー描画
 	m_player->Draw();
 
+	//エフェクト描画
+	EFFECTMANAGER.Draw();
 
 	//スキル描画（プレイヤーや敵の上に描画されるもの）
 	m_skillmanager->TopDraw();
 
+	//当たり判定描画
+	m_hitmanager->Draw();
+
 
 	//Ui「最後」
 	m_gameui->Draw();
+}
+
+void C_Game::ImGui()
+{
+
+	m_player->ImGui();
+
+	m_enemymanager->ImGui();
 }
 
 void C_Game::SpwornMnager()
@@ -134,4 +154,5 @@ void C_Game::SpwornMnager()
 
 void C_Game::Release()
 {
+	EFFECTMANAGER.Release();
 }

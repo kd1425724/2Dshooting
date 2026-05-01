@@ -1,6 +1,5 @@
 #include "Shot.h"
 #include"Application/Common/CommonAPI.h"
-#include"../../Hit/ShotHit/ShotHit.h"
 #include"../../Hit/HitManager.h"
 
 C_Shot::C_Shot()
@@ -17,8 +16,9 @@ void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Ve
 	{
 	case ShotType::NormalShot:
 	case ShotType::EnemyNormalShot:
+	case ShotType::CopyShot:
 		//初期化
-		NormalShotInit(a_texturetype,a_animmaxnum, a_rect, a_pos, target,movespeed);
+		NormalShotInit(a_type,a_texturetype,a_animmaxnum, a_rect, a_pos, target,movespeed);
 		break;
 	case ShotType::ShotNum:
 		break;
@@ -35,8 +35,9 @@ void C_Shot::ShotManager(ShotType a_type, ShotTextureType a_texturetype, Math::V
 	{
 	case ShotType::NormalShot:
 	case ShotType::EnemyNormalShot:
+	case ShotType::CopyShot:
 		//初期化
-		NormalShotInit(a_texturetype, a_animmaxnum, a_rect, a_pos, a_angle,movespeed);
+		NormalShotInit(a_type,a_texturetype, a_animmaxnum, a_rect, a_pos, a_angle,movespeed);
 		break;
 	case ShotType::ShotNum:
 		break;
@@ -73,12 +74,14 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 		mat = scalemat * rotatemat * transmat;
 
-		//当たり判定
-		m_hit = std::make_shared<C_ShotHit>();
-		m_hit->SetType(HitType::PlayerShot);
-		m_hit->SetRadius(rect.x * scale.x / 2);
+		//半径
+		m_halfsize = rect * scale / 2;
+		m_radius = rect.x * scale.x / 2;
 
-		m_hitmanager->AddHit(m_hit);
+		if (auto hm = m_hitmanager.lock())
+		{
+			hm->SetPlayerShot(shared_from_this());
+		}
 
 		break;
 	case ShotType::EnemyNormalShot:
@@ -105,12 +108,47 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 		mat = scalemat * rotatemat * transmat;
 
-		//当たり判定
-		m_hit = std::make_shared<C_ShotHit>();
-		m_hit->SetType(HitType::Enemy);
-		m_hit->SetRadius(rect.x * scale.x / 2);
+		//半径
+		m_halfsize = rect * scale / 2;
+		m_radius = rect.x * scale.x / 2;
 
-		m_hitmanager->AddHit(m_hit);
+		if (auto hm = m_hitmanager.lock())
+		{
+			hm->SetEnemyShot(shared_from_this());
+		}
+		break;
+	case ShotType::CopyShot:
+
+		//画像設定セット
+		SetTextureSetting(a_texturetype);
+
+		rect = a_rect;
+		speed = movespeed;
+		pos = a_pos;
+		angle = atan2(target.y - pos.y, target.x - pos.x);
+		move.x = cosf(angle) * speed;
+		move.y = sinf(angle) * speed;
+		color = { 1,1,1,1 };
+		alive = true;
+		scale = { 1,1 };
+
+		//アニメーション用
+		anim = { 0,0 };
+		animmaxnum = a_animmaxnum;
+
+		scalemat = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		rotatemat = Math::Matrix::CreateRotationZ(angle + texangle);
+		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		mat = scalemat * rotatemat * transmat;
+
+		//半径
+		m_halfsize = rect * scale / 2;
+		m_radius = rect.x * scale.x / 2;
+
+		if (auto hm = m_hitmanager.lock())
+		{
+			hm->SetCopyShot(shared_from_this());
+		}
 		break;
 	case ShotType::ShotNum:
 		break;
@@ -147,13 +185,14 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 		mat = scalemat * rotatemat * transmat;
 
-		//当たり判定
-		m_hit = std::make_shared<C_ShotHit>();
-		m_hit->SetType(HitType::PlayerShot);
-		m_hit->SetRadius(rect.x * scale.x / 2);
+		//半径
+		m_halfsize = rect * scale / 2;
+		m_radius = rect.x * scale.x / 2;
 
-		m_hitmanager->AddHit(m_hit);
-
+		if (auto hm = m_hitmanager.lock())
+		{
+			hm->SetPlayerShot(shared_from_this());
+		}
 
 		break;
 	case ShotType::EnemyNormalShot:
@@ -179,12 +218,47 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 		mat = scalemat * rotatemat * transmat;
 
-		//当たり判定
-		m_hit = std::make_shared<C_ShotHit>();
-		m_hit->SetType(HitType::Enemy);
-		m_hit->SetRadius(rect.x * scale.x / 2);
+		//半径
+		m_halfsize = rect * scale / 2;
+		m_radius = rect.x * scale.x / 2;
 
-		m_hitmanager->AddHit(m_hit);
+		if (auto hm = m_hitmanager.lock())
+		{
+			hm->SetEnemyShot(shared_from_this());
+		}
+
+		break;
+	case ShotType::CopyShot:
+		//画像設定セット
+		SetTextureSetting(a_texturetype);
+
+		rect = a_rect;
+		speed = movespeed;
+		pos = a_pos;
+		angle = a_angle;
+		move.x = cosf(angle) * speed;
+		move.y = sinf(angle) * speed;
+		color = { 1,1,1,1 };
+		alive = true;
+		scale = { 1,1 };
+
+		//アニメーション用
+		anim = { 0,0 };
+		animmaxnum = a_animmaxnum;
+
+		scalemat = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		rotatemat = Math::Matrix::CreateRotationZ(angle + texangle);
+		transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		mat = scalemat * rotatemat * transmat;
+
+		//半径
+		m_halfsize = rect * scale / 2;
+		m_radius = rect.x * scale.x / 2;
+
+		if (auto hm = m_hitmanager.lock())
+		{
+			hm->SetCopyShot(shared_from_this());
+		}
 
 		break;
 	case ShotType::ShotNum:
@@ -226,18 +300,18 @@ void C_Shot::SetTexture(ShotTextureType type)
 	}
 }
 
-void C_Shot::NormalShotInit(ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed)
+void C_Shot::NormalShotInit(ShotType shottype, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed)
 {
 	m_normalshot.emplace_back(std::make_shared<Shot>());
 	m_normalshot.back()->SetHitManager(m_hitmanager);
-	m_normalshot.back()->Init(ShotType::NormalShot, a_texturetype,a_animmaxnum, a_rect, a_pos, target,movespeed);
+	m_normalshot.back()->Init(shottype, a_texturetype,a_animmaxnum, a_rect, a_pos, target,movespeed);
 }
 
-void C_Shot::NormalShotInit(ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed)
+void C_Shot::NormalShotInit(ShotType shottype, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed)
 {
 	m_normalshot.emplace_back(std::make_shared<Shot>());
 	m_normalshot.back()->SetHitManager(m_hitmanager);
-	m_normalshot.back()->Init(ShotType::NormalShot, a_texturetype, a_animmaxnum, a_rect, a_pos, a_angle,movespeed);
+	m_normalshot.back()->Init(shottype, a_texturetype, a_animmaxnum, a_rect, a_pos, a_angle,movespeed);
 
 }
 
@@ -245,9 +319,6 @@ void C_Shot::NormalShotUpdate()
 {
 	for (int i = 0; i < m_normalshot.size(); i++)
 	{
-		//座標セット
-		m_normalshot[i]->m_hit->SetPos(m_normalshot[i]->pos);
-
 		m_normalshot[i]->pos += m_normalshot[i]->move;
 
 		m_normalshot[i]->anim.x += 0.1f;
@@ -279,11 +350,15 @@ void C_Shot::NormalShotUpdate()
 	//削除
 	for (int i = 0; i < m_normalshot.size(); )
 	{
-		if (!m_normalshot[i]->alive ||
-			COMMONAPI.OutOfPlayAreaPlusMargin(m_normalshot[i]->pos, m_normalshot[i]->rect / 2))
+		if (COMMONAPI.OutOfPlayAreaPlusMargin(m_normalshot[i]->pos, m_normalshot[i]->rect / 2))
 		{
-			m_hitmanager->RemoveHit(m_normalshot[i]->m_hit);
+			m_normalshot[i]->alive = false;
+		}
+
+		if (!m_normalshot[i]->alive )
+		{
 			m_normalshot.erase(m_normalshot.begin() + i);
+			continue;
 		}
 		else
 		{

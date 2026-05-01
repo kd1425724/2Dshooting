@@ -1,10 +1,8 @@
 #pragma once
 #include "Application/Skill/SkillBase.h"
 
-enum class Pattern
-{
-	Shot,
-};
+class C_Shot;
+class C_HitManager;
 
 class C_Copy : public C_SkillBase
 {
@@ -20,13 +18,14 @@ public:
 	void SkillActivate() override;
 	void EnemySkillActivate() override;
 
-	// 各種セット
-	void SetTexture(std::shared_ptr<KdTexture> tex) override { m_tex = tex; }
-
 	// 描画順
 	bool IsTopDraw() override { return false; }
 
+	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager)override { m_hitmanager = hitmanager; }
+
 private:
 
-	std::shared_ptr<KdTexture> m_tex;
+	std::shared_ptr<C_Shot> m_shot;
+
+	std::weak_ptr<C_HitManager> m_hitmanager;
 };

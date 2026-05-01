@@ -7,9 +7,12 @@
 #include"Application/Input/Input.h"
 #include"../../../Skill/SkillManager.h"
 #include"../../../Hit/HitManager.h"
-#include"../../../Hit/EnemyHit/Enemy/EnemyHit.h"
+
 void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i)
 {
+	//ステータス
+	m_hp = 20;
+
 	//スキル初期化
 	//m_skillmanager = nullptr;
 
@@ -19,9 +22,10 @@ void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::sha
 	m_player = move(player);
 
 	m_shot = std::make_shared<C_Shot>();
-
-	m_shot->SetHitManager(m_hitmanager);
-
+	if (auto hm = m_hitmanager.lock())
+	{
+		m_shot->SetHitManager(hm);
+	}
 	//アニメーション用
 	m_anim = { 0,0 };
 
@@ -93,19 +97,18 @@ void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::sha
 	//ストップカウント
 	m_stopcount = 0;
 
-	m_atk = 5;
+	//半径
+	m_halfsize = m_rect * m_scale / 2;
+	m_radius = m_rect.x * m_scale.x / 2;
 
-	m_hit = std::make_shared<C_EnemyHit>();
-	m_hit->SetType(HitType::Enemy);
-	m_hit->SetRadius(m_rect.x * m_scale.x / 2);
-	m_hit->SetAtk(m_atk);
 	//当たり判定管理に渡す
-	m_hitmanager->AddHit(m_hit);
+	if (auto hm = m_hitmanager.lock())
+	{
+		hm->SetEnemy(shared_from_this());
+	}
 }
 void C_EnemyMove2::Update()
 {
-	m_hit->SetPos(m_pos);
-
 	if (m_inherentmove == InherentMove2::Start)
 	{
 		m_pos += m_move;
@@ -124,16 +127,20 @@ void C_EnemyMove2::Update()
 		if (m_stopcount < 0)
 		{
 			m_inherentmove = InherentMove2::Shot;
-
-			m_angle = atan2(m_player->GetPos().y - m_pos.y, m_player->GetPos().x - m_pos.x);
+			if (auto p = m_player.lock())
+			{
+				m_angle = atan2(p->GetPos().y - m_pos.y, p->GetPos().x - m_pos.x);
+			}
 			m_move.x = cosf(m_angle) * m_movespeed.x;
 			m_move.y = sinf(m_angle) * m_movespeed.y;
 		}
 	}
 	else if (m_inherentmove == InherentMove2::Shot)
 	{
-		m_shotangle = atan2(m_player->GetPos().y - m_pos.y, m_player->GetPos().x - m_pos.x) - DirectX::XMConvertToRadians(90);
-
+		if (auto p = m_player.lock())
+		{
+			m_shotangle = atan2(p->GetPos().y - m_pos.y, p->GetPos().x - m_pos.x) - DirectX::XMConvertToRadians(90);
+		}
 		for (int i = 0; i < 5; i++)
 		{
 			float keep = m_shotangle;
@@ -157,8 +164,11 @@ void C_EnemyMove2::Update()
 		{
 			m_inherentmove = InherentMove2::ReStart;
 
-			m_angle = atan2(m_player->GetPos().y - m_pos.y, m_player->GetPos().x - m_pos.x);
-			m_move.x = cosf(m_angle) * m_movespeed.x*2;
+			if (auto p = m_player.lock())
+			{
+				m_angle = atan2(p->GetPos().y - m_pos.y, p->GetPos().x - m_pos.x);
+			}
+			m_move.x = cosf(m_angle) * m_movespeed.x * 2;
 			m_move.y = sinf(m_angle) * m_movespeed.y*2;
 		}
 	}
@@ -166,6 +176,13 @@ void C_EnemyMove2::Update()
 	{
 		m_pos += m_move;
 	}
+
+	//hpが０になったら
+	if (m_hp <= 0)
+	{
+		m_alive = false;
+	}
+
 	m_shot->Update();
 
 	m_mat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);

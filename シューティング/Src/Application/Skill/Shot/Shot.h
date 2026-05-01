@@ -3,13 +3,13 @@
 
 using namespace std;
 
-class C_ShotHit;
 class C_HitManager;
 
 enum class ShotType
 {
 	NormalShot,
 	EnemyNormalShot,
+	CopyShot,
 	ShotNum	//数
 };
 
@@ -51,8 +51,9 @@ struct Shot : public std::enable_shared_from_this<Shot>
 	Math::Vector2 animmaxnum = { 0,0 };
 	float animspeed=0;
 
-	//当たり判定
-	std::shared_ptr<C_ShotHit> m_hit;
+	//半径
+	float m_radius;
+	Math::Vector2 m_halfsize;
 
 	//初期化（targetpos指定バージョン）
 	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target,int movespeed);
@@ -60,12 +61,24 @@ struct Shot : public std::enable_shared_from_this<Shot>
 	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed);
 	
 	//当たり管理用
-	std::shared_ptr<C_HitManager> m_hitmanager;
+	std::weak_ptr<C_HitManager> m_hitmanager;
 
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
+	bool GetAlive() { return alive; }
+
 	//弾消し
 	void SetAlive(bool flg) { alive = flg; }
+
+	//座標取得用
+	Math::Vector2 GetPos() { return pos; }
+
+	//半径x,y別（矩形）
+	Math::Vector2 GetSize() { return m_halfsize; }
+
+	//半径（円判定）
+	float GetRadius() { return m_radius; }
+
 	
 };
 
@@ -108,9 +121,9 @@ private:
 	vector<std::shared_ptr<Shot>> m_normalshot;
 
 	//一発発射
-	void NormalShotInit(ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed);
+	void NormalShotInit(ShotType shottype, ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed);
 	//アングル指定バージョン
-	void NormalShotInit(ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed);
+	void NormalShotInit(ShotType shottype, ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed);
 	void NormalShotUpdate();
 	void NormalShotDraw();
 

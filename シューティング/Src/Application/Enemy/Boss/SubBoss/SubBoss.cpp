@@ -1,10 +1,12 @@
 #include "SubBoss.h"
 #include"../../../Common/CommonAPI.h"
 #include"../../../Skill/SkillManager.h"
+#include"../../../Hit/HitManager.h"
 
 void C_SubBoss::Init(Math::Vector2 pos)
 {
-	//m_skillmanager = nullptr;
+	//ステータス
+	m_hp = 500;
 
 	m_skilltype = SkillType::None;
 
@@ -42,6 +44,17 @@ void C_SubBoss::Init(Math::Vector2 pos)
 
 	//行動パターン
 	m_actionpattern = SubBossActionPattern::p1_Laser;
+
+	//半径
+	m_halfsize = m_rect * m_scale / 2;
+	m_radius = m_rect.x * m_scale.x / 2;
+
+	//当たり判定
+	//当たり判定管理に渡す
+	if (auto hm = m_hitmanager.lock())
+	{
+		hm->SetEnemy(shared_from_this());
+	}
 }
 
 void C_SubBoss::Update()
@@ -140,7 +153,8 @@ void C_SubBoss::Draw()
 			&Math::Rectangle(0, 0, m_rect.x, m_rect.y), &m_color);
 		//エンジン
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetex, 0, 0,
-			&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y), &m_color);
+			&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y),
+			&m_color);
 	}
 }
 
@@ -247,7 +261,10 @@ void C_SubBoss::p1_LaserInit()
 
 	m_lasertime = LaserTime;
 
-	m_skillmanager->SetEnemySkill(SkillType::Laser, shared_from_this());
+	if (auto sm = m_skillmanager.lock())
+	{
+		sm->SetEnemySkill(SkillType::Laser, shared_from_this());
+	}
 }
 
 void C_SubBoss::p2_BarrierInit()
@@ -257,8 +274,10 @@ void C_SubBoss::p2_BarrierInit()
 
 	m_barriertime = BarrierTime;
 
-	m_skillmanager->SetEnemySkill(SkillType::Barrier, shared_from_this());
-
+	if (auto sm = m_skillmanager.lock())
+	{
+		sm->SetEnemySkill(SkillType::Barrier, shared_from_this());
+	}
 	//m_pattern = Pattern::Death;
 }
 

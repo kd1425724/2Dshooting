@@ -25,6 +25,15 @@ void C_SceneManager::Draw()
     }
 }
 
+void C_SceneManager::ImGui()
+{
+    //‹ó‚¶‚á‚È‚¯‚ê‚Î
+    if (!scenes.empty())
+    {
+        scenes.top()->ImGui();
+    }
+}
+
 void C_SceneManager::push(SceneType type,bool popflg)
 {
     FEED.FeedOutInit(30,[this,type,popflg]()

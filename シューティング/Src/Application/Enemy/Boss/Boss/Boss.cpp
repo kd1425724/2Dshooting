@@ -2,11 +2,14 @@
 #include"../../../Skill/Shot/Shot.h"
 #include"../../../Skill/SkillManager.h"
 #include"../../../Common/CommonAPI.h"
-#include"../../../Hit/EnemyHit/Enemy/EnemyHit.h"
 #include"../../../Hit/HitManager.h"
 
 void C_Boss::Init()
 {
+	//ステータス
+	m_hp = 1000;
+
+
 	//プレイヤーのインスタンス
 	//m_player = move(player);
 
@@ -14,15 +17,17 @@ void C_Boss::Init()
 
 
 	m_shot = std::make_shared<C_Shot>();
-	m_shot->SetHitManager(m_hitmanager);
-
+	if (auto hm = m_hitmanager.lock())
+	{
+		m_shot->SetHitManager(hm);
+	}
 	//アニメーション用
 	m_anim = { 0,0 };
 
 	m_pos = { 700,0 - 60 };
 
 	//移動量
-	
+
 	m_stoppos = { 500,0 - 60 };
 	m_movespeed = { 4,4 };
 	m_angle = atan2(m_stoppos.y - m_pos.y, m_stoppos.x - m_pos.x);
@@ -64,23 +69,20 @@ void C_Boss::Init()
 	m_spiralshotangle = DirectX::XMConvertToRadians(0);
 	m_spiralshotinterval = 0;
 
-	//攻撃力初期化
-	m_atk = 10;
+	//半径
+	m_halfsize = m_rect * m_scale / 2.5;
+	m_radius = m_rect.x * m_scale.x / 2;
 
 	//当たり判定
-	m_hit = std::make_shared<C_EnemyHit>();
-	m_hit->SetType(HitType::Enemy);
-	m_hit->SetRadius(m_rect.x * m_scale.x / 2);
-	m_hit->SetAtk(m_atk);
-	m_hit->SetOwner(shared_from_this());
 	//当たり判定管理に渡す
-	m_hitmanager->AddHit(m_hit);
+	if (auto hm = m_hitmanager.lock())
+	{
+		hm->SetEnemy(shared_from_this());
+	}
 }
 
 void C_Boss::Update()
 {
-	m_hit->SetPos(m_pos);
-
 	switch (m_pattern)
 	{
 	case Pattern::Start:
@@ -274,27 +276,36 @@ void C_Boss::p1_EnemyGenerateInit()
 {
 	m_enemygeneratetime = EnemyGenerateTime;
 
-	m_skillmanager->SetEnemySkill(SkillType::EnemyGenerate, shared_from_this());
+	if (auto sm = m_skillmanager.lock())
+	{
+		sm->SetEnemySkill(SkillType::EnemyGenerate, shared_from_this());
+	}
 }
 
 void C_Boss::p2_LaserInit()
 {
 	m_skilltype = SkillType::Laser;
 
-	m_pattern = Pattern::Death;
+	//m_pattern = Pattern::Death;
 	m_lasertime = LaserTime;
 
-	m_skillmanager->SetEnemySkill(SkillType::Laser, shared_from_this());
+	if (auto sm = m_skillmanager.lock())
+	{
+		sm->SetEnemySkill(SkillType::Laser, shared_from_this());
+	}
 }
 
 void C_Boss::p3_BarrierInit()
 {
 	m_skilltype = SkillType::Barrier;
 
-	m_pattern = Pattern::Death;
+	//m_pattern = Pattern::Death;
 	m_barriertime = BarrierTime;
 
-	m_skillmanager->SetEnemySkill(SkillType::Barrier, shared_from_this());
+	if (auto sm = m_skillmanager.lock())
+	{
+		sm->SetEnemySkill(SkillType::Barrier, shared_from_this());
+	}
 }
 
 void C_Boss::p4_SpiralInit()
@@ -345,7 +356,7 @@ void C_Boss::p4_SpiralUpdate()
 			float angle = m_spiralshotangle + DirectX::XM_2PI * i / count;
 
 			m_shot->ShotManager(
-				ShotType::NormalShot,
+				ShotType::EnemyNormalShot,
 				ShotTextureType::Bolt,
 				{ 4,0 },
 				{ 48,32 },

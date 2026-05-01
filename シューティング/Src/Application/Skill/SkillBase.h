@@ -3,6 +3,7 @@
 class C_EnemyManager;
 class C_EnemyMoveBase;
 class C_Player;
+class C_HitManager;
 
 enum class UseType
 {
@@ -15,7 +16,6 @@ class C_SkillBase
 public:
 	C_SkillBase() {
 		m_usetype = UseType::Player;
-		m_player = nullptr;
 	}
 	virtual ~C_SkillBase(){}
 
@@ -43,12 +43,31 @@ public:
 	//‰æ‘œ•`‰æ‡’²®
 	virtual bool IsTopDraw() = 0;
 
+	bool GetAlive() { return m_alive; }
+
+	Math::Vector2 GetPos() { return m_pos; }
+
+	//”¼Œax,y•Êi‹éŒ`j
+	Math::Vector2 GetSize() { return m_halfsize; }
+
+	//”¼Œai‰~”»’èj
+	float GetRadius() { return m_radius; }
+
+	virtual void SetHitManager(std::shared_ptr<C_HitManager> hitmanager){}
+
 protected:
 	
 	UseType m_usetype;
 
-	std::shared_ptr<C_Player> m_player;
+	std::weak_ptr<C_Player> m_player;
 
+	bool m_alive;
+
+	Math::Vector2 m_pos;
+
+	//”¼Œa
+	float m_radius;
+	Math::Vector2 m_halfsize;
 
 
 private:

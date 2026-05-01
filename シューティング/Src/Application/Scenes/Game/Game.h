@@ -23,7 +23,7 @@ public:
 	void Update()override;
 	void Draw()override;
 
-
+	void ImGui()override;
 
 private:
 

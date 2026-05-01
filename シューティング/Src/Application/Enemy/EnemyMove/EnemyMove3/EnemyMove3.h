@@ -7,7 +7,7 @@ enum class  InherentMove3
 	Stop,
 };
 
-class C_EnemyMove3 :public C_EnemyMoveBase
+class C_EnemyMove3 :public C_EnemyMoveBase, public std::enable_shared_from_this<C_EnemyMove3>
 
 {
 public:

@@ -40,8 +40,6 @@ public:
 
 		m_alive = true;
 
-		m_atk = 0;
-
 		m_pos = { 0, 0 };
 		m_move = { 0, 0 };
 		m_movespeed = { 0, 0 };
@@ -61,8 +59,6 @@ public:
 
 		m_skilltype = (SkillType)0;
 		m_usetype = (UseType)0;
-
-		m_skillmanager = nullptr;
 	}
 	virtual ~C_EnemyMoveBase(){}
 
@@ -87,11 +83,17 @@ public:
 	//座標取得用
 	Math::Vector2 GetPos() { return m_pos; }
 
-	//画像半径取得用
-	Math::Vector2 GetRadius() { return m_rect * m_scale / 2; }
+	//半径x,y別（矩形）
+	Math::Vector2 GetSize() { return m_halfsize; }
+
+	//半径（円判定）
+	float GetRadius() { return m_radius; }
 
 	//生存フラグ取得用
 	bool GetAlive() { return m_alive; }
+
+	//体力
+	int GetHp() { return m_hp; }
 
 	//エンジンテクスチャ
 	void SetEngineTex(KdTexture* tex) { m_enginetex = tex; }
@@ -109,16 +111,19 @@ public:
 	//当たり判定管理用
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
-	//当たり判定用取得
-	std::shared_ptr<C_HitBase> GetHit() { return m_hit; }
+	//ダメージ処理
+	void Damage(int value);
+
+	//ヒット演出用
+	void HitUpdate();
 
 protected:
 
 	//解放処理
 	virtual void Release();
 
-	//攻撃力
-	int m_atk;
+	//ステータス
+	int m_hp;
 
 	//テクスチャ
 	KdTexture* m_tex;
@@ -149,12 +154,15 @@ protected:
 	int m_shotintervaltime;
 	//移動方向用
 	float m_angle;
+	//半径
+	float m_radius;
+	Math::Vector2 m_halfsize;
 
 	//ショット用
 	std::shared_ptr<C_Shot> m_shot;
 
 	//プレイヤーインスタンス受け取り用
-	std::shared_ptr<C_Player> m_player;
+	std::weak_ptr<C_Player> m_player;
 
 	KdTexture* m_enginetex;
 	KdTexture* m_movetex;
@@ -169,12 +177,13 @@ protected:
 	Math::Vector2 m_moveanim;
 
 	//スキル用
-	std::shared_ptr<C_SkillManager> m_skillmanager;
+	std::weak_ptr<C_SkillManager> m_skillmanager;
 
 	//当たり判定管理用
-	std::shared_ptr<C_HitManager> m_hitmanager;
+	std::weak_ptr<C_HitManager> m_hitmanager;
+	static const int HitTimer = 30;
+	int m_hittimer;
 
-	std::shared_ptr<C_HitBase> m_hit;
 
 	SkillType m_skilltype;
 

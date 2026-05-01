@@ -1,8 +1,6 @@
 #pragma once
 #include"Application/Enemy/Boss/BossBase.h"
 
-class C_EnemyHit;
-
 enum class BossActionPattern
 {
 	p1_EnemyGenerate,
@@ -29,9 +27,6 @@ public:
 private:
 
 	void Release()	override;
-
-	//当たり判定用
-	std::shared_ptr<C_EnemyHit> m_hit;
 
 	//ボスパターン
 	Pattern m_pattern;

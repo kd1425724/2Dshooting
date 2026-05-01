@@ -1,13 +1,15 @@
 #pragma once
 #include "Application/Skill/SkillBase.h"
 
+class C_HitManager;
+
 enum class Flashing
 {
     Up,
     Down
 };
 
-class C_Barrier : public C_SkillBase
+class C_Barrier : public C_SkillBase, public std::enable_shared_from_this<C_Barrier>
 {
 public:
     C_Barrier();
@@ -26,13 +28,19 @@ public:
 
     bool IsTopDraw()override { return true; }
 
+    void SetHitManager(std::shared_ptr<C_HitManager> hitmanager)override { m_hitmanager = hitmanager; }
+
 private:
 
+    //î≠ê∂éûä‘
+    static const int MaxTime = 300;
+    int m_time;
+
     // à íu
-    Math::Vector2 m_pos;
+    //Math::Vector2 m_pos;
 
     // ï`âÊ
-    std::shared_ptr<KdTexture> m_tex;
+    std::weak_ptr<KdTexture> m_tex;
     Math::Vector2 m_rect;
     Math::Color m_color;
 
@@ -48,9 +56,10 @@ private:
     static const int AnimMaxNum = 6;
     float m_anim;
 
-    bool m_isActive;
-
     Flashing m_flashing;
 
-    std::shared_ptr<C_EnemyMoveBase> m_enemy;
+    std::weak_ptr<C_EnemyMoveBase> m_enemy;
+
+    //ìñÇΩÇËîªíË
+    std::weak_ptr<C_HitManager> m_hitmanager;
 };

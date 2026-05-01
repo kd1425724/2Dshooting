@@ -12,6 +12,10 @@ public:
 	//プレイヤー
 	const KdTexture& GetPlayerTex()const { return m_playertex; }
 	const Math::Rectangle GetPlayerRect()const { return m_playerrect; }
+	
+	//数字
+	const KdTexture& GetNumTex()const { return m_numtex; }
+	const Math::Rectangle GetNumRect()const { return m_numrect; }
 
 private:
 
@@ -22,6 +26,10 @@ private:
 	//プレイヤー
 	KdTexture m_playertex;
 	Math::Rectangle m_playerrect = { 0,0,48,48 };
+
+	//数字
+	KdTexture m_numtex;
+	Math::Rectangle m_numrect;
 
 //シングルトン
 private:

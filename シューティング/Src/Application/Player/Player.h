@@ -1,12 +1,11 @@
 #pragma once
 
 class C_Shot;
-class C_PlayerHit;
 class C_HitManager;
 
 enum class PlayerShotInterval
 {
-	NormalShot=10,	//’ÊíUŒ‚
+	NormalShot=5,	//’ÊíUŒ‚
 	Num
 };
 
@@ -22,17 +21,23 @@ public:
 
 	void Release();
 
+	void ImGui();
+
 	void ShotInit();
 	void ShotUpdate();
 
 	Math::Vector2 GetPos() { return m_pos; }
 
-	Math::Vector2 GetRadius() { return m_rect * m_scale / 2; }
+	//”¼Œax,y•Êi‹éŒ`j
+	Math::Vector2 GetSize() { return m_halfsize; }
+
+	//”¼Œai‰~”»’èj
+	float GetRadius() { return m_radius; }
 
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
 	//ƒ_ƒ[ƒWˆ—
-	void Dameage() { m_Hp--; };
+	void Damage() { m_Hp--; };
 
 private:
 
@@ -40,7 +45,6 @@ private:
 	int m_Hp = 3;
 
 	//“–‚½‚è”»’è—p
-	std::shared_ptr<C_PlayerHit> m_hit;
 	std::shared_ptr<C_HitManager> m_hitmanager;
 
 	//À•W
@@ -60,12 +64,13 @@ private:
 	bool m_alive;
 	//Ø‚èæ‚è”ÍˆÍ
 	Math::Vector2 m_rect;
+	//”¼Œa
+	float m_radius;
+	Math::Vector2 m_halfsize;
 
 	//’e
 	std::shared_ptr<C_Shot> m_shot;
 	//”­ËŠÔŠu
 	int m_shotinterval;
-
-
 };
 

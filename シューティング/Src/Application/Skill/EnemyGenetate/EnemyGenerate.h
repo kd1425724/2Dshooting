@@ -25,9 +25,11 @@ public:
 
 private:
 
-	std::shared_ptr<C_EnemyManager> m_enemymanager;
+	std::weak_ptr<C_EnemyManager> m_enemymanager;
 
-	std::shared_ptr<C_EnemyMoveBase> m_enemy;
+	std::weak_ptr<C_EnemyMoveBase> m_enemy;
+
+	int m_time;
 
 
 

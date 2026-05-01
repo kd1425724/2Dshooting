@@ -1,5 +1,6 @@
 #include "CommonAPI.h"
 #include"Application/Info.h"
+#include"CommonTexture.h"
 
 bool C_CommonAPI::OutOfScreen(Math::Vector2 pos, Math::Vector2 radius)
 {
@@ -89,4 +90,8 @@ float C_CommonAPI::GetTextureAngleAdjustment(TextureAngle angle)
 	}
 	
 
+}
+
+void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale)
+{
 }

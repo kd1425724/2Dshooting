@@ -1,9 +1,8 @@
 #include "Player.h"
-#include"Application/Common/CommonTexture.h"
-#include"Application/Input/Input.h"
+#include"../Common/CommonTexture.h"
+#include"../Input/Input.h"
 #include"../Skill/Shot/Shot.h"
-#include"Application/Info.h"
-#include"../Hit/PlayerHit/PlayerHit.h"
+#include"../Info.h"
 #include"../Hit/HitManager.h"
 
 void C_Player::Init()	
@@ -22,20 +21,16 @@ void C_Player::Init()
 	//切り取り範囲
 	m_rect = { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height };
 
+	//半径
+	m_halfsize = m_rect * m_scale / 2;
+	m_radius = m_rect.x /** m_scale.x *// 2;
 
-	//当たり判定
-	m_hit = std::make_shared<C_PlayerHit>();
-	m_hit->SetType(HitType::Player);
-	m_hit->SetRadius(m_rect.x * m_scale.x / 2);
-	m_hit->SetOwner(shared_from_this());
-	//当たり判定管理に渡す
-	m_hitmanager->AddHit(m_hit);
+	//当たり判定用
+	m_hitmanager->SetPlayer(shared_from_this());
 
 }
 void C_Player::Update()
 {
-	//当たり判定用座標セット
-	m_hit->SetPos(m_pos);
 
 	ShotUpdate();
 
@@ -66,6 +61,8 @@ void C_Player::Update()
 }
 void C_Player::Draw()
 {
+
+
 	m_shot->Draw();
 
 	SHADER.m_spriteShader.SetMatrix(m_mat);
@@ -74,6 +71,10 @@ void C_Player::Draw()
 
 void C_Player::Release()
 {
+}
+void C_Player::ImGui()
+{
+	ImGui::Text("\nPlayerHP : %d",m_Hp);
 }
 
 void C_Player::ShotInit()
@@ -94,7 +95,7 @@ void C_Player::ShotUpdate()
 		if (Input.GetPlayerKey(PlayerKeyType::NormalShot))
 		{
 			m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-				m_pos, { m_pos.x + 100,m_pos.y },7);
+				m_pos, { m_pos.x + 100,m_pos.y },12);
 			m_shotinterval = (int)PlayerShotInterval::NormalShot;
 		}
 	}

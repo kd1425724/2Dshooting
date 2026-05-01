@@ -145,17 +145,15 @@ void C_EnemyManager::Update()
 	{
 		for (int i = 0; i < m_enemys.size(); i++)
 		{
+			m_enemys[i]->HitUpdate();
 			m_enemys[i]->Update();
 		}
 
 		for (int i = 0; i < m_enemys.size(); i++)
 		{
-			if (COMMONAPI.OutOfPlayAreaPlusMargin(m_enemys[i]->GetPos(), m_enemys[i]->GetRadius()) ||
+			if (COMMONAPI.OutOfPlayAreaPlusMargin(m_enemys[i]->GetPos(), m_enemys[i]->GetSize()) ||
 				!m_enemys[i]->GetAlive())
 			{
-				
-				m_hitmanager->RemoveHit(m_enemys[i]->GetHit());
-
 				m_enemys.erase(m_enemys.begin() + i);
 
 				i--;
@@ -171,11 +169,12 @@ void C_EnemyManager::Update()
 
 		for (int i = 0; i < m_skillenemys.size(); i++)
 		{
+			m_enemys[i]->HitUpdate();
 			m_skillenemys[i]->Update();
 		}
 		for (int i = 0; i < m_skillenemys.size(); i++)
 		{
-			if (COMMONAPI.OutOfPlayAreaPlusMargin(m_skillenemys[i]->GetPos(), m_skillenemys[i]->GetRadius()) ||
+			if (COMMONAPI.OutOfPlayAreaPlusMargin(m_skillenemys[i]->GetPos(), m_skillenemys[i]->GetSize()) ||
 				!m_skillenemys[i]->GetAlive())
 			{
 				m_skillenemys.erase(m_skillenemys.begin() + i);
@@ -205,6 +204,31 @@ void C_EnemyManager::Draw()
 		}
 	}
 }
+
+void C_EnemyManager::ImGui()
+{
+	ImGui::Text("\nEnemyNum : %d", m_enemys.size());
+
+	if (!m_enemys.empty())
+	{
+		for (int i = 0; i < m_enemys.size(); i++)
+		{
+			// テキスト表示
+			ImGui::Text("EnemyHp : %d", m_enemys[i]->GetHp());
+		}
+	}
+
+	if (!m_skillenemys.empty())
+	{
+		for (int i = 0; i < m_skillenemys.size(); i++)
+		{
+			// テキスト表示
+			ImGui::Text("SkillEnemyHp : %d", m_enemys[i]->GetHp());
+		}
+	}
+}
+
+
 void C_EnemyManager::EnemySpworn(int judgmentcount)
 {
 	switch (m_spworntype[judgmentcount].movetype)
@@ -251,7 +275,7 @@ void C_EnemyManager::BossSpworn()
 	//サブボス
 	for (int i = 0; i < 2; i++)
 	{
-		m_enemys.emplace_back(new C_SubBoss());
+		m_enemys.emplace_back(std::make_shared<C_SubBoss>());
 		m_enemys.back()->SetHitManager(m_hitmanager);
 		m_enemys.back()->SetSkillManager(m_skillmanager);
 		m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss), { 128,128 }, { NULL,NULL });

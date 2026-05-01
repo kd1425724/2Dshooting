@@ -1,7 +1,7 @@
 #pragma once
 #include"Application/Enemy/EnemyMoveBase.h"
 
-class C_EnemyMove1:public C_EnemyMoveBase
+class C_EnemyMove1:public C_EnemyMoveBase, public std::enable_shared_from_this<C_EnemyMove1>
 
 {
 public:

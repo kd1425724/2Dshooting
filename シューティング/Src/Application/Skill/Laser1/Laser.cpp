@@ -2,7 +2,7 @@
 #include "Application/Enemy/EnemyMoveBase.h"
 #include "../../Player/Player.h"
 #include"../../Common/CommonAPI.h"
-
+#include"../../Hit/HitManager.h"
 C_Laser::C_Laser()
 {
     m_length = 0.0f;
@@ -16,8 +16,10 @@ C_Laser::C_Laser()
     m_rect = { 18,38 };
     m_color = { 1,1,1,1 };
 
-    m_isActive = false;
+    m_alive = false;
     m_scale = { 1,1 };
+
+   
 
     //スクロール用
     for (int i = 0; i < (int)1280 / 38; i++)
@@ -40,14 +42,23 @@ void C_Laser::SkillActivate()
     // プレイヤー用レーザー発動
   
     m_launchtime = LaunshTime;
-    m_scale = { 1,1 };
-    m_isActive = true;
+    m_scale = { 2,2 };
+    m_alive = true;
     m_length = 0.0f;
-    m_color = { 0,1,1,1 };
+    m_color = { 0.2,0.7,1,1 };
 
-    if (m_player)
+    //太さ
+    m_thick = m_rect.x * m_scale.x;
+
+    //当たり判定管理に渡す
+    if (auto hm = m_hitmanager.lock())
     {
-        m_start = { m_player->GetPos().x + m_player->GetRadius().x,m_player->GetPos().y };
+        hm->SetPlayerLaser(shared_from_this());
+    }
+
+    if (auto p = m_player.lock())
+    {
+        m_start = { p->GetPos().x + p->GetSize().x,p->GetPos().y };
 
         // 右方向
         m_dir = { 1.0f, 0.0f };
@@ -57,18 +68,27 @@ void C_Laser::SkillActivate()
 void C_Laser::EnemySkillActivate()
 {
     // 敵用レーザー発動
-    m_isActive = true;
+    m_alive = true;
     m_length = 0.0f;
 
     m_launchtime = LaunshTime;
     m_scale = { 2,2 };
-    m_isActive = true;
+    m_alive = true;
     m_length = 0.0f;
     m_color = { 1,1,1,1 };
 
-    if (m_enemy)
+    //太さ
+    m_thick = m_rect.x * m_scale.x;
+
+    //当たり判定管理に渡す
+    if (auto hm = m_hitmanager.lock())
     {
-        m_start = m_enemy->GetPos();
+        hm->SetEnemyLaser(shared_from_this());
+    }
+
+    if (auto e = m_enemy.lock())
+    {
+        m_start = e->GetPos();
 
         // 左方向
         m_dir = { -1.0f, 0.0f };
@@ -77,16 +97,19 @@ void C_Laser::EnemySkillActivate()
 
 void C_Laser::Update()
 {
-    if (!m_isActive) return;
+    if (!m_alive) return;
+
+    auto e = m_enemy.lock();
+    auto p = m_player.lock();
 
     // 発射位置を追従させる
-    if (m_usetype == UseType::Player && m_player)
+    if (m_usetype == UseType::Player &&p)
     {
-        m_start = { m_player->GetPos().x + m_player->GetRadius().x,m_player->GetPos().y };
+        m_start = { p->GetPos().x + p->GetSize().x,p->GetPos().y };
     }
-    else if (m_usetype == UseType::Enemy && m_enemy)
+    else if (m_usetype == UseType::Enemy && e)
     {
-        m_start = m_enemy->GetPos();
+        m_start = e->GetPos();
     }
 
     // レーザーを伸ばす
@@ -98,7 +121,10 @@ void C_Laser::Update()
     // 描画枚数計算
     m_drawCount = static_cast<int>(m_length / m_segmentHeight);
 
-  
+    //最後尾計算
+    m_end = m_start + m_dir * m_length;
+
+
     // スクロール用
     for (int i = 0; i < (int)1280 / 38; i++)
     {
@@ -118,7 +144,7 @@ void C_Laser::Update()
         m_scale.x -= 0.1f;
         if (m_scale.x < 0)
         {
-            m_isActive = false;
+            m_alive = false;
         }
     }
 
@@ -135,22 +161,21 @@ void C_Laser::Update()
 
 void C_Laser::Draw()
 {
-    if (!m_isActive) return;
+    if (!m_alive) return;
 
     for (int i = 0; i < m_drawCount; i++)
     {
         // =========================
         // 各タイルの位置計算
         // =========================
-        Math::Vector2 pos;
-        pos.x = m_start.x + m_dir.x * (i * m_segmentHeight);
-        pos.y = m_start.y + m_dir.y * (i * m_segmentHeight);
+        m_pos.x = m_start.x + m_dir.x * (i * m_segmentHeight);
+        m_pos.y = m_start.y + m_dir.y * (i * m_segmentHeight);
 
   
         // =========================
         // 平行移動行列
         // =========================
-        Math::Matrix trans = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+        Math::Matrix trans = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
 
         // =========================
         // 最終行列（回転＋移動）

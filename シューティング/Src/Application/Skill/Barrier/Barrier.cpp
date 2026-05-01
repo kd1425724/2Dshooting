@@ -2,16 +2,17 @@
 #include"../../Player/Player.h"
 #include "../../Enemy/EnemyMoveBase.h"
 #include"../../Common/CommonAPI.h"
+#include"../../Hit/HitManager.h"
 
 C_Barrier::C_Barrier()
 {
-    m_rect = { 64,64 };
+    m_rect = { 128,128 };
     m_color = { 1,1,1,1 };
 
     m_rot = 0.0f;
-    m_alpha = 1.0f;
+    m_alpha = 0.8f;
 
-    m_isActive = false;
+    m_alive = false;
 }
 
 C_Barrier::~C_Barrier()
@@ -21,7 +22,8 @@ C_Barrier::~C_Barrier()
 void C_Barrier::Init()
 {
     m_anim = 0;
-    m_flashing = Flashing::Up;
+    m_flashing = Flashing::Down;
+    m_time = MaxTime;
 }
 
 void C_Barrier::SetTexture(std::shared_ptr<KdTexture> tex)
@@ -31,38 +33,67 @@ void C_Barrier::SetTexture(std::shared_ptr<KdTexture> tex)
 
 void C_Barrier::SkillActivate()
 {
-    m_isActive = true;
-    m_scale = { 1.5f,1.5f };
+    m_alive = true;
+    m_scale = { 1.0f,1.0f };
     m_dir = { 1.0f,0.0f };
-
+    m_alpha = 0.8f;
     m_rot = atan2(m_dir.y, m_dir.x) + COMMONAPI.GetTextureAngleAdjustment(TextureAngle::Top);
 
-    m_pos = m_player->GetPos();
+    //半径
+    m_halfsize = m_rect * m_scale / 2;
+    m_radius = m_rect.x * m_scale.x / 2;
+
+    auto p = m_player.lock();
+    auto hm = m_hitmanager.lock();
+
+    m_time = MaxTime;
+
+    if (p&&hm)
+    {
+        m_pos = p->GetPos();
+        hm->SetPlayerBarrier(shared_from_this());
+    }
 }
 
 void C_Barrier::EnemySkillActivate()
 {
-    m_isActive = true;
-    m_scale = { 4.3f,4.3f };
+    m_alive = true;
+    m_scale = { 2.6f,2.6f };
     m_dir = { -1.0f,0.0f };
-
+    m_alpha = 0.8f;
     m_rot = atan2(m_dir.y, m_dir.x) + COMMONAPI.GetTextureAngleAdjustment(TextureAngle::Top);
-   
-    m_pos = { m_enemy->GetPos().x - m_enemy->GetRadius().x+100,m_enemy->GetPos().y };
+
+    //半径
+    m_halfsize = m_rect * m_scale / 2;
+    m_radius = m_rect.x * m_scale.x / 2;
+
+    auto e = m_enemy.lock();
+    auto hm = m_hitmanager.lock();
+
+    m_time = MaxTime;
+
+    if (e&&hm)
+    {
+        m_pos = { e->GetPos().x - e->GetSize().x + 100,e->GetPos().y };
+        hm->SetEnemyBarrier(shared_from_this());
+    }
 }
 
 void C_Barrier::Update()
 {
-    if (!m_isActive) return;
+    if (!m_alive) return;
 
-    // =========================
-    // プレイヤー追従
-    // =========================
-    if (m_usetype == UseType::Player && m_player)
+    auto p = m_player.lock();
+    auto e = m_enemy.lock();
+
+    if (m_usetype == UseType::Player && p)
     {
-        m_pos = m_player->GetPos();
+        m_pos = p->GetPos();
     }
-
+    else if (m_usetype == UseType::Enemy && e)
+    {
+        m_pos = { e->GetPos().x , e->GetPos().y };
+    }
     //アニメーション用
     m_anim += 0.1f;
     if (m_anim >= AnimMaxNum)
@@ -74,29 +105,45 @@ void C_Barrier::Update()
     // =========================
     // 点滅（アルファ）
     // =========================
-    if (m_flashing == Flashing::Up)
+    if (m_time < 120)
     {
-        m_alpha += 0.01f;
-        if (m_alpha >= 0.6f)
+        if (m_flashing == Flashing::Up)
         {
-            m_alpha = 0.6f;
-            m_flashing = Flashing::Down;
+            m_alpha += 0.01f;
+            if (m_alpha >= 0.6f)
+            {
+                m_alpha = 0.6f;
+                m_flashing = Flashing::Down;
+            }
+        }
+        else if (m_flashing == Flashing::Down)
+        {
+            m_alpha -= 0.01f;
+            if (m_alpha <= 0.3f)
+            {
+                m_alpha = 0.3f;
+                m_flashing = Flashing::Up;
+            }
         }
     }
-    else if (m_flashing == Flashing::Down)
+
+    //発生時間
+    if (m_time > 0)
     {
-        m_alpha -= 0.01f;
-        if (m_alpha <= 0.3f)
+        m_time--;
+        if (m_time <= 0)
         {
-            m_alpha = 0.3f;
-            m_flashing = Flashing::Up;
+            m_time = 0;
+            m_alive = false;
         }
     }
 }
 
 void C_Barrier::Draw()
 {
-    if (!m_isActive || !m_tex) return;
+    auto t = m_tex.lock();
+
+    if (!m_alive || !t) return;
 
     // =========================
     // 行列作成
@@ -119,7 +166,7 @@ void C_Barrier::Draw()
     KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 
     KdShaderManager::GetInstance().m_spriteShader.DrawTex(
-        m_tex.get(),
+        t.get(),
         0,
         0,
         &Math::Rectangle((int)m_anim*m_rect.x, 0, m_rect.x, m_rect.y),

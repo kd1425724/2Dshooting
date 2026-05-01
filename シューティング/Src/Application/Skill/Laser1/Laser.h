@@ -3,7 +3,7 @@
 
 class C_EnemyMoveBase;
 
-class C_Laser : public C_SkillBase
+class C_Laser : public C_SkillBase, public std::enable_shared_from_this<C_Laser>
 {
 public:
     C_Laser();
@@ -22,10 +22,19 @@ public:
 
     bool IsTopDraw()override { return false; }
 
+    float GetThick() { return m_thick; }
+
+    Math::Vector2 GetStart() { return m_start; }
+
+    Math::Vector2 GetEnd() { return m_end; }
+
+    void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
+
 private:
 
     // ===== 基本情報 =====
     Math::Vector2 m_start;     // 発射位置
+    Math::Vector2 m_end;       //最後尾座標
     Math::Vector2 m_dir;       // 方向（正規化して使う）
 
     float m_length;            // 現在の長さ
@@ -34,6 +43,7 @@ private:
 
     float m_segmentHeight;     // 1タイルの高さ
     int   m_drawCount;         // 描画枚数
+    float m_thick;              //太さ
 
     // ===== 描画 =====
     std::shared_ptr<KdTexture> m_tex;                 // テクスチャ
@@ -50,10 +60,12 @@ private:
     static  const int m_animmaxnum = 4;
 
     // ===== 状態 =====
-    bool m_isActive;
 
     static const int LaunshTime = 120;
     int m_launchtime;
 
-    std::shared_ptr<C_EnemyMoveBase> m_enemy;
+    std::weak_ptr<C_EnemyMoveBase> m_enemy;
+
+    //当たり判定
+    std::weak_ptr<C_HitManager> m_hitmanager;
 };

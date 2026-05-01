@@ -13,6 +13,7 @@ class C_SkillBase;
 class C_EnemyManager;
 class C_Player;
 class C_EnemyMoveBase;
+class C_HitManager;
 
 class C_SkillManager
 {
@@ -37,6 +38,9 @@ public:
 
 	void SetPlayer(std::shared_ptr<C_Player> player) { m_player = player; }
 
+	//当たり判定用
+	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
+
 private:
 
 	//プレイヤースキルまとめ
@@ -46,15 +50,18 @@ private:
 	std::vector<std::shared_ptr<C_SkillBase>> m_enemyskills;
 
 	//敵管理取得用
-	std::shared_ptr<C_EnemyManager> m_enemymanager=nullptr;
+	std::weak_ptr<C_EnemyManager> m_enemymanager;
 
 	//敵用
-	std::shared_ptr<C_EnemyMoveBase> m_enemys=nullptr;
+	std::weak_ptr<C_EnemyMoveBase> m_enemys;
 
 	//プレイヤーインスタンス取得用
-	std::shared_ptr<C_Player> m_player=nullptr;
+	std::weak_ptr<C_Player> m_player;
 
-	//画像読み込み用
+	//当たり判定
+	std::weak_ptr<C_HitManager> m_hitmanager;
+
+	//画像読み込み用（本体）
 	//レーザー
 	std::shared_ptr<KdTexture> m_lasertex;
 	//スキル

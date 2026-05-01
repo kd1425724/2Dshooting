@@ -115,26 +115,17 @@
     <Filter Include="Src\Application\Hit">
       <UniqueIdentifier>{962d6ac3-e468-4610-9c4c-c4fcbb64dbe6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Hit\PlayerHit">
-      <UniqueIdentifier>{c27688de-a9d9-4340-903b-00a7e093d004}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Hit\EnemyHit">
-      <UniqueIdentifier>{7a0d02d5-f0b4-4e94-9315-f899adba7579}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Hit\ShotHit">
-      <UniqueIdentifier>{b27b705d-21c8-45bc-a7f9-9457639ee25d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Hit\SkillHit">
-      <UniqueIdentifier>{cdc1de7c-21c8-44f8-adb3-7568700a1e45}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Player">
       <UniqueIdentifier>{1b5a6d1a-5650-4798-966d-b411ea6b6e3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Hit\EnemyHit\Enemy">
-      <UniqueIdentifier>{e439d2fd-1031-40bc-8e6a-2ac9832368c3}</UniqueIdentifier>
+    <Filter Include="Src\Application\Effect\Explosion">
+      <UniqueIdentifier>{158abcea-deb1-4828-bdfe-92418a62d815}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Hit\SkillHit\BarrierHit">
-      <UniqueIdentifier>{8ead6dd7-e07c-44b9-a9bd-2e9d259d50d1}</UniqueIdentifier>
+    <Filter Include="Src\Application\Effect\HitEffect">
+      <UniqueIdentifier>{2f001170-9e22-4f82-9109-be292213dc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Effect\HitEffect\BoltHitEffect">
+      <UniqueIdentifier>{cdea7161-df89-4864-83da-04bc59bbccdf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -315,23 +306,23 @@
     <ClInclude Include="Src\Application\Skill\Copy\Copy.h">
       <Filter>Src\Application\Skill\Copy</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Hit\HitBase.h">
-      <Filter>Src\Application\Hit</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Hit\HitManager.h">
       <Filter>Src\Application\Hit</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\Hit\PlayerHit\PlayerHit.h">
-      <Filter>Src\Application\Hit\PlayerHit</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Player\Player.h">
       <Filter>Src\Application\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Hit\EnemyHit\Enemy\EnemyHit.h">
-      <Filter>Src\Application\Hit\EnemyHit\Enemy</Filter>
+    <ClInclude Include="Src\Application\Effect\EffectManager.h">
+      <Filter>Src\Application\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Hit\ShotHit\ShotHit.h">
-      <Filter>Src\Application\Hit\ShotHit</Filter>
+    <ClInclude Include="Src\Application\Effect\EffectBase.h">
+      <Filter>Src\Application\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Effect\Explosion\Explosion.h">
+      <Filter>Src\Application\Effect\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Effect\HitEffect\BoltHitEffect\BoltHitEffect.h">
+      <Filter>Src\Application\Effect\HitEffect\BoltHitEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -482,23 +473,23 @@
     <ClCompile Include="Src\Application\Skill\Copy\Copy.cpp">
       <Filter>Src\Application\Skill\Copy</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Hit\HitBase.cpp">
-      <Filter>Src\Application\Hit</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Hit\HitManager.cpp">
       <Filter>Src\Application\Hit</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Hit\PlayerHit\PlayerHit.cpp">
-      <Filter>Src\Application\Hit\PlayerHit</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Player\Player.cpp">
       <Filter>Src\Application\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Hit\EnemyHit\Enemy\EnemyHit.cpp">
-      <Filter>Src\Application\Hit\EnemyHit\Enemy</Filter>
+    <ClCompile Include="Src\Application\Effect\EffectManager.cpp">
+      <Filter>Src\Application\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Hit\ShotHit\ShotHit.cpp">
-      <Filter>Src\Application\Hit\ShotHit</Filter>
+    <ClCompile Include="Src\Application\Effect\EffectBase.cpp">
+      <Filter>Src\Application\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Effect\Explosion\Explosion.cpp">
+      <Filter>Src\Application\Effect\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Effect\HitEffect\BoltHitEffect\BoltHitEffect.cpp">
+      <Filter>Src\Application\Effect\HitEffect\BoltHitEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

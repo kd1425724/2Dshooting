@@ -3,6 +3,7 @@
 #include"EnemyGenetate/EnemyGenerate.h"
 #include"Laser1/Laser.h"
 #include"Barrier/Barrier.h"
+#include"Copy/Copy.h"
 #include"../Input/Input.h"
 #include"../Enemy/EnemyMoveBase.h"
 
@@ -21,7 +22,7 @@ void C_SkillManager::Init()
 	m_barriertex = std::make_shared<KdTexture>();
 	m_barriertex->Load("Texture/Skill/Barrier/Barrier.png");
 
-	SetPlayerSkill(SkillType::Barrier);
+	SetPlayerSkill(SkillType::CopyShot);
 }
 void C_SkillManager::Update()
 {
@@ -37,12 +38,26 @@ void C_SkillManager::Update()
 		}
 	}
 
-	for (int i = 0; i < m_enemyskills.size(); i++)
+	for (int i = 0; i < m_enemyskills.size(); )
 	{
-		if (m_enemyskills[i])
+		// nullチェック
+		if (!m_enemyskills[i])
 		{
-			m_enemyskills[i]->Update();
+			m_enemyskills.erase(m_enemyskills.begin() + i);
+			continue;
 		}
+
+		// 更新
+		m_enemyskills[i]->Update();
+
+		// 死んだら削除
+		if (!m_enemyskills[i]->GetAlive())
+		{
+			m_enemyskills.erase(m_enemyskills.begin() + i);
+			continue;
+		}
+
+		i++;
 	}
 
 
@@ -98,29 +113,53 @@ void C_SkillManager::TopDraw()
 
 void C_SkillManager::SetPlayerSkill(SkillType skilltype)
 {
+	auto p = m_player.lock();
+	auto em = m_enemymanager.lock();
+	auto hm = m_hitmanager.lock();
 
 	switch (skilltype)
 	{
+	case SkillType::None:
 	case SkillType::CopyShot:
+		m_playerskills = std::make_shared<C_Copy>();
+		m_playerskills->SetUseType(UseType::Player);
+		if (p&&hm)
+		{
+			m_playerskills->SetPlayer(p);
+			m_playerskills->SetHitManager(hm);
+		}
+		m_playerskills->Init();
+		break;
 		break;
 	case SkillType::EnemyGenerate:
 		m_playerskills = std::make_shared<C_EnemyGenerate>();
 		m_playerskills->SetUseType(UseType::Player);
-		m_playerskills->SetEnemyMagager(m_enemymanager);
-		m_playerskills->SetPlayer(m_player);
+		if (p && em)
+		{
+			m_playerskills->SetEnemyMagager(em);
+			m_playerskills->SetPlayer(p);
+		}
 		m_playerskills->Init();
 		break;
 	case SkillType::Barrier:
 		m_playerskills = std::make_shared<C_Barrier>();
 		m_playerskills->SetUseType(UseType::Player);
-		m_playerskills->SetPlayer(m_player);
+		if (p&&hm)
+		{
+			m_playerskills->SetPlayer(p);
+			m_playerskills->SetHitManager(hm);
+		}
 		m_playerskills->SetTexture(m_barriertex);
 		m_playerskills->Init();
 		break;
 	case SkillType::Laser:
 		m_playerskills = std::make_shared<C_Laser>();
 		m_playerskills->SetUseType(UseType::Player);
-		m_playerskills->SetPlayer(m_player);
+		if (p&&hm)
+		{
+			m_playerskills->SetPlayer(p);
+			m_playerskills->SetHitManager(hm);
+		}
 		m_playerskills->SetTexture(m_lasertex);
 		m_playerskills->Init();
 		break;
@@ -131,6 +170,9 @@ void C_SkillManager::SetPlayerSkill(SkillType skilltype)
 
 void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyMoveBase> enemybase)
 {
+	auto em = m_enemymanager.lock();
+	auto hm = m_hitmanager.lock();
+
 	switch (skilltype)
 	{
 	case SkillType::None:
@@ -139,8 +181,11 @@ void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyM
 		break;
 	case SkillType::EnemyGenerate:
 		m_enemyskills.emplace_back(std::make_shared<C_EnemyGenerate>());
-		m_enemyskills.back()->SetUseType(UseType::Enemy);
-		m_enemyskills.back()->SetEnemyMagager(m_enemymanager);
+		m_enemyskills.back()->SetUseType(UseType::Enemy);	
+		if (em)
+		{
+			m_enemyskills.back()->SetEnemyMagager(em);
+		}
 		m_enemyskills.back()->SetEnemy(enemybase);
 		m_enemyskills.back()->Init();
 		m_enemyskills.back()->EnemySkillActivate();
@@ -148,6 +193,10 @@ void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyM
 	case SkillType::Barrier:
 		m_enemyskills.emplace_back(std::make_shared<C_Barrier>());
 		m_enemyskills.back()->SetUseType(UseType::Enemy);
+		if (hm)
+		{
+			m_enemyskills.back()->SetHitManager(hm);
+		}
 		m_enemyskills.back()->SetEnemy(enemybase);
 		m_enemyskills.back()->SetTexture(m_barriertex);
 		m_enemyskills.back()->Init();
@@ -156,6 +205,10 @@ void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyM
 	case SkillType::Laser:
 		m_enemyskills.emplace_back(std::make_shared<C_Laser>());
 		m_enemyskills.back()->SetUseType(UseType::Enemy);
+		if (hm)
+		{
+			m_enemyskills.back()->SetHitManager(hm);
+		}
 		m_enemyskills.back()->SetEnemy(enemybase);
 		m_enemyskills.back()->SetTexture(m_lasertex);
 		m_enemyskills.back()->Init();

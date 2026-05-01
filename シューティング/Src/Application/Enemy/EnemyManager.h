@@ -43,6 +43,8 @@ public:
 	void Update();
 	void Draw();
 
+	void ImGui();
+
 	//ƒXƒLƒ‹ŠÇ—æ“¾—p
 	void SetSkillManager(std::shared_ptr<C_SkillManager> skillmanager) { m_skillmanager = skillmanager; }
 

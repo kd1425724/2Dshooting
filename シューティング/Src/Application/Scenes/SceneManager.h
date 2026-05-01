@@ -20,6 +20,8 @@ public:
 	void Update();
 	void Draw();
 
+	void ImGui();
+
 	//w’è‚µ‚½ƒV[ƒ“‚ğã‚É”í‚¹‚é
 	//popflg...pushpop‚·‚é‚©‚Ç‚¤‚©
 	void push(SceneType type,bool popflg);
