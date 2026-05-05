@@ -138,6 +138,6 @@ void C_TitleUi::StartDraw()
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 	Math::Color color = { 1,1,1,m_startalpha };
-	Math::Rectangle r= { 0,0,480,97 };
+	Math::Rectangle r= { 0,0,480,100 };
 	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_starttex.get(), 0, 0, &r, &color);
 }

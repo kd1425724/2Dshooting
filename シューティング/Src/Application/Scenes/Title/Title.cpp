@@ -2,7 +2,6 @@
 #include"Application/Scenes/SceneManager.h"
 #include"../../Ui/ScenesUi/TitleUi.h"
 
-
 void C_Title::Release()
 {
 

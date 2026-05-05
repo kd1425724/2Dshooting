@@ -70,28 +70,63 @@ float C_CommonAPI::GetTextureAngleAdjustment(TextureAngle angle)
 		return 0.0f;
 		break;
 	}
-
-	switch (angle)
-	{
-	case TextureAngle::Right:
-		return 0.0f;
-
-	case TextureAngle::Top:
-		return -DirectX::XM_PIDIV2;   // -90度
-
-	case TextureAngle::Left:
-		return DirectX::XM_PI;        // 180度
-
-	case TextureAngle::Bottom:
-		return DirectX::XM_PIDIV2;    // +90度
-
-	default:
-		return 0.0f;
-	}
-	
-
 }
 
 void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale)
 {
+
+	Math::Matrix s;
+	Math::Matrix t;
+	Math::Matrix mat;
+
+	Math::Rectangle Srect = CommonTex.GetNumRect();
+
+	//マイナスなら強制＋に
+	if (num < 0)
+	{
+		num = abs(num);
+	}
+
+	
+
+	// 0対策（0の場合は0のみ表示）
+	if (num == 0)
+	{
+		s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		t = Math::Matrix::CreateTranslation(startpos.x, startpos.y, 0);
+		mat = s * t;
+
+		Math::Rectangle rect = { num * Srect.width,Srect.y,Srect.width,Srect.height };
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(), 0, 0,
+			&rect);
+
+		return;
+	}
+
+	std::vector<int> digits;
+
+	//numが０になるまでループ
+	while (num > 0)
+	{
+		digits.push_back(num % 10);
+		num /= 10;
+	}
+
+	for (int i = 0; i < digits.size(); i++)
+	{
+		Math::Vector2 pos = startpos;
+		pos.x -= Srect.width * scale.x * i;
+
+		s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		mat = s * t;
+
+		Math::Rectangle rect = { digits[i] * Srect.width,Srect.y,Srect.width,Srect.height };
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(), 0, 0,
+			&rect);
+	}
 }

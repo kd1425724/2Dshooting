@@ -1,6 +1,7 @@
 #include "Result.h"
 #include"../SceneManager.h"
 #include"../../Ui/ScenesUi/ResultUi.h"
+#include"../../Common/CommonAPI.h"
 
 void C_Result::Init()
 {
@@ -22,6 +23,8 @@ void C_Result::Update()
 void C_Result::Draw()
 {
 	m_resultui->Draw();
+
+	COMMONAPI.NumDraw(1234567890, { 600,0 }, { 0.5f,0.5f });
 }
 
 void C_Result::Release()

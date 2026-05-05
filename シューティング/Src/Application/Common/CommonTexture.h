@@ -29,7 +29,7 @@ private:
 
 	//”š
 	KdTexture m_numtex;
-	Math::Rectangle m_numrect;
+	Math::Rectangle m_numrect = { 0,0,100,100 };
 
 //ƒVƒ“ƒOƒ‹ƒgƒ“
 private:
