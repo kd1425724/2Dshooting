@@ -3,6 +3,7 @@
 
 enum class SubBossActionPattern
 {
+	None,
 	p1_Laser,
 	p2_Barrier,
 	SubBossActionPatternNum
@@ -23,11 +24,16 @@ private:
 
 	void Release()	override;
 
+	//何もしない時間
+	static const int NoneTime = 60;
+	int m_nonetime;
+
 	//ボスパターン
 	Pattern m_pattern;
 
 	//ボス行動パターン
 	SubBossActionPattern m_actionpattern;
+	SubBossActionPattern m_nextactionpattern;
 
 	//止まる座標
 	Math::Vector2 m_stoppos;
@@ -40,6 +46,8 @@ private:
 	//レーザー
 	static const int LaserTime = 300;
 	int m_lasertime;
+	int m_laserprogresstime;
+	bool m_laserflg;
 	//バリア
 	static const int BarrierTime = 300;
 	int m_barriertime;
@@ -55,11 +63,13 @@ private:
 	void DeathDraw();
 
 	//ループ中行動パターン初期化
+	void NoneInit(SubBossActionPattern pattern);
 	void p1_LaserInit();
 	void p2_BarrierInit();
 	
 
 	//ループ中行動パターン更新
+	void NoneUpdate();
 	void p1_LaserUpdate();
 	void p2_BarrierUpdate();
 

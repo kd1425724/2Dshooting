@@ -44,7 +44,7 @@ private:
 	
 	C_SceneManager() 
 	{
-		scenes.push(CreateScene(SceneType::Game));
+		scenes.push(CreateScene(SceneType::Title));
 		scenes.top()->Init();
 	}
 

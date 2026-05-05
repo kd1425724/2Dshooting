@@ -19,6 +19,8 @@ public:
 	void Update();
 	void Draw();
 
+	void ImGui();
+
 	// 登録・解除
 	void Clear();
 
@@ -57,6 +59,9 @@ public:
 	void DrawCircle(Math::Vector2 pos, float radius, Math::Color col);
 
 private:
+
+	//デバッグ用
+	bool m_DrawHitdebugflg;
 
 	//プレイヤー
 	std::weak_ptr<C_Player> m_player;

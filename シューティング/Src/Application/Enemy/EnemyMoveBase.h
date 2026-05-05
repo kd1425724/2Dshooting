@@ -28,6 +28,13 @@ enum class MovePattern
 	Pattern5
 };
 
+enum class EnemySType
+{
+	Normal,
+	SubBoss,
+	Boss
+};
+
 class C_EnemyMoveBase
 {
 public:
@@ -117,10 +124,14 @@ public:
 	//ヒット演出用
 	void HitUpdate();
 
+	EnemySType GetEnemyType() { return m_enemytype; }
+
 protected:
 
 	//解放処理
 	virtual void Release();
+
+	EnemySType m_enemytype = EnemySType::Normal;
 
 	//ステータス
 	int m_hp;
@@ -164,6 +175,7 @@ protected:
 	//プレイヤーインスタンス受け取り用
 	std::weak_ptr<C_Player> m_player;
 
+	//テクスチャ
 	KdTexture* m_enginetex;
 	KdTexture* m_movetex;
 	KdTexture* m_deathtex;

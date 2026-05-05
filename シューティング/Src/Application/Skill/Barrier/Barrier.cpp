@@ -55,10 +55,10 @@ void C_Barrier::SkillActivate()
     }
 }
 
-void C_Barrier::EnemySkillActivate()
+void C_Barrier::EnemySkillActivate(Math::Vector2 scale)
 {
     m_alive = true;
-    m_scale = { 2.6f,2.6f };
+    m_scale = scale;
     m_dir = { -1.0f,0.0f };
     m_alpha = 0.8f;
     m_rot = atan2(m_dir.y, m_dir.x) + COMMONAPI.GetTextureAngleAdjustment(TextureAngle::Top);

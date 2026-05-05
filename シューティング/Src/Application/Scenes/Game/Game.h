@@ -38,9 +38,6 @@ private:
 
 	void SpwornMnager();
 
-	//画像ロード
-	void TextureLoad()override;
-
 	//解放処理
 	void Release()override;
 
@@ -58,5 +55,12 @@ private:
 
 	//当たり判定管理
 	std::shared_ptr<C_HitManager> m_hitmanager = nullptr;
+
+	////////
+	//テクスチャ
+	////////
+
+	//プレイヤーエンジン
+	std::vector<std::shared_ptr<KdTexture>> m_playerenginetexs;
 
 };

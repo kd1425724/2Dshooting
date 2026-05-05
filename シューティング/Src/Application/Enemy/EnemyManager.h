@@ -11,7 +11,7 @@ enum class UseType;
 
 enum class EnemyType
 {
-	s,
+	enemy3,
 	SubBoss,
 	Boss
 };
@@ -92,6 +92,12 @@ private:
 	KdTexture& GetEnemyTexture(EnemyType type);
 	//画像セット用
 	KdTexture m_enemytex;
+
+	//敵３用
+	KdTexture m_enemy3tex;
+	KdTexture m_enemy3movetex;
+	KdTexture m_enemy3enginetex;
+	KdTexture m_enemy3deathtex;
 
 	//サブボス用
 	KdTexture m_subbosstex;

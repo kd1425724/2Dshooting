@@ -15,7 +15,12 @@ void C_EnemyManager::Init(std::shared_ptr<C_Player> player)
 
 	SpwornEnemyLoad();
 
-	m_enemytex.Load("Texture/Enemy/Fighter.png");
+	//m_enemytex.Load("Texture/Enemy/Fighter.png");
+
+	m_enemy3tex.Load("Texture/Enemy/Enemy3/Enemy3Base.png");
+	m_enemy3movetex.Load("Texture/Enemy/Enemy3/Enemy3Move.png");
+	m_enemy3enginetex.Load("Texture/Enemy/Enemy3/Enemy3Engine.png");
+	m_enemy3deathtex.Load("Texture/Enemy/Enemy3/Enemy3Death.png");
 
 	m_subbosstex.Load("Texture/Enemy/SubBoss/SubBossBase.png");
 	m_subbossmovetex.Load("Texture/Enemy/SubBoss/SubBossMove.png");
@@ -67,7 +72,7 @@ void C_EnemyManager::SpwornEnemyLoad()
 			switch (setenemytype[i])
 			{
 			case 1:
-				m_spworntype[i].type = EnemyType::s;
+				m_spworntype[i].type = EnemyType::enemy3;
 				break;
 			default:
 				break;
@@ -169,7 +174,7 @@ void C_EnemyManager::Update()
 
 		for (int i = 0; i < m_skillenemys.size(); i++)
 		{
-			m_enemys[i]->HitUpdate();
+			m_skillenemys[i]->HitUpdate();
 			m_skillenemys[i]->Update();
 		}
 		for (int i = 0; i < m_skillenemys.size(); i++)
@@ -223,7 +228,7 @@ void C_EnemyManager::ImGui()
 		for (int i = 0; i < m_skillenemys.size(); i++)
 		{
 			// テキスト表示
-			ImGui::Text("SkillEnemyHp : %d", m_enemys[i]->GetHp());
+			ImGui::Text("SkillEnemyHp : %d", m_skillenemys[i]->GetHp());
 		}
 	}
 }
@@ -278,7 +283,7 @@ void C_EnemyManager::BossSpworn()
 		m_enemys.emplace_back(std::make_shared<C_SubBoss>());
 		m_enemys.back()->SetHitManager(m_hitmanager);
 		m_enemys.back()->SetSkillManager(m_skillmanager);
-		m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss), { 128,128 }, { NULL,NULL });
+		m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::SubBoss), { 128,128 }, { NULL,NULL });
 		m_enemys.back()->SetMoveTex(&m_subbossmovetex);
 		m_enemys.back()->SetEngineTex(&m_subbossenginetex);
 		m_enemys.back()->SetDeathTex(&m_subbossdeathtex);
@@ -305,12 +310,17 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type)
 	case UseType::Player:
 		for (int i = 0; i < 4; i++)
 		{
-			m_skillenemys.emplace_back(std::make_shared<C_EnemyMove3>());
-			m_enemys.back()->SetHitManager(m_hitmanager);
-			m_skillenemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::s),
+			std::shared_ptr<C_EnemyMove3> e = std::make_shared<C_EnemyMove3>();
+			e->SetHitManager(m_hitmanager);
+			e->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
 				{ 64,64 }, { 0,0 });
+			e->SetMoveTex(&m_enemy3movetex);
+			e->SetEngineTex(&m_enemy3enginetex);
+			e->SetDeathTex(&m_enemy3deathtex);
 
-			m_skillenemys.back()->Init(pos, type, i);
+			e->Init(pos, type, i);
+
+			m_skillenemys.emplace_back(e);
 		}
 		break;
 	case UseType::Enemy:
@@ -320,9 +330,12 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type)
 			m_enemys.back()->SetHitManager(m_hitmanager);
 			m_enemys.back()->SetSkillManager(m_skillmanager);
 
-			m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::s),
+			m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
 				{ 64,64 }, { 0,0 });
-			
+			m_enemys.back()->SetMoveTex(&m_enemy3movetex);
+			m_enemys.back()->SetEngineTex(&m_enemy3enginetex);
+			m_enemys.back()->SetDeathTex(&m_enemy3deathtex);
+
 			m_enemys.back()->Init(pos, type, i);
 
 		
@@ -337,8 +350,8 @@ KdTexture& C_EnemyManager::GetEnemyTexture(EnemyType type)
 {
 	switch (type)
 	{
-	case EnemyType::s:
-		return m_enemytex;
+	case EnemyType::enemy3:
+		return m_enemy3tex;
 	case EnemyType::SubBoss:
 		return m_subbosstex;
 	case EnemyType::Boss:

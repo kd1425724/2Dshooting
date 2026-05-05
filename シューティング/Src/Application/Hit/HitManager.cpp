@@ -9,6 +9,7 @@
 
 C_HitManager::C_HitManager()
 {
+	m_DrawHitdebugflg = false;
 }
 
 C_HitManager::~C_HitManager()
@@ -65,7 +66,7 @@ void C_HitManager::PlayerHit()
 					it = m_enemys.erase(it);
 					continue;
 				}
-				if (IsHit(p_pos, p_radius, e->GetPos(), e->GetSize().x))
+				if (IsHit(p_pos, p_radius, e->GetPos(), e->GetRadius()))
 				{
 					//プレイヤーのダメージ
 					p->Damage();
@@ -83,15 +84,15 @@ void C_HitManager::PlayerHit()
 		//敵の弾との当たり判定
 		for (auto it = m_enemyshot.begin(); it != m_enemyshot.end(); )
 		{
-			std::shared_ptr<Shot> s = it->lock();
-			if (s)
+			std::shared_ptr<Shot> enemy3 = it->lock();
+			if (enemy3)
 			{
-				if (!s->GetAlive())
+				if (!enemy3->GetAlive())
 				{
 					it = m_enemyshot.erase(it);
 					continue;
 				}
-				if (IsHit(p_pos, p_radius, s->GetPos(), s->GetRadius()))
+				if (IsHit(p_pos, p_radius, enemy3->GetPos(), enemy3->GetRadius()))
 				{
 					p->Damage();
 					//s->SetAlive(false);
@@ -187,7 +188,7 @@ void C_HitManager::PlayerShotHit()
 					if (IsHit(ps_pos, ps_radius, e->GetPos(), e->GetSize().x))
 					{
 						ps->SetAlive(false);
-						e->Damage(5);
+						e->Damage(500);
 						EFFECTMANAGER.AddEffect(EffectType::BoltHitEffect, ps_pos);
 					}
 					++it;
@@ -254,7 +255,7 @@ void C_HitManager::PlayerShotHit()
 			continue;
 		}
 	}
-
+	//プレイヤーのレーザーの当たり判定
 	for (auto plit = m_playerlaser.begin(); plit != m_playerlaser.end();)
 	{
 		std::shared_ptr<C_Laser> pl = plit->lock();
@@ -263,8 +264,7 @@ void C_HitManager::PlayerShotHit()
 		{
 			Math::Vector2 pl_start = pl->GetStart();
 			Math::Vector2 pl_end = pl->GetEnd();
-			Math::Vector2 pl_size = pl->GetSize();
-			float pl_radius = pl->GetRadius();
+			float pl_thick = pl->GetThick();
 
 			//存在しなければ消去
 			if (!pl->GetAlive())
@@ -274,7 +274,82 @@ void C_HitManager::PlayerShotHit()
 			}
 
 			//敵との当たり判定
-			for (auto it=m_enemys.begin();it!=m_enemys.end();)
+			for (auto it = m_enemys.begin(); it != m_enemys.end(); )
+			{
+				std::shared_ptr<C_EnemyMoveBase> e = it->lock();
+				if (e)
+				{
+					if (!e->GetAlive())
+					{
+						it = m_enemys.erase(it);
+						continue;
+					}
+					if (IsHitLaser(pl_start, pl_end, pl_thick, e->GetPos(), e->GetRadius()))
+					{
+						//敵のダメージ
+						e->Damage(50);
+					}
+					++it;
+				}
+				else
+				{
+					it = m_enemys.erase(it);
+				}
+			}
+
+			//敵の弾との当たり判定
+			for (auto it = m_enemyshot.begin(); it != m_enemyshot.end(); )
+			{
+				std::shared_ptr<Shot> es = it->lock();
+				if (es)
+				{
+					if (!es->GetAlive())
+					{
+						it = m_enemyshot.erase(it);
+						continue;
+					}
+
+					if (IsHitLaser(pl_start, pl_end, pl_thick, es->GetPos(), es->GetRadius()))
+					{
+						es->SetAlive(false);
+					}
+					++it;
+				}
+				else
+				{
+					it = m_enemyshot.erase(it);
+				}
+			}
+
+
+			++plit;
+		}
+		else
+		{
+			plit = m_playerlaser.erase(plit);
+			continue;
+		}
+	}
+
+	//プレイヤーの生成敵の当たり判定
+	for (auto peit = m_playerenemys.begin(); peit != m_playerenemys.end();)
+	{
+		std::shared_ptr<C_EnemyMoveBase> pe = peit->lock();
+
+		if (pe)
+		{
+			Math::Vector2 pe_pos = pe->GetPos();
+			Math::Vector2 pe_size = pe->GetSize();
+			float pe_radius = pe->GetRadius();
+
+			if (!pe->GetAlive())
+			{
+				peit = m_playerenemys.erase(peit);
+				continue;
+			}
+
+			//敵との当たり判定
+			for (auto it = m_enemys.begin(); it != m_enemys.end(); )
 			{
 				std::shared_ptr<C_EnemyMoveBase> e = it->lock();
 
@@ -285,23 +360,74 @@ void C_HitManager::PlayerShotHit()
 						it = m_enemys.erase(it);
 						continue;
 					}
-
-					if (IsHitLaser(pl_start, pl_end, pl_radius, e->GetPos(), e->GetRadius()))
+					if (IsHit(pe_pos, pe_radius, e->GetPos(), e->GetSize().x))
 					{
-
+						pe->Damage(20);
 					}
+					++it;
 				}
 				else
 				{
 					it = m_enemys.erase(it);
-					continue;
 				}
 			}
+
+
+			//敵の弾との当たり判定
+			for (auto esit = m_enemyshot.begin(); esit != m_enemyshot.end();)
+			{
+				std::shared_ptr<Shot> es = esit->lock();
+
+				if (es)
+				{
+					Math::Vector2 es_pos = es->GetPos();
+					Math::Vector2 es_size = es->GetSize();
+					float es_radius = es->GetRadius();
+
+					if (!es->GetAlive())
+					{
+						esit = m_enemyshot.erase(esit);
+						continue;
+					}
+					if (IsHit(pe_pos, pe_radius, es->GetPos(), es->GetRadius()))
+					{
+						es->SetAlive(false);
+						pe->Damage(10);
+					}
+
+					++esit;
+				}
+			}
+
+			//敵のレーザーとの当たり判定
+			for (auto it = m_enemylaser.begin(); it != m_enemylaser.end(); )
+			{
+				std::shared_ptr<C_Laser> l = it->lock();
+				if (l)
+				{
+					if (!l->GetAlive())
+					{
+						it = m_enemylaser.erase(it);
+						continue;
+					}
+					if (IsHitLaser(l->GetStart(), l->GetEnd(), l->GetThick(), pe_pos, pe_radius))
+					{
+						pe->Damage(10);
+					}
+					++it;
+				}
+				else
+				{
+					it = m_enemylaser.erase(it);
+				}
+			}
+
+
+			++peit;
 		}
 		else
 		{
-			plit = m_playerlaser.erase(plit);
-			continue;
+			peit = m_playerenemys.erase(peit);
 		}
 	}
 }
@@ -486,6 +612,8 @@ bool C_HitManager::IsHitLaser(Math::Vector2 start,Math::Vector2 end,float laserT
 //当たり判定描画
 void C_HitManager::Draw()
 {
+	if (!m_DrawHitdebugflg)return;
+
 	Math::Matrix mat = Math::Matrix::Identity;
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 
@@ -513,9 +641,9 @@ void C_HitManager::Draw()
 	// =========================
 	for (auto& w : m_playershot)
 	{
-		if (auto s = w.lock())
+		if (auto enemy3 = w.lock())
 		{
-			DrawCircle(s->GetPos(), s->GetRadius(), { 0,1,1,1 }); // 水色
+			DrawCircle(enemy3->GetPos(), enemy3->GetRadius(), { 0,1,1,1 }); // 水色
 		}
 	}
 
@@ -524,9 +652,9 @@ void C_HitManager::Draw()
 	// =========================
 	for (auto& w : m_copyshot)
 	{
-		if (auto s = w.lock())
+		if (auto enemy3 = w.lock())
 		{
-			DrawCircle(s->GetPos(), s->GetRadius(), { 1,0.5f,0,1 }); // オレンジ
+			DrawCircle(enemy3->GetPos(), enemy3->GetRadius(), { 1,0.5f,0,1 }); // オレンジ
 		}
 	}
 
@@ -535,9 +663,9 @@ void C_HitManager::Draw()
 	// =========================
 	for (auto& w : m_enemyshot)
 	{
-		if (auto s = w.lock())
+		if (auto enemy3 = w.lock())
 		{
-			DrawCircle(s->GetPos(), s->GetRadius(), { 1,1,0,1 }); // 黄
+			DrawCircle(enemy3->GetPos(), enemy3->GetRadius(), { 1,1,0,1 }); // 黄
 		}
 	}
 
@@ -570,7 +698,7 @@ void C_HitManager::Draw()
 	{
 		if (auto l = w.lock())
 		{
-			auto s = l->GetStart();
+			auto enemy3 = l->GetStart();
 			auto e = l->GetEnd();
 			float t = l->GetThick();
 
@@ -578,20 +706,55 @@ void C_HitManager::Draw()
 
 			// 中心線
 			KdShaderManager::GetInstance().m_spriteShader.DrawLine(
-				(int)s.x, (int)s.y,
+				(int)enemy3.x, (int)enemy3.y,
 				(int)e.x, (int)e.y,
 				&col
 			);
 
 			// 太さ
 			KdShaderManager::GetInstance().m_spriteShader.DrawLine(
-				(int)s.x, (int)(s.y - t),
+				(int)enemy3.x, (int)(enemy3.y - t),
 				(int)e.x, (int)(e.y - t),
 				&col
 			);
 
 			KdShaderManager::GetInstance().m_spriteShader.DrawLine(
-				(int)s.x, (int)(s.y + t),
+				(int)enemy3.x, (int)(enemy3.y + t),
+				(int)e.x, (int)(e.y + t),
+				&col
+			);
+		}
+	}
+
+	// =========================
+	// プレイヤーレーザー（追加）
+	// =========================
+	for (auto& w : m_playerlaser)
+	{
+		if (auto l = w.lock())
+		{
+			auto enemy3 = l->GetStart();
+			auto e = l->GetEnd();
+			float t = l->GetThick();
+
+			Math::Color col = { 1,0,0,1 }; // 赤（プレイヤー用）
+
+			// 中心線
+			KdShaderManager::GetInstance().m_spriteShader.DrawLine(
+				(int)enemy3.x, (int)enemy3.y,
+				(int)e.x, (int)e.y,
+				&col
+			);
+
+			// 太さ（上下にオフセット）
+			KdShaderManager::GetInstance().m_spriteShader.DrawLine(
+				(int)enemy3.x, (int)(enemy3.y - t),
+				(int)e.x, (int)(e.y - t),
+				&col
+			);
+
+			KdShaderManager::GetInstance().m_spriteShader.DrawLine(
+				(int)enemy3.x, (int)(enemy3.y + t),
 				(int)e.x, (int)(e.y + t),
 				&col
 			);
@@ -625,3 +788,7 @@ void C_HitManager::DrawCircle(Math::Vector2 pos, float radius, Math::Color col)
 	}
 }
 
+void C_HitManager::ImGui()
+{
+	ImGui::Checkbox(u8"当たり判定描画", &m_DrawHitdebugflg);
+}

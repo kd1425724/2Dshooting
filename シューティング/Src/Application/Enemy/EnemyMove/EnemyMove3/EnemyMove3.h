@@ -5,6 +5,7 @@ enum class  InherentMove3
 {
 	Start,
 	Stop,
+	Death,
 };
 
 class C_EnemyMove3 :public C_EnemyMoveBase, public std::enable_shared_from_this<C_EnemyMove3>
@@ -26,4 +27,6 @@ private:
 	Math::Vector2 m_stoppos;
 
 	InherentMove3 m_inherentmove;
+
+	float m_texangle;
 };

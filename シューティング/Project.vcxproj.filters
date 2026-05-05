@@ -324,6 +324,9 @@
     <ClInclude Include="Src\Application\Effect\HitEffect\BoltHitEffect\BoltHitEffect.h">
       <Filter>Src\Application\Effect\HitEffect\BoltHitEffect</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Ui\ScenesUi\ResultUi.h">
+      <Filter>Src\Application\Ui\ScenesUi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -490,6 +493,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Effect\HitEffect\BoltHitEffect\BoltHitEffect.cpp">
       <Filter>Src\Application\Effect\HitEffect\BoltHitEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Ui\ScenesUi\ResultUi.cpp">
+      <Filter>Src\Application\Ui\ScenesUi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

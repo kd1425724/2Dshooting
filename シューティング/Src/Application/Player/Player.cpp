@@ -4,6 +4,7 @@
 #include"../Skill/Shot/Shot.h"
 #include"../Info.h"
 #include"../Hit/HitManager.h"
+#include"../Effect/EffectManager.h"
 
 void C_Player::Init()	
 {
@@ -13,7 +14,7 @@ void C_Player::Init()
 	m_pos = { -300,0 - (float)INFO.HUDAreaHeight };
 	//移動量
 	m_move = { 0.0f,0.0f };
-	m_movespeed = { 9.0f,9.0f };
+	m_movespeed = { 8.0f,8.0f };
 	//サイズ
 	m_scale = { 1.5f,1.5f };
 	//カラー
@@ -23,14 +24,18 @@ void C_Player::Init()
 
 	//半径
 	m_halfsize = m_rect * m_scale / 2;
-	m_radius = m_rect.x /** m_scale.x *// 2;
+	m_radius = m_rect.x /** m_scale.x *//3;
 
 	//当たり判定用
 	m_hitmanager->SetPlayer(shared_from_this());
 
+	m_engineanim = 0;
+
 }
 void C_Player::Update()
 {
+	//当たった時
+	HitUpdate();
 
 	ShotUpdate();
 
@@ -52,21 +57,38 @@ void C_Player::Update()
 	{
 		m_move.x = 1.0f;
 	}
+	m_move.Normalize();
+
+	//エンジンアニメーション用
+	m_engineanim += 0.1f;
+	if (m_engineanim >= m_enginetexs.size())
+	{
+		m_engineanim = 0;
+	}
 
 	m_pos += m_move * m_movespeed;
 	
 	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
-	m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
+	m_transmat = Math::Matrix::CreateTranslation((int)(m_pos.x+0.5f), (int)(m_pos.y+0.5f), 0);//+0.5f四捨五入してる
 	m_mat = m_scalemat * m_transmat;
 }
 void C_Player::Draw()
 {
-
-
 	m_shot->Draw();
 
-	SHADER.m_spriteShader.SetMatrix(m_mat);
-	SHADER.m_spriteShader.DrawTex(&CommonTex.GetPlayerTex(), 0, 0, &CommonTex.GetPlayerRect(), &m_color);
+	Math::Color color = { 1,1,1,1 };
+	Math::Rectangle enginerect = { 0,0, 64,64 };
+
+	Math::Matrix enginscale = Math::Matrix::CreateScale(0.8f, 0.8f, 0);
+	Math::Matrix engintrans = Math::Matrix::CreateTranslation((int)(m_pos.x - 60+0.5f), (int)(m_pos.y+0.5f), 0);
+
+	Math::Matrix mat = enginscale * engintrans;
+	
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetexs[(int)m_engineanim].get(), 0, 0, &enginerect, &color);
+
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPlayerTex(), 0, 0, &CommonTex.GetPlayerRect(), &m_color);
 }
 
 void C_Player::Release()
@@ -107,6 +129,35 @@ void C_Player::ShotUpdate()
 		if (m_shotinterval <= 0)
 		{
 			m_shotinterval = 0;
+		}
+	}
+}
+
+void C_Player::Damage()
+{
+	if (m_hittimer <= 0)
+	{
+		m_Hp--;
+
+		m_hittimer = HitTime;
+
+		EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
+	}
+}
+
+void C_Player::HitUpdate()
+{
+	if (m_hittimer > 0)
+	{
+		m_hittimer--;
+
+		if ((m_hittimer / 2) % 2 == 0)
+		{
+			m_color = { 1.5f, 1.5f, 1.5f, 1.0f }; // 明るく（白っぽく）
+		}
+		else
+		{
+			m_color = { 1.0f, 1.0f, 1.0f, 1.0f }; // 通常
 		}
 	}
 }

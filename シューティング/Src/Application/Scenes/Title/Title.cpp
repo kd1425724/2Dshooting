@@ -1,11 +1,7 @@
 #include "Title.h"
 #include"Application/Scenes/SceneManager.h"
+#include"../../Ui/ScenesUi/TitleUi.h"
 
-void C_Title::TextureLoad()
-{
-	//テクスチャロード
-	m_titleui.TextureLoad();
-}
 
 void C_Title::Release()
 {
@@ -14,31 +10,28 @@ void C_Title::Release()
 
 void C_Title::Init()
 {
-	//テクスチャロード
-	TextureLoad();
+	m_titleui = std::make_shared<C_TitleUi>();
 
-	m_titleui.Init();
+	m_starttex = std::make_shared<KdTexture>();
+	m_starttex->Load("Texture/Ui/Font/START.png");
 
-	//indexと何をするか入れる
-	m_titleui.SetAction(START, [this]() {
-		StartButtonProcess();
-		});
+	m_titleui->SetStartTex(m_starttex);
+
+	m_titleui->Init();
 }
 
 void C_Title::Update()
 {
-	m_titleui.Update();
+	m_titleui->Update();
 
-	//ボタン
-	m_titleui.ClickableUi();
+	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	{
+		SCENEMANAGER.push(SceneType::Game, true);
+	}
+
 }
 
 void C_Title::Draw()
 {
-	m_titleui.Draw();
-}
-
-void C_Title::StartButtonProcess()
-{
-	SCENEMANAGER.push(SceneType::Game, true);
+	m_titleui->Draw();
 }

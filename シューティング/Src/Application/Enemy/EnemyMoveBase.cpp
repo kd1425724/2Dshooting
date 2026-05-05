@@ -18,6 +18,7 @@ void C_EnemyMoveBase::Damage(int value)
 		m_hittimer = HitTimer;
 	}
 }
+
 void C_EnemyMoveBase::HitUpdate()
 {
 	if (m_hittimer > 0)

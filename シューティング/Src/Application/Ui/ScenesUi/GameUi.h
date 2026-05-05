@@ -5,14 +5,12 @@ class C_GameUi :public C_ScenesUiBase
 {
 public:
 	C_GameUi() {}
-	~C_GameUi() override{}
+	~C_GameUi() override { Release(); }
 
 	void Init()		override;
 	void Update()	override;
 	void Draw()		override;
 
-	//âÊëúÉçÅ[Éh
-	void TextureLoad()override;
 
 	//îwåióp
 	void BackGroundInit()	override;
@@ -21,6 +19,13 @@ public:
 
 	
 private:
+
+	void Release()override;
+
+	//îwåióp
+	Math::Matrix m_backgroundtransmat2;
+	Math::Matrix m_backgroundmat2;
+	Math::Vector2 m_backgroundpos2;
 
 	//HUDóp///
 	 //HUD

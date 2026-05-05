@@ -193,6 +193,7 @@
     <ClInclude Include="Src\Application\Skill\SkillManager.h" />
     <ClInclude Include="Src\Application\Ui\Feed.h" />
     <ClInclude Include="Src\Application\Ui\ScenesUi\GameUi.h" />
+    <ClInclude Include="Src\Application\Ui\ScenesUi\ResultUi.h" />
     <ClInclude Include="Src\Application\Ui\ScenesUi\ScenesUiBase.h" />
     <ClInclude Include="Src\Application\Ui\ScenesUi\TitleUi.h" />
     <ClInclude Include="Src\System\Audio\KdAudio.h" />
@@ -252,6 +253,7 @@
     <ClCompile Include="Src\Application\Skill\SkillManager.cpp" />
     <ClCompile Include="Src\Application\Ui\Feed.cpp" />
     <ClCompile Include="Src\Application\Ui\ScenesUi\GameUi.cpp" />
+    <ClCompile Include="Src\Application\Ui\ScenesUi\ResultUi.cpp" />
     <ClCompile Include="Src\Application\Ui\ScenesUi\ScenesUiBase.cpp" />
     <ClCompile Include="Src\Application\Ui\ScenesUi\TitleUi.cpp" />
     <ClCompile Include="Src\System\Audio\KdAudio.cpp" />

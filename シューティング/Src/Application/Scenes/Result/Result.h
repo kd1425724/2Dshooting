@@ -1,6 +1,8 @@
 #pragma once
 #include"Application/Scenes/SceneBase.h"
 
+class C_ResultUi;
+
 class C_Result:public C_SceneBase
 {
 public:
@@ -13,9 +15,9 @@ public:
 
 private:
 
-
-	void TextureLoad()override;
-
+	
 	void Release()override;
+
+	std::shared_ptr<C_ResultUi> m_resultui;
 
 };

@@ -26,6 +26,7 @@ public:
 	//ƒXƒLƒ‹”­“®—p
 	virtual void SkillActivate(){}
 	virtual void EnemySkillActivate(){}
+	virtual void EnemySkillActivate(Math::Vector2 scale){}
 
 	void SetUseType(UseType type) { m_usetype = type; }
 

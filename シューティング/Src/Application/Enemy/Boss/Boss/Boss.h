@@ -3,11 +3,12 @@
 
 enum class BossActionPattern
 {
+	None,
 	p1_EnemyGenerate,
 	p2_Laser,
 	p3_Barrier,
 	p4_SpiralShot,
-	BossActionPatternNum
+	BossActionPatternNum,
 };
 
 class C_Boss:public C_BossBase, public std::enable_shared_from_this<C_Boss>
@@ -28,11 +29,16 @@ private:
 
 	void Release()	override;
 
+	//何もしない時間
+	static const int NoneTime = 60;
+	int m_nonetime;
+
 	//ボスパターン
 	Pattern m_pattern;
 
 	//ボス行動パターン
 	BossActionPattern m_actionpattern;
+	BossActionPattern m_nextactionpattern;
 
 	//止まる座標
 	Math::Vector2 m_stoppos;
@@ -70,12 +76,14 @@ private:
 	void DeathDraw();
 
 	//ループ中行動パターン初期化
+	void NoneInit(BossActionPattern pattern);
 	void p1_EnemyGenerateInit();
 	void p2_LaserInit();
 	void p3_BarrierInit();
 	void p4_SpiralInit();
 
 	//ループ中行動パターン更新
+	void NoneUpdate();
 	void p1_EnemyGenerateUpdate();
 	void p2_LaserUpdate();
 	void p3_BarrierUpdate();

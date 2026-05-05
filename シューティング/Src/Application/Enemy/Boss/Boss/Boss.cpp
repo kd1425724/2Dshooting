@@ -6,6 +6,8 @@
 
 void C_Boss::Init()
 {
+	m_enemytype = EnemySType::Boss;
+
 	//ステータス
 	m_hp = 1000;
 
@@ -57,9 +59,12 @@ void C_Boss::Init()
 
 	//パターン
 	m_pattern = Pattern::Start;
-
+	
 	//行動パターン
-	m_actionpattern = BossActionPattern::p1_EnemyGenerate;
+	m_actionpattern = BossActionPattern::None;
+	m_nextactionpattern = BossActionPattern::p1_EnemyGenerate;
+	m_nonetime = NoneTime;
+
 
 	//固有行動
 	//m_inherentmove = InherentMove::Start;
@@ -99,13 +104,14 @@ void C_Boss::Update()
 	}
 
 	//ボスが死んだらHpがなくなったら
-	if (!m_alive)
+	if (m_hp<=0)
 	{
-		
+		m_pattern = Pattern::Death;
 	}
 
 	
-	
+	if (m_pattern != Pattern::Death)
+	{
 	//アニメーション用
 	m_anim.x += 0.1f;
 	//マックス以上になったら,4コマなら4
@@ -125,8 +131,7 @@ void C_Boss::Update()
 		}
 	}
 
-	if (m_pattern != Pattern::Death)
-	{
+
 		//エンジンアニメーション用
 		m_engineanim.x += 0.1f;
 		//マックス以上になったら,4コマなら4
@@ -208,6 +213,9 @@ void C_Boss::LoopUpdate()
 {
 	switch (m_actionpattern)
 	{
+	case BossActionPattern::None:
+		NoneUpdate();
+		break;
 	case BossActionPattern::p1_EnemyGenerate:
 		p1_EnemyGenerateUpdate();
 		break;
@@ -272,8 +280,17 @@ void C_Boss::DeathDraw()
 		&m_color);
 }
 
+void C_Boss::NoneInit(BossActionPattern pattern)
+{
+	m_actionpattern = BossActionPattern::None;
+	m_nextactionpattern = pattern;
+	m_nonetime = NoneTime;
+}
+
 void C_Boss::p1_EnemyGenerateInit()
 {
+	m_skilltype = SkillType::EnemyGenerate;
+
 	m_enemygeneratetime = EnemyGenerateTime;
 
 	if (auto sm = m_skillmanager.lock())
@@ -313,13 +330,22 @@ void C_Boss::p4_SpiralInit()
 	m_spiraltime = SpiralTime;
 }
 
+void C_Boss::NoneUpdate()
+{
+	m_nonetime--;
+	if (m_nonetime < 0)
+	{
+		SetActionPattern(GetRandomPatternExclude(m_nextactionpattern));
+	}
+}
+
 void C_Boss::p1_EnemyGenerateUpdate()
 {
 	m_enemygeneratetime--;
 
 	if (m_enemygeneratetime < 0)
 	{
-		SetActionPattern(GetRandomPatternExclude(BossActionPattern::p1_EnemyGenerate));
+		NoneInit(BossActionPattern::p1_EnemyGenerate);
 	}
 }
 
@@ -328,7 +354,7 @@ void C_Boss::p2_LaserUpdate()
 	m_lasertime--;
 	if(m_lasertime<0)
 	{
-		SetActionPattern(GetRandomPatternExclude(BossActionPattern::p2_Laser));
+		NoneInit(BossActionPattern::p2_Laser);
 	}
 }
 
@@ -337,7 +363,7 @@ void C_Boss::p3_BarrierUpdate()
 	m_barriertime--;
 	if (m_barriertime < 0)
 	{
-		SetActionPattern(GetRandomPatternExclude(BossActionPattern::p3_Barrier));
+		NoneInit(BossActionPattern::p3_Barrier);
 	}
 }
 
@@ -372,7 +398,7 @@ void C_Boss::p4_SpiralUpdate()
 	m_spiraltime--;
 	if (m_spiraltime <= 0)
 	{
-		SetActionPattern(GetRandomPatternExclude(BossActionPattern::p4_SpiralShot));
+		NoneInit(BossActionPattern::p4_SpiralShot);
 	}
 }
 
@@ -417,6 +443,8 @@ void C_Boss::SetActionPattern(BossActionPattern pattern)
 		
 		p4_SpiralInit();
 		break;
+
+	case BossActionPattern::None:
 	default:
 		m_actionpattern = BossActionPattern::p3_Barrier;
 		p3_BarrierInit();
@@ -429,19 +457,17 @@ BossActionPattern C_Boss::GetRandomPatternExclude(BossActionPattern exclude)
 	static std::random_device rd;
 	static std::mt19937 mt(rd());
 
-	// 総数（enumの最後）
+	int min = 1;
 	int max = static_cast<int>(BossActionPattern::BossActionPatternNum);
 
-	std::uniform_int_distribution<int> dist(0, max - 2);
-	int r = dist(mt);
+	std::uniform_int_distribution<int> dist(min, max - 1);
 
-	int excludeIndex = static_cast<int>(exclude);
+	BossActionPattern result;
 
-	// 除外分ずらす
-	if (r >= excludeIndex)
+	do
 	{
-		r++;
-	}
+		result = static_cast<BossActionPattern>(dist(mt));
+	} while (result == exclude);
 
-	return static_cast<BossActionPattern>(r);
+	return result;
 }

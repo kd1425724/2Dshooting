@@ -5,6 +5,10 @@
 
 void C_SubBoss::Init(Math::Vector2 pos)
 {
+	m_enemytype = EnemySType::SubBoss;
+
+	m_nonetime = 0;
+	
 	//ステータス
 	m_hp = 500;
 
@@ -37,13 +41,21 @@ void C_SubBoss::Init(Math::Vector2 pos)
 
 	//死亡演出用
 	m_deathanim = { 0,0 };
-	m_deathanimmaxnum = { 14,0 };
+	m_deathanimmaxnum = { 12,0 };
+
+	//レーザー
+	m_moveanim = { 0,0 };
+	m_moveanimmaxnum = { 60,0 };
+	m_laserflg = false;
+	m_laserprogresstime = 0;
 
 	//パターン
 	m_pattern = Pattern::Start;
 
 	//行動パターン
-	m_actionpattern = SubBossActionPattern::p1_Laser;
+	m_actionpattern = SubBossActionPattern::None;
+	m_nextactionpattern = SubBossActionPattern::p1_Laser;
+	m_nonetime = NoneTime;
 
 	//半径
 	m_halfsize = m_rect * m_scale / 2;
@@ -75,13 +87,14 @@ void C_SubBoss::Update()
 	}
 
 	//ボスが死んだらHpがなくなったら
-	if (!m_alive)
+	if (m_hp<=0)
 	{
-
+		m_pattern = Pattern::Death;
 	}
 
 
-
+	if (m_pattern != Pattern::Death)
+	{
 	//アニメーション用
 	m_anim.x += 0.1f;
 	//マックス以上になったら,4コマなら4
@@ -101,8 +114,7 @@ void C_SubBoss::Update()
 		}
 	}
 
-	if (m_pattern != Pattern::Death)
-	{
+	
 		//エンジンアニメーション用
 		m_engineanim.x += 0.1f;
 		//マックス以上になったら,4コマなら4
@@ -146,7 +158,7 @@ void C_SubBoss::Draw()
 		break;
 	}
 
-	if (m_pattern != Pattern::Death)
+	if (m_pattern != Pattern::Death&&m_actionpattern!=SubBossActionPattern::p1_Laser)
 	{
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_tex, 0, 0,
@@ -199,6 +211,9 @@ void C_SubBoss::LoopUpdate()
 	// 現在の行動パターンごとに分岐
 	switch (m_actionpattern)
 	{
+	case SubBossActionPattern::None:
+		NoneUpdate();
+		break;
 	case SubBossActionPattern::p1_Laser:
 		p1_LaserUpdate();
 		break;
@@ -235,7 +250,7 @@ void C_SubBoss::DeathUpdate()
 	//マックス以上になったら,4コマなら4
 	if (m_deathanim.x >= m_deathanimmaxnum.x)
 	{
-		m_deathanim.x = 0;
+		m_deathanim.x = m_deathanimmaxnum.x;
 		//死亡演出が終了したら消去
 		m_alive = false;
 	}
@@ -251,6 +266,13 @@ void C_SubBoss::DeathDraw()
 }
 
 
+void C_SubBoss::NoneInit(SubBossActionPattern pattern)
+{
+	m_actionpattern = SubBossActionPattern::None;
+	m_nextactionpattern = pattern;
+	m_nonetime = NoneTime;
+}
+
 //========================
 // パターン初期化
 //========================
@@ -261,10 +283,8 @@ void C_SubBoss::p1_LaserInit()
 
 	m_lasertime = LaserTime;
 
-	if (auto sm = m_skillmanager.lock())
-	{
-		sm->SetEnemySkill(SkillType::Laser, shared_from_this());
-	}
+	m_laserflg = false;
+	m_laserprogresstime = 0;
 }
 
 void C_SubBoss::p2_BarrierInit()
@@ -282,16 +302,54 @@ void C_SubBoss::p2_BarrierInit()
 }
 
 
+void C_SubBoss::NoneUpdate()
+{
+	m_nonetime--;
+	if (m_nonetime < 0)
+	{
+		SetActionPattern(GetRandomPatternExclude(m_nextactionpattern));
+	}
+}
+
 //========================
 // パターン更新
 //========================
 void C_SubBoss::p1_LaserUpdate()
 {
 	// レーザー処理
-	m_lasertime--;
-	if (m_lasertime < 0)
+
+	if (!m_laserflg)
 	{
-		SetActionPattern(GetRandomPatternExclude(SubBossActionPattern::p1_Laser));
+		float prev = m_moveanim.x;
+		m_moveanim.x += 0.5f;
+
+		if (prev < 57.0f && m_moveanim.x >= 57.0f)
+		{
+			if (auto sm = m_skillmanager.lock())
+			{
+				sm->SetEnemySkill(SkillType::Laser, shared_from_this());
+			}
+
+			m_laserflg = true;
+			m_laserprogresstime = 120;
+		}
+	}
+
+	if (m_laserflg)
+	{
+		m_laserprogresstime--;
+
+		if (m_laserprogresstime <= 0)
+		{
+			m_moveanim.x += 0.1f;
+		}
+	}
+
+	//マックス以上になったら,4コマなら4
+	if (m_moveanim.x >= m_moveanimmaxnum.x)
+	{
+		NoneInit(SubBossActionPattern::p1_Laser);
+		m_moveanim.x = {};
 	}
 }
 
@@ -301,7 +359,7 @@ void C_SubBoss::p2_BarrierUpdate()
 	m_barriertime--;
 	if (m_barriertime < 0)
 	{
-		SetActionPattern(GetRandomPatternExclude(SubBossActionPattern::p2_Barrier));
+		NoneInit(SubBossActionPattern::p2_Barrier);
 	}
 }
 
@@ -311,7 +369,15 @@ void C_SubBoss::p2_BarrierUpdate()
 //========================
 void C_SubBoss::p1_LaserDrawSprite()
 {
-	// レーザー描画
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
+	//行動中
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_movetex, 0, 0,
+		&Math::Rectangle((int)m_moveanim.x * m_rect.x, (int)m_moveanim.y * m_rect.y, m_rect.x, m_rect.y),
+		&m_color);
+	//エンジン
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetex, 0, 0,
+		&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y),
+		&m_color);
 }
 
 void C_SubBoss::p2_BarrierDrawSprite()
@@ -337,6 +403,8 @@ void C_SubBoss::SetActionPattern(SubBossActionPattern pattern)
 
 		p2_BarrierInit();
 		break;
+
+	case SubBossActionPattern::None:
 	default:
 		m_actionpattern = SubBossActionPattern::p2_Barrier;
 		p2_BarrierInit();
@@ -353,19 +421,17 @@ SubBossActionPattern C_SubBoss::GetRandomPatternExclude(SubBossActionPattern exc
 	static std::random_device rd;
 	static std::mt19937 mt(rd());
 
-	// 総数（enumの最後）
+	int min = 1;
 	int max = static_cast<int>(SubBossActionPattern::SubBossActionPatternNum);
 
-	std::uniform_int_distribution<int> dist(0, max - 2);
-	int r = dist(mt);
+	std::uniform_int_distribution<int> dist(min, max - 1);
 
-	int excludeIndex = static_cast<int>(exclude);
+	SubBossActionPattern result;
 
-	// 除外分ずらす
-	if (r >= excludeIndex)
+	do
 	{
-		r++;
-	}
+		result = static_cast<SubBossActionPattern>(dist(mt));
+	} while (result == exclude);
 
-	return static_cast<SubBossActionPattern>(r);
+	return result;
 }

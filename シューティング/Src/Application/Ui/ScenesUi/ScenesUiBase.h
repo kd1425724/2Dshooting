@@ -33,15 +33,12 @@ class C_ScenesUiBase
 {
 public:
 	C_ScenesUiBase() { m_frametex.Load("Texture/Ui/IsOnTopFrame.png"); }
-	virtual ~C_ScenesUiBase(){}
+	virtual ~C_ScenesUiBase() { Release(); }
 
 	virtual void Init();
 	virtual void Update();
 	virtual void Draw();
 	
-	//âÊëúÉçÅ[Éh
-	virtual void TextureLoad();
-
 	//îwåióp
 	virtual void BackGroundInit();
 	virtual void BackGroundUpdate();
@@ -65,6 +62,8 @@ public:
 	void SetAction(int index, function<void()> action) { m_SpriteItem[index].action = action; };
 
 protected:
+
+	virtual void Release(){}
 
 	//îwåióp///
 	

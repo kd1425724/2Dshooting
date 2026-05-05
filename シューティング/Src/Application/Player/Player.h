@@ -37,16 +37,27 @@ public:
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
 	//ダメージ処理
-	void Damage() { m_Hp--; };
+	void Damage();
+
+	void HitUpdate();
+
+	//エンジン用
+	void SetEngineTex(std::vector<std::shared_ptr<KdTexture>> tex) { m_enginetexs = tex; }
 
 private:
+
+	//エンジン
+	std::vector<std::shared_ptr<KdTexture>> m_enginetexs;
+	//アニメーション用
+	float m_engineanim;
 
 	//ステータス
 	int m_Hp = 3;
 
 	//当たり判定用
 	std::shared_ptr<C_HitManager> m_hitmanager;
-
+	static const int HitTime = 180;
+	int m_hittimer;
 	//座標
 	Math::Vector2 m_pos;
 	//移動量

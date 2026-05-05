@@ -4,8 +4,6 @@ void C_BoltHitEffect::Init(Math::Vector2 pos)
 {
 	//座標代入
 	m_pos = pos;
-
-	m_timer = 0;
 	m_scale = 2.0f; 
 	m_anim = 0;
 	m_rect = { 32,32 };
@@ -15,8 +13,6 @@ void C_BoltHitEffect::Init(Math::Vector2 pos)
 
 void C_BoltHitEffect::Update()
 {
-	m_timer++;
-
 	// フェードアウト的なこともここでやれる（今は省略）
 	 
 	//アニメーション用
@@ -39,9 +35,6 @@ void C_BoltHitEffect::Draw()
 
 	if (tex)
 	{
-		// 仮：円とかテクスチャ描画
-		// 例（擬似コード）:
-		// DrawCircle(m_pos, m_scale * 20);
 		Math::Rectangle rect = { (int)m_anim * (long)m_rect.x,0,(long)m_rect.x,(long)m_rect.y };
 		Math::Color color = { 1,1,1,m_alpha };
 

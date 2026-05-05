@@ -4,11 +4,7 @@
 class C_BoltHitEffect : public C_EffectBase
 {
 public:
-	C_BoltHitEffect() :
-		m_timer(0),
-		m_lifetime(30) // 30ƒtƒŒ[ƒ€‚ÅÁ‚¦‚é
-	{
-	}
+	C_BoltHitEffect(){}
 
 	~C_BoltHitEffect() {}
 
@@ -19,9 +15,6 @@ public:
 private:
 
 	static const int AnimMax = 7;
-
-	int m_timer;
-	int m_lifetime;
 
 	float m_anim;
 };

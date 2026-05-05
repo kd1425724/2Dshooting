@@ -22,7 +22,7 @@ void C_SkillManager::Init()
 	m_barriertex = std::make_shared<KdTexture>();
 	m_barriertex->Load("Texture/Skill/Barrier/Barrier.png");
 
-	SetPlayerSkill(SkillType::CopyShot);
+	SetPlayerSkill(SkillType::EnemyGenerate);
 }
 void C_SkillManager::Update()
 {
@@ -200,7 +200,14 @@ void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyM
 		m_enemyskills.back()->SetEnemy(enemybase);
 		m_enemyskills.back()->SetTexture(m_barriertex);
 		m_enemyskills.back()->Init();
-		m_enemyskills.back()->EnemySkillActivate();
+		if (enemybase->GetEnemyType() != EnemySType::SubBoss)
+		{
+			m_enemyskills.back()->EnemySkillActivate({ 2.6f,2.6f });
+		}
+		else
+		{
+			m_enemyskills.back()->EnemySkillActivate({ 1.6f,1.6f });
+		}
 		break;
 	case SkillType::Laser:
 		m_enemyskills.emplace_back(std::make_shared<C_Laser>());

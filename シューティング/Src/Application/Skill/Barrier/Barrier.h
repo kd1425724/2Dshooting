@@ -20,7 +20,7 @@ public:
     void Draw() override;
 
     void SkillActivate() override;
-    void EnemySkillActivate() override;
+    void EnemySkillActivate(Math::Vector2 scale) override;
 
     void SetTexture(std::shared_ptr<KdTexture> tex);
 

@@ -2,10 +2,6 @@
 #include"Application/Common/CommonTexture.h"
 #include"Application/Input/Input.h"
 
-void C_ScenesUiBase::TextureLoad()
-{
-	return;
-}
 void C_ScenesUiBase::Init()
 {
 	return;

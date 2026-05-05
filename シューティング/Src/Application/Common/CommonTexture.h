@@ -25,7 +25,7 @@ private:
 
 	//ƒvƒŒƒCƒ„[
 	KdTexture m_playertex;
-	Math::Rectangle m_playerrect = { 0,0,48,48 };
+	Math::Rectangle m_playerrect = { 0,0,64,64 };
 
 	//”š
 	KdTexture m_numtex;

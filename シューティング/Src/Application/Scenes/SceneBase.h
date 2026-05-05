@@ -14,9 +14,6 @@ public:
 
 protected:
 
-	//画像ロード
-	virtual void TextureLoad();
-
 	//リリース
 	virtual void Release();
 

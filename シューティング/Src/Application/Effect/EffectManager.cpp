@@ -22,6 +22,7 @@ void C_EffectManager::Update()
 		{
 			it = m_effects.erase(it);
 		}
+
 		else
 		{
 			(*it)->Update();

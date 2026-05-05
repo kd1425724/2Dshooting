@@ -8,11 +8,6 @@
 #include"../../Hit/HitManager.h"
 #include"../../Effect/EffectManager.h"
 
-void C_Game::TextureLoad()
-{
-	m_gameui->TextureLoad();
-}
-
 void C_Game::Init()
 {
 	EFFECTMANAGER.Init();
@@ -41,8 +36,17 @@ void C_Game::Init()
 	m_enemymanager->SetHitManager(m_hitmanager);
 	m_skillmanager->SetHitManager(m_hitmanager);
 
-	//‰Šú‰»
-	TextureLoad();
+	std::shared_ptr<KdTexture> tex = std::make_shared<KdTexture>();
+	tex->Load("Texture/Player/PlayerEngine_01.png");
+	m_playerenginetexs.push_back(tex);
+	tex = std::make_shared<KdTexture>();
+	tex->Load("Texture/Player/PlayerEngine_02.png");
+	m_playerenginetexs.push_back(tex);
+	tex = std::make_shared<KdTexture>();
+	tex->Load("Texture/Player/PlayerEngine_03.png");
+	m_playerenginetexs.push_back(tex);
+
+	m_player->SetEngineTex(m_playerenginetexs);
 
 	m_gameui->Init();
 
@@ -98,10 +102,10 @@ void C_Game::Update()
 		}
 	}
 
-	/*if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 	{
-		SceneManager->push(SceneType::Title, true);
-	}*/
+		SCENEMANAGER.push(SceneType::Result, true);
+	}
 }
 
 void C_Game::Draw()
@@ -134,10 +138,13 @@ void C_Game::Draw()
 
 void C_Game::ImGui()
 {
+	m_hitmanager->ImGui();
 
 	m_player->ImGui();
 
 	m_enemymanager->ImGui();
+
+	
 }
 
 void C_Game::SpwornMnager()
