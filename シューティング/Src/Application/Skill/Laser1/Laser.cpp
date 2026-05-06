@@ -19,7 +19,7 @@ C_Laser::C_Laser()
     m_alive = false;
     m_scale = { 1,1 };
 
-   
+    m_finished = false;
 
     //スクロール用
     for (int i = 0; i < (int)1280 / 38; i++)
@@ -68,8 +68,6 @@ void C_Laser::SkillActivate()
 void C_Laser::EnemySkillActivate()
 {
     // 敵用レーザー発動
-    m_alive = true;
-    m_length = 0.0f;
 
     m_launchtime = LaunshTime;
     m_scale = { 2,2 };
@@ -145,6 +143,7 @@ void C_Laser::Update()
         if (m_scale.x < 0)
         {
             m_alive = false;
+            m_finished = true;
         }
     }
 

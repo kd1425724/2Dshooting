@@ -27,6 +27,9 @@ void C_Game::Init()
 	//当たり判定管理
 	m_hitmanager = std::make_shared<C_HitManager>();
 
+	//オーナーセット
+	m_gameui->SetOwner(shared_from_this());
+
 	//スキル管理取得
 	m_hitmanager->SetSkillManager(m_skillmanager);
 	m_enemymanager->SetSkillManager(m_skillmanager);
@@ -36,17 +39,37 @@ void C_Game::Init()
 	m_enemymanager->SetHitManager(m_hitmanager);
 	m_skillmanager->SetHitManager(m_hitmanager);
 
-	std::shared_ptr<KdTexture> tex = std::make_shared<KdTexture>();
-	tex->Load("Texture/Player/PlayerEngine_01.png");
-	m_playerenginetexs.push_back(tex);
-	tex = std::make_shared<KdTexture>();
-	tex->Load("Texture/Player/PlayerEngine_02.png");
-	m_playerenginetexs.push_back(tex);
-	tex = std::make_shared<KdTexture>();
-	tex->Load("Texture/Player/PlayerEngine_03.png");
-	m_playerenginetexs.push_back(tex);
+	//ゲームUiセット
+	m_skillmanager->SetGameUi(m_gameui);
+
+	//プレイヤーエンジン
+	std::shared_ptr<KdTexture> playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_01.png");
+	m_playerenginetexs.push_back(playerenginetex);
+	playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_02.png");
+	m_playerenginetexs.push_back(playerenginetex);
+	playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_03.png");
+	m_playerenginetexs.push_back(playerenginetex);
 
 	m_player->SetEngineTex(m_playerenginetexs);
+
+	//スコア表示
+	std::shared_ptr<KdTexture> scoretex = std::make_shared<KdTexture>();
+	scoretex->Load("Texture/Ui/Font/SCORE.png");
+	m_gameui->SetScoreTex(scoretex);
+
+	//スキル
+	std::shared_ptr<KdTexture> skilltex = std::make_shared<KdTexture>();
+	skilltex->Load("Texture/Ui/Font/SKILL.png");
+	m_gameui->SetSkillTex(skilltex);
+
+	//LIFE
+	std::shared_ptr<KdTexture> lifetex = std::make_shared<KdTexture>();
+	lifetex->Load("Texture/Ui/Font/LIFE.png");
+	m_gameui->SetLifeTex(lifetex);
+
 
 	m_gameui->Init();
 

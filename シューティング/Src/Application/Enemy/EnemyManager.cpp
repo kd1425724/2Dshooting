@@ -287,7 +287,7 @@ void C_EnemyManager::BossSpworn()
 		m_enemys.back()->SetMoveTex(&m_subbossmovetex);
 		m_enemys.back()->SetEngineTex(&m_subbossenginetex);
 		m_enemys.back()->SetDeathTex(&m_subbossdeathtex);
-		m_enemys.back()->Init({ 700,(float)0 - 60 + 200 - (i * 400) });
+		m_enemys.back()->Init({ 700,(float)0 - 80 + 200 - (i * 400) });
 	
 	}
 

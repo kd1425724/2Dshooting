@@ -24,7 +24,7 @@ void C_Result::Draw()
 {
 	m_resultui->Draw();
 
-	COMMONAPI.NumDraw(1234567890, { 600,0 }, { 0.5f,0.5f });
+	COMMONAPI.NumDraw(10, { 600,0 }, { 0.5f,0.5f },10);
 }
 
 void C_Result::Release()

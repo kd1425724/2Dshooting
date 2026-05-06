@@ -72,7 +72,7 @@ float C_CommonAPI::GetTextureAngleAdjustment(TextureAngle angle)
 	}
 }
 
-void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale)
+void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale,int maxdigits)
 {
 
 	Math::Matrix s;
@@ -112,6 +112,12 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale)
 	{
 		digits.push_back(num % 10);
 		num /= 10;
+	}
+
+	//Å‘åŒ…”‚Ü‚Å‚O‘ã“ü
+	while (digits.size() < maxdigits)
+	{
+		digits.push_back(0);
 	}
 
 	for (int i = 0; i < digits.size(); i++)

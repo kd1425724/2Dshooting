@@ -13,6 +13,8 @@ C_Barrier::C_Barrier()
     m_alpha = 0.8f;
 
     m_alive = false;
+
+    m_finished = false;
 }
 
 C_Barrier::~C_Barrier()
@@ -135,6 +137,8 @@ void C_Barrier::Update()
         {
             m_time = 0;
             m_alive = false;
+
+            m_finished = true;
         }
     }
 }

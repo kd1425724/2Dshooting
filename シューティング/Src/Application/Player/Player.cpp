@@ -11,7 +11,7 @@ void C_Player::Init()
 	ShotInit();
 
 	//À•W
-	m_pos = { -300,0 - (float)INFO.HUDAreaHeight };
+	m_pos = { -300,0 - (float)INFO.HUDAreaHeight/2 };
 	//ˆÚ“®—Ê
 	m_move = { 0.0f,0.0f };
 	m_movespeed = { 8.0f,8.0f };

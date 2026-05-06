@@ -467,11 +467,9 @@ void C_HitManager::CopyHit()
 					{
 						c->SetAlive(false);
 						
-						std::shared_ptr<C_Player> p = m_player.lock();
-
 						std::shared_ptr<C_SkillManager> sm = m_skillmanager.lock();
 
-						if (p && sm)
+						if (sm)
 						{
 							sm->SetPlayerSkill(e->GetSkillType());
 						}

@@ -1,9 +1,5 @@
 #pragma once
-#include<stack>
-#include<memory>
 #include"SceneBase.h"
-
-using namespace std;
 
 enum class SceneType
 {
@@ -30,11 +26,11 @@ public:
 
 	//指定したシーンを作る
 	//push関数で使ってる
-	unique_ptr<C_SceneBase> CreateScene(SceneType type);
+	std::shared_ptr<C_SceneBase> CreateScene(SceneType type);
 
 private:
 
-	stack<unique_ptr<C_SceneBase>> scenes;
+	std::stack<std::shared_ptr<C_SceneBase>> scenes;
 
 	
 
@@ -44,7 +40,7 @@ private:
 	
 	C_SceneManager() 
 	{
-		scenes.push(CreateScene(SceneType::Title));
+		scenes.push(CreateScene(SceneType::Game));
 		scenes.top()->Init();
 	}
 

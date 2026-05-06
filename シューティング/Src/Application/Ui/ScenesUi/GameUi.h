@@ -1,6 +1,9 @@
 #pragma once
 #include"Application/Ui/ScenesUi/ScenesUiBase.h"
 
+enum class SkillType;
+class C_Game;
+
 class C_GameUi :public C_ScenesUiBase
 {
 public:
@@ -17,10 +20,28 @@ public:
 	void BackGroundUpdate()	override;
 	void BackGroundDraw()	override;
 
+	//オーナー
+	void SetOwner(std::shared_ptr<C_Game> owner) { m_owner = owner; }
+
+	void SetScoreTex(std::shared_ptr<KdTexture> tex) { m_scoretex = tex; }
+
+	//スキル用
+	void SetSkillIconTex(std::vector<std::shared_ptr<KdTexture>> tex) { m_skillicontexs = tex; }
+
+	void SetSkill(SkillType type);
+
+	void SetSkillTex(std::shared_ptr<KdTexture> tex) { m_SKILLtex = tex; }
+
+	//LIFE
+	void SetLifeTex(std::shared_ptr<KdTexture> tex) { m_LIFETexttex = tex; }
+	
 	
 private:
 
 	void Release()override;
+
+	//オーナー
+	std::weak_ptr<C_Game> m_owner;
 
 	//背景用
 	Math::Matrix m_backgroundtransmat2;
@@ -48,4 +69,46 @@ private:
 	//カラー
 	Math::Color m_HUDareacolor;
 	////////////
+
+	//スコア
+	void ScoreHUDInit();
+	void ScoreHUDUpdate();
+	void ScoreHUDDraw();
+
+	Math::Vector2 m_scorepos;
+	Math::Vector2 m_scorescale;
+
+	std::shared_ptr<KdTexture> m_scoretex;
+
+	//スキル
+	void C_GameUi::SkillHUDInit();
+	void C_GameUi::SkillHUDUpdate();
+	void C_GameUi::SkillHUDDraw();
+
+	Math::Vector2 m_skilliconpos;
+	Math::Vector2 m_skilliconscale;
+	
+	std::vector<std::shared_ptr<KdTexture>> m_skillicontexs;
+
+	int m_skilliconindex = 0;
+
+
+	Math::Vector2 m_skillpos;
+	Math::Vector2 m_skillscale;
+	std::shared_ptr<KdTexture> m_SKILLtex;
+
+	//残機HUD
+	void LifeHUDInit();
+	void LifeDraw();
+
+	Math::Vector2 m_lifestartpos;
+
+	Math::Vector2 m_lifescale;
+
+	std::shared_ptr<KdTexture> m_LIFETexttex;
+
+	Math::Vector2 m_LIFETextpos;
+	Math::Vector2 m_LIFETextscale;
+
+	Math::Rectangle m_LIFETextrect;
 };

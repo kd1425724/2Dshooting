@@ -34,6 +34,9 @@ public:
 	//半径（円判定）
 	float GetRadius() { return m_radius; }
 
+	//Hpゲッター
+	int GetHp() { return m_Hp; }
+
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
 	//ダメージ処理

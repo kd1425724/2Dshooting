@@ -46,6 +46,9 @@ public:
 
 	bool GetAlive() { return m_alive; }
 
+	//終了フラグ
+	bool GetFinishedFlg() { return m_finished; }
+
 	Math::Vector2 GetPos() { return m_pos; }
 
 	//半径x,y別（矩形）
@@ -69,6 +72,9 @@ protected:
 	//半径
 	float m_radius;
 	Math::Vector2 m_halfsize;
+
+	//終了フラグ
+	bool m_finished=false;
 
 
 private:

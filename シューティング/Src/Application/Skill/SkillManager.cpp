@@ -6,6 +6,7 @@
 #include"Copy/Copy.h"
 #include"../Input/Input.h"
 #include"../Enemy/EnemyMoveBase.h"
+#include"../Ui/ScenesUi/GameUi.h"
 
 void C_SkillManager::Release()
 {
@@ -22,6 +23,22 @@ void C_SkillManager::Init()
 	m_barriertex = std::make_shared<KdTexture>();
 	m_barriertex->Load("Texture/Skill/Barrier/Barrier.png");
 
+	std::vector<std::shared_ptr<KdTexture>> tex;
+	tex.push_back(std::make_shared<KdTexture>());
+	tex.back()->Load("Texture/Ui/HUD/Copy.png");
+	tex.push_back(std::make_shared<KdTexture>());
+	tex.back()->Load("Texture/Ui/HUD/EnemyGenerate.png");
+	tex.push_back(std::make_shared<KdTexture>());
+	tex.back()->Load("Texture/Ui/HUD/Barrier.png");
+	tex.push_back(std::make_shared<KdTexture>());
+	tex.back()->Load("Texture/Ui/HUD/Laser.png");
+
+	auto gu = m_gameui.lock();
+	if (gu)
+	{
+		gu->SetSkillIconTex(tex);
+	}
+
 	SetPlayerSkill(SkillType::EnemyGenerate);
 }
 void C_SkillManager::Update()
@@ -35,6 +52,11 @@ void C_SkillManager::Update()
 			!Input.GetPlayerKeyFlg(PlayerKeyType::Skill))
 		{
 			m_playerskills->SkillActivate();
+		}
+
+		if (m_playerskills->GetFinishedFlg())
+		{
+			SetPlayerSkill(SkillType::CopyShot);
 		}
 	}
 
@@ -116,6 +138,17 @@ void C_SkillManager::SetPlayerSkill(SkillType skilltype)
 	auto p = m_player.lock();
 	auto em = m_enemymanager.lock();
 	auto hm = m_hitmanager.lock();
+
+	//‚È‚µˆÈŠO‚ÌŽž
+	if (skilltype != SkillType::None)
+	{
+		auto gu = m_gameui.lock();
+
+		if (gu)
+		{
+			gu->SetSkill(skilltype);
+		}
+	}
 
 	switch (skilltype)
 	{

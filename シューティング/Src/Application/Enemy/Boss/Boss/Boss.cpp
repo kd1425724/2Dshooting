@@ -3,7 +3,7 @@
 #include"../../../Skill/SkillManager.h"
 #include"../../../Common/CommonAPI.h"
 #include"../../../Hit/HitManager.h"
-
+#include"../../../Info.h"
 void C_Boss::Init()
 {
 	m_enemytype = EnemySType::Boss;
@@ -26,11 +26,11 @@ void C_Boss::Init()
 	//アニメーション用
 	m_anim = { 0,0 };
 
-	m_pos = { 700,0 - 60 };
+	m_pos = { 700,0 - (float)INFO.HUDAreaHeight/2 };
 
 	//移動量
 
-	m_stoppos = { 500,0 - 60 };
+	m_stoppos = { 500,0 - (float)INFO.HUDAreaHeight / 2 };
 	m_movespeed = { 4,4 };
 	m_angle = atan2(m_stoppos.y - m_pos.y, m_stoppos.x - m_pos.x);
 	m_move.x = cosf(m_angle) * m_movespeed.x;

@@ -3,6 +3,11 @@
 #include"../../Player/Player.h"
 #include"../../Enemy/EnemyMoveBase.h"
 
+C_EnemyGenerate::C_EnemyGenerate()
+{
+	m_finished = false;
+}
+
 void C_EnemyGenerate::Init()
 {
 	m_alive = false;
@@ -35,6 +40,8 @@ void C_EnemyGenerate::SkillActivate()
 	{
 		em->SkillEnemySpworn(p->GetPos(), m_usetype);
 	}
+
+	m_finished = true;
 }
 
 void C_EnemyGenerate::EnemySkillActivate()

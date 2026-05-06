@@ -14,6 +14,7 @@ class C_EnemyManager;
 class C_Player;
 class C_EnemyMoveBase;
 class C_HitManager;
+class C_GameUi;
 
 class C_SkillManager
 {
@@ -41,6 +42,9 @@ public:
 	//当たり判定用
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
+	//モザイク用
+	void SetGameUi(std::shared_ptr<C_GameUi> gameui) { m_gameui = gameui; }
+
 private:
 
 	//プレイヤースキルまとめ
@@ -60,6 +64,9 @@ private:
 
 	//当たり判定
 	std::weak_ptr<C_HitManager> m_hitmanager;
+
+	//ゲームUi
+	std::weak_ptr<C_GameUi> m_gameui;
 
 	//画像読み込み用（本体）
 	//レーザー

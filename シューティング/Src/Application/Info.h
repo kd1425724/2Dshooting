@@ -12,7 +12,7 @@ public:
 
 	//HUDエリア設定
 	static const int HUDAreaWidth = 1280;
-	static const int HUDAreaHeight = 120;
+	static const int HUDAreaHeight = 160;
 
 	//プレイ画面設定
 	static const int PlayAreaWidth = 1280;

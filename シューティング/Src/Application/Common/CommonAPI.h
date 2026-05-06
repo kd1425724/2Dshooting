@@ -27,7 +27,7 @@ public:
 
 	//”š•`‰æ—p
 	//startpos...ˆê‚ÌˆÊ
-	void NumDraw(int num,Math::Vector2 startpos,Math::Vector2 scale);
+	void NumDraw(int num,Math::Vector2 startpos,Math::Vector2 scale,int maxdigits);
 
 private:
 

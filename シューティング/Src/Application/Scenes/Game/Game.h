@@ -13,7 +13,7 @@ enum class GameMode
 	Stage2,
 };
 
-class C_Game:public C_SceneBase
+class C_Game:public C_SceneBase, public std::enable_shared_from_this<C_Game>
 {
 public:
 	C_Game() { Release(); }
@@ -24,6 +24,9 @@ public:
 	void Draw()override;
 
 	void ImGui()override;
+
+	//プレイヤーゲッター
+	std::shared_ptr<C_Player> GetPlayer() { return m_player; }
 
 private:
 

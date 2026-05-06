@@ -70,7 +70,7 @@ void C_SceneManager::pop()
     }
 }
 
-unique_ptr<C_SceneBase> C_SceneManager::CreateScene(SceneType type)
+std::shared_ptr<C_SceneBase> C_SceneManager::CreateScene(SceneType type)
 {
     switch (type) {
     case SceneType::Title:
