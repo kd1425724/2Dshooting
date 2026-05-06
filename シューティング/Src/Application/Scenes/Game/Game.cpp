@@ -8,6 +8,16 @@
 #include"../../Hit/HitManager.h"
 #include"../../Effect/EffectManager.h"
 
+std::shared_ptr<C_Boss> C_Game::GetBoss()
+{
+	return m_enemymanager->GetBoss();
+}
+
+std::vector<std::shared_ptr<C_SubBoss>> C_Game::GetSubBoss()
+{
+	return m_enemymanager->GetSubBoss();
+}
+
 void C_Game::Init()
 {
 	EFFECTMANAGER.Init();
@@ -70,6 +80,17 @@ void C_Game::Init()
 	lifetex->Load("Texture/Ui/Font/LIFE.png");
 	m_gameui->SetLifeTex(lifetex);
 
+	//Hpバー
+	std::shared_ptr<KdTexture> hpbartex = std::make_shared<KdTexture>();
+	hpbartex->Load("Texture/Ui/HUD/HPBar.png");
+	m_gameui->SetHpBarTex(hpbartex);
+	//枠
+	std::shared_ptr<KdTexture> hpbarframetex = std::make_shared<KdTexture>();
+	hpbarframetex->Load("Texture/Ui/HUD/HPBarFrame.png");
+	m_gameui->SetHpBarFrameTex(hpbarframetex);
+
+	//ボス生成用（仮）
+	m_enemymanager->BossSpworn();
 
 	m_gameui->Init();
 
@@ -87,8 +108,7 @@ void C_Game::Init()
 	m_JudgmenCount = 0;
 
 
-	//ボス生成用（仮）
-	m_enemymanager->BossSpworn();
+
 }
 
 void C_Game::Update()

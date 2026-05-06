@@ -9,6 +9,9 @@ enum class PosPattern;
 enum class MovePattern;
 enum class UseType;
 
+class C_Boss;
+class C_SubBoss;
+
 enum class EnemyType
 {
 	enemy3,
@@ -60,6 +63,12 @@ public:
 	//当たり判定管理セット
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
+	//ボスゲッター
+	std::shared_ptr<C_Boss> GetBoss() { return m_boss; }
+
+	//サブボスゲッター
+	std::vector<std::shared_ptr<C_SubBoss>> GetSubBoss() { return m_subbosss; }
+
 private:
 
 	//解放処理
@@ -78,6 +87,10 @@ private:
 
 	//敵まとめ
 	std::vector<std::shared_ptr<C_EnemyMoveBase>> m_enemys;
+	//ボス
+	std::shared_ptr<C_Boss> m_boss;
+	//サブボス
+	std::vector<std::shared_ptr<C_SubBoss>> m_subbosss;
 
 	//スキル用
 	std::vector<std::shared_ptr<C_EnemyMoveBase>> m_skillenemys;

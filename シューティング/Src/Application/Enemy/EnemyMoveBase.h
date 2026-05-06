@@ -102,6 +102,9 @@ public:
 	//体力
 	int GetHp() { return m_hp; }
 
+	//最大体力
+	int GetMaxHp() { return m_maxhp; }
+
 	//エンジンテクスチャ
 	void SetEngineTex(KdTexture* tex) { m_enginetex = tex; }
 	//死亡演出用テクスチャ
@@ -134,6 +137,7 @@ protected:
 	EnemySType m_enemytype = EnemySType::Normal;
 
 	//ステータス
+	int m_maxhp;
 	int m_hp;
 
 	//テクスチャ

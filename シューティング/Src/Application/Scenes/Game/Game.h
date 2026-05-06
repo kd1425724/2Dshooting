@@ -6,6 +6,8 @@ class C_Player;
 class C_EnemyManager;
 class C_SkillManager;
 class C_HitManager;
+class C_Boss;
+class C_SubBoss;
 
 enum class GameMode
 {
@@ -27,6 +29,12 @@ public:
 
 	//プレイヤーゲッター
 	std::shared_ptr<C_Player> GetPlayer() { return m_player; }
+
+	//ボスゲッター
+	std::shared_ptr<C_Boss> GetBoss();
+	//サブボスゲッター
+	std::vector<std::shared_ptr<C_SubBoss>> C_Game::GetSubBoss();
+
 
 private:
 

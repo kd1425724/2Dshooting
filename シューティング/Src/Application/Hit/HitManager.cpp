@@ -188,7 +188,7 @@ void C_HitManager::PlayerShotHit()
 					if (IsHit(ps_pos, ps_radius, e->GetPos(), e->GetSize().x))
 					{
 						ps->SetAlive(false);
-						e->Damage(500);
+						e->Damage(50);
 						EFFECTMANAGER.AddEffect(EffectType::BoltHitEffect, ps_pos);
 					}
 					++it;

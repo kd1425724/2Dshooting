@@ -35,7 +35,11 @@ public:
 	//LIFE
 	void SetLifeTex(std::shared_ptr<KdTexture> tex) { m_LIFETexttex = tex; }
 	
-	
+	//Hpバー
+	void SetHpBarTex(std::shared_ptr<KdTexture> tex) { m_hpbartex = tex; }
+	//Hpバー枠
+	void SetHpBarFrameTex(std::shared_ptr<KdTexture> tex) { m_hpbarframetex = tex; }
+
 private:
 
 	void Release()override;
@@ -111,4 +115,28 @@ private:
 	Math::Vector2 m_LIFETextscale;
 
 	Math::Rectangle m_LIFETextrect;
+
+	//Hpバー
+	void HPBarInit();
+	void HPBarUpdate();
+	void HPBarDraw();
+
+	Math::Rectangle m_hpbarrect;
+	Math::Rectangle m_hpbarframerect;
+	std::shared_ptr<KdTexture> m_hpbartex;
+	std::shared_ptr<KdTexture> m_hpbarframetex;
+
+	float m_bossHpRate = 1.0f;
+	bool  m_isBossExist = false;
+
+	std::vector<float> m_subBossHpRates;
+
+	//ボス
+	Math::Vector2 m_bosshpbarstartpos;
+	Math::Vector2 m_bosshpbarpos;
+	Math::Vector2 m_bosshpbarscale;
+
+	//サブボス用
+	Math::Vector2 m_subbosshpbarstartpos;
+	Math::Vector2 m_subbosshpbarscale;
 };

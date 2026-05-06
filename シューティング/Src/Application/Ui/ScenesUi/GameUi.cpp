@@ -5,6 +5,9 @@
 #include"../../Skill/SkillManager.h"
 #include"../../Scenes/Game/Game.h"
 #include"../../Player/Player.h"
+#include"../../Enemy/Boss/Boss/Boss.h"
+#include"../../Enemy/Boss/SubBoss/SubBoss.h"
+
 void C_GameUi::Init()
 {
 	BackGroundInit();
@@ -123,11 +126,15 @@ void C_GameUi::HUDInit()
 
 	//残機
 	LifeHUDInit();
+
+	//Hpバー
+	HPBarInit();
 }
 
 void C_GameUi::HUDUpdate()
 {
-	
+	HPBarUpdate();
+
 	m_HUDareascalemat = Math::Matrix::CreateScale(m_HUDareascale.x, m_HUDareascale.y, 1);
 	m_HUDareatransmat = Math::Matrix::CreateTranslation(m_HUDareapos.x, m_HUDareapos.y, 0);
 	m_HUDareamat = m_HUDareascalemat * m_HUDareatransmat;
@@ -148,6 +155,9 @@ void C_GameUi::HUDDraw()
 
 	//残機
 	LifeDraw();
+
+	//Hpバー
+	HPBarDraw();
 }
 
 void C_GameUi::ScoreHUDInit()
@@ -256,6 +266,142 @@ void C_GameUi::LifeDraw()
 				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPlayerTex(),
 					CommonTex.GetPlayerRect(), 1.0f);
+			}
+		}
+	}
+}
+
+void C_GameUi::HPBarInit()
+{
+	m_hpbarrect = {0,0, 980,20 };
+	m_hpbarframerect = { 0,0,1040,30 };
+
+	//ボス
+	m_bosshpbarstartpos = { 350,240 };
+	m_bosshpbarpos = m_bosshpbarstartpos;
+	m_bosshpbarscale = { 0.5f,1 };
+
+	//サブボス
+	m_subbosshpbarstartpos = { 475,335 };
+	m_subbosshpbarscale = { 0.25f,1 };
+
+	m_subBossHpRates.clear();
+}
+
+void C_GameUi::HPBarUpdate()
+{
+	auto o = m_owner.lock();
+
+	if (o)
+	{
+		auto b = o->GetBoss();
+
+
+		if (b)
+		{
+			m_bossHpRate = (float)b->GetHp() / b->GetMaxHp();
+			if (m_bossHpRate <= 0)
+			{
+				m_bossHpRate = 0;
+			}
+			m_isBossExist = true;
+		}
+
+		auto sb = o->GetSubBoss();
+
+		for (auto& s : sb)
+		{
+			if (!s) continue;
+
+			int id = s->GetId();
+
+			if (id >= m_subBossHpRates.size())
+			{
+				m_subBossHpRates.resize(id + 1, 0.0f);
+			}
+
+			m_subBossHpRates[id] =
+				std::max(0.0f, (float)s->GetHp() / s->GetMaxHp());
+		}
+	}
+}
+
+
+void C_GameUi::HPBarDraw()
+{
+	auto o = m_owner.lock();
+
+	if (o)
+	{
+		//ボス
+		auto b = o->GetBoss();
+
+		if (m_isBossExist)
+		{
+			//枠
+			{
+				Math::Matrix s = Math::Matrix::CreateScale(m_bosshpbarscale.x, m_bosshpbarscale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(m_bosshpbarstartpos.x, m_bosshpbarpos.y, 0);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_hpbarframetex.get(), m_hpbarframerect, 1.0f);
+
+			}
+
+			//Hpバー
+			{
+				float rate = m_bossHpRate;
+
+				float d = m_hpbarrect.width * (1.0f - rate);
+				float offset = d / 2.0f;
+
+				m_bosshpbarpos.x = m_bosshpbarstartpos.x - offset * m_bosshpbarscale.x;
+
+				Math::Matrix s = Math::Matrix::CreateScale(m_bosshpbarscale.x, m_bosshpbarscale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(m_bosshpbarpos.x, m_bosshpbarpos.y, 0);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				Math::Rectangle rect = { 0,0,(long)(m_hpbarrect.width * rate) ,m_hpbarrect.height };
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_hpbartex.get(), rect, 1.0f);
+			}
+		}
+
+		for (int i = 0; i < m_subBossHpRates.size(); i++)
+		{
+			//枠
+			{
+				float posY = m_subbosshpbarstartpos.y - (i * (m_hpbarrect.height * m_subbosshpbarscale.y + 25));
+
+				Math::Matrix s = Math::Matrix::CreateScale(m_subbosshpbarscale.x, m_subbosshpbarscale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(m_subbosshpbarstartpos.x,posY, 0);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_hpbarframetex.get(), m_hpbarframerect, 1.0f);
+			}
+
+			//Hpバー
+			{
+				float rate = m_subBossHpRates[i];
+
+				// ここでバー描画
+				float d = m_hpbarrect.width * (1.0f - rate);
+				float offset = d / 2.0f;
+
+				float posX = m_subbosshpbarstartpos.x- offset*m_subbosshpbarscale.x;
+				float posY = m_subbosshpbarstartpos.y - (i * (m_hpbarrect.height * m_subbosshpbarscale.y + 25));
+
+
+				Math::Matrix s = Math::Matrix::CreateScale(m_subbosshpbarscale.x, m_subbosshpbarscale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(posX, posY, 0);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				Math::Rectangle rect = { 0,0,(long)(m_hpbarrect.width * rate) ,m_hpbarrect.height };
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_hpbartex.get(), rect, 1.0f);
+
 			}
 		}
 	}

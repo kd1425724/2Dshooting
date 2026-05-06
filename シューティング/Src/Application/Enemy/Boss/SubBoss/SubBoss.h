@@ -19,8 +19,13 @@ public:
 	void Update()	override;
 	void Draw()		override;
 
+	void SetId(int id) { m_id = id; }
+
+	int GetId() { return m_id; }
 
 private:
+
+	int m_id;
 
 	void Release()	override;
 

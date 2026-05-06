@@ -10,7 +10,8 @@ void C_SubBoss::Init(Math::Vector2 pos)
 	m_nonetime = 0;
 	
 	//ステータス
-	m_hp = 500;
+	m_maxhp = 500;
+	m_hp = m_maxhp;
 
 	m_skilltype = SkillType::None;
 

@@ -9,7 +9,8 @@ void C_Boss::Init()
 	m_enemytype = EnemySType::Boss;
 
 	//ステータス
-	m_hp = 1000;
+	m_maxhp = 1000;
+	m_hp = m_maxhp;
 
 
 	//プレイヤーのインスタンス

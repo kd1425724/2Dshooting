@@ -177,6 +177,7 @@ void C_EnemyManager::Update()
 			m_skillenemys[i]->HitUpdate();
 			m_skillenemys[i]->Update();
 		}
+
 		for (int i = 0; i < m_skillenemys.size(); i++)
 		{
 			if (COMMONAPI.OutOfPlayAreaPlusMargin(m_skillenemys[i]->GetPos(), m_skillenemys[i]->GetSize()) ||
@@ -188,6 +189,22 @@ void C_EnemyManager::Update()
 
 				continue;
 			}
+		}
+	}
+
+	// ボス
+	if (m_boss && !m_boss->GetAlive())
+	{
+		m_boss = nullptr;
+	}
+
+	// サブボス
+	for (int i = 0; i < m_subbosss.size(); i++)
+	{
+		if (!m_subbosss[i]->GetAlive())
+		{
+			m_subbosss.erase(m_subbosss.begin() + i);
+			i--;
 		}
 	}
 }
@@ -280,27 +297,33 @@ void C_EnemyManager::BossSpworn()
 	//サブボス
 	for (int i = 0; i < 2; i++)
 	{
-		m_enemys.emplace_back(std::make_shared<C_SubBoss>());
-		m_enemys.back()->SetHitManager(m_hitmanager);
-		m_enemys.back()->SetSkillManager(m_skillmanager);
-		m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::SubBoss), { 128,128 }, { NULL,NULL });
-		m_enemys.back()->SetMoveTex(&m_subbossmovetex);
-		m_enemys.back()->SetEngineTex(&m_subbossenginetex);
-		m_enemys.back()->SetDeathTex(&m_subbossdeathtex);
-		m_enemys.back()->Init({ 700,(float)0 - 80 + 200 - (i * 400) });
-	
+		auto sb = std::make_shared<C_SubBoss>();
+
+		sb->SetHitManager(m_hitmanager);
+		sb->SetSkillManager(m_skillmanager);
+		sb->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::SubBoss), { 128,128 }, { NULL,NULL });
+		sb->SetMoveTex(&m_subbossmovetex);
+		sb->SetEngineTex(&m_subbossenginetex);
+		sb->SetDeathTex(&m_subbossdeathtex);
+		sb->SetId(i);
+		sb->Init({ 700,(float)0 - 80 + 200 - (i * 400) });
+
+		m_subbosss.push_back(sb);
+		m_enemys.push_back(sb);
 	}
 
 	//ボス
-	m_enemys.emplace_back(std::make_shared<C_Boss>());
-	m_enemys.back()->SetHitManager(m_hitmanager);
-	m_enemys.back()->SetSkillManager(m_skillmanager);
-	m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss),
-		{ 128,128 }, { NULL,NULL });
-	m_enemys.back()->SetMoveTex(&m_bossmovetex);
-	m_enemys.back()->SetEngineTex(&m_bossenginetex);
-	m_enemys.back()->SetDeathTex(&m_bossdeathtex);
-	m_enemys.back()->Init();
+	m_boss = std::make_shared<C_Boss>();
+
+	m_boss->SetHitManager(m_hitmanager);
+	m_boss->SetSkillManager(m_skillmanager);
+	m_boss->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss),{ 128,128 }, { NULL,NULL });
+	m_boss->SetMoveTex(&m_bossmovetex);
+	m_boss->SetEngineTex(&m_bossenginetex);
+	m_boss->SetDeathTex(&m_bossdeathtex);
+	m_boss->Init();
+
+	m_enemys.push_back(m_boss);
 }
 
 void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type)
