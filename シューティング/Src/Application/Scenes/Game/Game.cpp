@@ -7,7 +7,8 @@
 #include"Application/Skill/SkillBase.h"
 #include"../../Hit/HitManager.h"
 #include"../../Effect/EffectManager.h"
-
+#include"../../Skill/Shot/Shot.h"
+#include"../../Enemy/Boss/Boss/Boss.h"
 std::shared_ptr<C_Boss> C_Game::GetBoss()
 {
 	return m_enemymanager->GetBoss();
@@ -39,6 +40,8 @@ void C_Game::Init()
 
 	//オーナーセット
 	m_gameui->SetOwner(shared_from_this());
+	m_enemymanager->SetOwner(shared_from_this());
+	m_player->SetOwner(shared_from_this());
 
 	//スキル管理取得
 	m_hitmanager->SetSkillManager(m_skillmanager);
@@ -113,7 +116,14 @@ void C_Game::Init()
 
 void C_Game::Update()
 {
-	
+	//時間
+	m_time += 1.0f / 60.0f;
+
+	//弾
+	for (auto& it : m_shot)
+	{
+		it->Update();
+	}
 
 	//プレイヤー
 	m_player->Update();
@@ -150,15 +160,48 @@ void C_Game::Update()
 		auto s = std::make_shared<Score>();
 		if (s)
 		{
-			s->clear = true;
+			if (!m_enemymanager->GetBoss())
+			{
+				s->clear = true;
+			}
+			else
+			{
+				s->clear = false;
+			}
 			s->playerlife = m_player->GetHp();
-			s->score = 10000;
-			s->time = 0;
+			s->score = SCENEMANAGER.GetScore();
+			s->time = (int)m_time;
 
 			SCENEMANAGER.SetScoreData(s);
 		}
 
 		SCENEMANAGER.push(SceneType::Result, true);
+		return;
+	}
+
+	if (!m_player->GetAlive() ||
+		!m_enemymanager->GetBoss())
+	{
+		auto s = std::make_shared<Score>();
+		if (s)
+		{
+			if (!m_enemymanager->GetBoss())
+			{
+				s->clear = true;
+			}
+			else
+			{
+				s->clear = false;
+			}
+			s->playerlife = m_player->GetHp();
+			s->score = SCENEMANAGER.GetScore();
+			s->time = (int)m_time;
+
+			SCENEMANAGER.SetScoreData(s);
+		}
+
+		SCENEMANAGER.push(SceneType::Result, true);
+		return;
 	}
 }
 
@@ -166,6 +209,12 @@ void C_Game::Draw()
 {
 	//背景「最初」
 	m_gameui->BackGroundDraw();
+
+	//弾描画
+	for (auto& it : m_shot)
+	{
+		it->Draw();
+	}
 
 	//スキル描画
 	m_skillmanager->Draw();

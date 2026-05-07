@@ -1,7 +1,7 @@
 #pragma once
 
-class C_Shot;
 class C_HitManager;
+class C_Game;
 
 enum class PlayerShotInterval
 {
@@ -30,6 +30,8 @@ public:
 	void ShotInit();
 	void ShotUpdate();
 
+	bool GetAlive() { return m_alive; }
+
 	Math::Vector2 GetPos() { return m_pos; }
 
 	//半径x,y別（矩形）
@@ -51,7 +53,12 @@ public:
 	//エンジン用
 	void SetEngineTex(std::vector<std::shared_ptr<KdTexture>> tex) { m_enginetexs = tex; }
 
+	void SetOwner(std::shared_ptr<C_Game> owner) { m_owner = owner; }
+
 private:
+
+	//オーナー
+	std::weak_ptr<C_Game> m_owner;
 
 	//エンジン
 	std::vector<std::shared_ptr<KdTexture>> m_enginetexs;
@@ -59,7 +66,7 @@ private:
 	float m_engineanim;
 
 	//ステータス
-	int m_Hp = 3;
+	int m_Hp = {};
 
 	//当たり判定用
 	std::shared_ptr<C_HitManager> m_hitmanager;
@@ -86,8 +93,6 @@ private:
 	float m_radius;
 	Math::Vector2 m_halfsize;
 
-	//弾
-	std::shared_ptr<C_Shot> m_shot;
 	//発射間隔
 	int m_shotinterval;
 };

@@ -39,11 +39,23 @@ private:
 
 	KdTexture m_frametex;
 
+	//ENTER
+	void ENTERInit();
+	void ENTERDraw();
+	KdTexture m_ENTERTex;
+
+	Math::Vector2 m_ENTERpos = {};
+	Math::Vector2 m_ENTERscale = {};
+	Math::Rectangle m_ENTERrect = {};
+
 	//ÉXÉRÉAóp
 	void ScoreInit();
 	void ScoreDraw();
 	
-	static const int PlayerLifeUpNum = 100000;
+	
+	static const int PlayerLifeUpNum = 100000;//ÇPÇOñú
+	static const int ClearScoreUpNum = 10000000;//ÇPÇOÇOÇOñú
+	static const int TimeScoreUpNum = 100000;//ÇPÇOñú
 
 	//ÉeÉLÉXÉg
 	KdTexture m_CrearTextTex;
@@ -55,7 +67,7 @@ private:
 	void StarInit();
 	void StarDraw();
 
-	static const int StarControlNum = 500000;
+	static const int StarControlNum = 1000000;
 	static const int StarNum = 3;
 
 	int m_pickstarnum = 0;

@@ -72,9 +72,8 @@ float C_CommonAPI::GetTextureAngleAdjustment(TextureAngle angle)
 	}
 }
 
-void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale,int maxdigits)
+void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, int maxdigits, Math::Color color)
 {
-
 	Math::Matrix s;
 	Math::Matrix t;
 	Math::Matrix mat;
@@ -97,8 +96,22 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale,i
 		Math::Rectangle rect = { num * Srect.width,Srect.y,Srect.width,Srect.height };
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(), 0, 0,
-			&rect);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(), 0, 0, &rect, &color);
+
+		/*for (int i = 1; i < maxdigits; i++)
+		{
+			Math::Vector2 pos = startpos;
+			pos.x -= Srect.width * scale.x * i;
+
+			s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+			t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+			mat = s * t;
+
+			Math::Rectangle rect = { 0 * Srect.width,Srect.y,Srect.width,Srect.height };
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(), 0, 0, &rect, &color);
+		}*/
 
 		return;
 	}
@@ -112,11 +125,11 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale,i
 		num /= 10;
 	}
 
-	//Å‘åŒ…”‚Ü‚Å‚O‘ã“ü
-	while (digits.size() < maxdigits)
-	{
-		digits.push_back(0);
-	}
+	////Å‘åŒ…”‚Ü‚Å‚O‘ã“ü
+	//while (digits.size() < maxdigits)
+	//{
+	//	digits.push_back(0);
+	//}
 
 	for (int i = 0; i < digits.size(); i++)
 	{
@@ -130,7 +143,7 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale,i
 		Math::Rectangle rect = { digits[i] * Srect.width,Srect.y,Srect.width,Srect.height };
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(),
-			rect,1.0f);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(),0,0,&rect, &color);
 	}
 }
+

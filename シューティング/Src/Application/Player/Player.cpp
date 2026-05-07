@@ -6,10 +6,13 @@
 #include"../Hit/HitManager.h"
 #include"../Effect/EffectManager.h"
 #include"../Common/CommonAPI.h"
+#include"../Scenes/Game/Game.h"
 
 void C_Player::Init()	
 {
 	ShotInit();
+
+	m_Hp = 3;
 
 	//ç¿ïW
 	m_pos = { -300,0 - (float)INFO.HUDAreaHeight/2 };
@@ -34,6 +37,8 @@ void C_Player::Init()
 	}
 
 	m_engineanim = 0;
+
+	m_alive = true;
 
 }
 void C_Player::Update()
@@ -75,11 +80,15 @@ void C_Player::Update()
 	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
 	m_transmat = Math::Matrix::CreateTranslation((int)(m_pos.x+0.5f), (int)(m_pos.y+0.5f), 0);//+0.5féléÃå‹ì¸ÇµÇƒÇÈ
 	m_mat = m_scalemat * m_transmat;
+
+	if (m_Hp <= 0)
+	{
+		m_alive = false;
+	}
 }
 void C_Player::Draw()
 {
-	m_shot->Draw();
-
+	
 	Math::Color color = { 1,1,1,1 };
 	Math::Rectangle enginerect = { 0,0, 64,64 };
 
@@ -168,28 +177,36 @@ void C_Player::ImGui()
 
 void C_Player::ShotInit()
 {
-	m_shot = std::make_shared<C_Shot>();
-	m_shot->SetHitManager(m_hitmanager);
 	m_shotinterval = 0;
 }
 
 void C_Player::ShotUpdate()
 {
-	//çUåÇUpdate
-	m_shot->Update();
 
 	//í èÌçUåÇ
 	if (m_shotinterval <= 0)
 	{
 		if (Input.GetPlayerKey(PlayerKeyType::NormalShot))
 		{
-			m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
-				m_pos, { m_pos.x + 100,m_pos.y+10 },18);
-			m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-				m_pos, { m_pos.x + 100,m_pos.y }, 18);
-			m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
-				m_pos, { m_pos.x + 100,m_pos.y-10 },18);
-		
+			auto s = std::make_shared<C_Shot>();
+			auto o = m_owner.lock();
+
+			if (s && o)
+			{
+
+				s->SetHitManager(m_hitmanager);
+
+				s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
+					m_pos, { m_pos.x + 100,m_pos.y + 10 }, 18);
+				s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+					m_pos, { m_pos.x + 100,m_pos.y }, 18);
+				s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
+					m_pos, { m_pos.x + 100,m_pos.y - 10 }, 18);
+			
+				o->SetShot(s);
+				
+			}
+
 			m_shotinterval = (int)PlayerShotInterval::NormalShot;
 		
 		}

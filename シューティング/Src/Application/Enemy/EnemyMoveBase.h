@@ -2,7 +2,6 @@
 
 class C_Player;
 enum class MovePatternDefault;
-class C_Shot;
 class C_SkillManager;
 
 class C_HitBase;
@@ -10,6 +9,8 @@ class C_HitManager;
 
 enum class UseType;
 enum class SkillType;
+
+class C_Game;
 
 enum class PosPattern
 {
@@ -129,10 +130,18 @@ public:
 
 	EnemySType GetEnemyType() { return m_enemytype; }
 
+	void SetOwner(std::weak_ptr<C_Game> owner) { m_owner = owner; }
+
 protected:
+
+	//オーナー
+	std::weak_ptr<C_Game> m_owner;
 
 	//解放処理
 	virtual void Release();
+
+	//スコア用
+	int m_score = 1000;
 
 	EnemySType m_enemytype = EnemySType::Normal;
 
@@ -172,9 +181,6 @@ protected:
 	//半径
 	float m_radius;
 	Math::Vector2 m_halfsize;
-
-	//ショット用
-	std::shared_ptr<C_Shot> m_shot;
 
 	//プレイヤーインスタンス受け取り用
 	std::weak_ptr<C_Player> m_player;

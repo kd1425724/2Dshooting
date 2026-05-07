@@ -16,6 +16,8 @@ void C_ResultUi::Init()
 	StarInit();
 
 	PlayerInit();
+
+	ENTERInit();
 }
 
 void C_ResultUi::Update()
@@ -35,7 +37,7 @@ void C_ResultUi::Draw()
 
 	ScoreDraw();
 
-
+	ENTERDraw();
 }
 
 //”wŒi
@@ -103,6 +105,25 @@ void C_ResultUi::Release()
 	m_backgroundtex.Release();
 }
 
+void C_ResultUi::ENTERInit()
+{
+	m_ENTERTex.Load("Texture/Ui/HUD/Result/ENTER.png");
+
+	m_ENTERpos = { 500,-300 };
+	m_ENTERrect = { 0,0,480,100 };
+	m_ENTERscale = { 0.5f,0.5f };
+}
+
+void C_ResultUi::ENTERDraw()
+{
+	Math::Matrix s = Math::Matrix::CreateScale(m_ENTERscale.x, m_ENTERscale.y, 1);
+	Math::Matrix t = Math::Matrix::CreateTranslation(m_ENTERpos.x, m_ENTERpos.y, 0);
+	Math::Matrix mat = s * t;
+
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_ENTERTex, m_ENTERrect, 1.0f);
+}
+
 void C_ResultUi::ScoreInit()
 {
 	m_CrearTextTex.Load("Texture/Ui/Font/CLEAR.png");
@@ -118,15 +139,19 @@ void C_ResultUi::ScoreInit()
 	{
 		return;
 	}
+	//ƒXƒRƒAŒvŽZ
 	int score = s->score;
 	int clear = 0;
+	int time = 0;
 	if (s->clear)
 	{
-		clear = 1000000;
+		clear = ClearScoreUpNum;
+		time = std::max(0, 300 - s->time) * TimeScoreUpNum;
 	}
 	int lifescore = s->playerlife * PlayerLifeUpNum;
-	int time = s->time;
-	int total = score+ clear + lifescore + time;
+
+	int total = score + clear + lifescore + time;
+
 	//¯‚Ì”§Œä—p
 	//‚T‚O–œ‚¸‚Âˆø‚­
 	//‚T‚O–œˆÈ‰º‚É‚È‚é‚©m_pickupstarnum‚ª‚R‚É‚È‚é‚Ü‚Åƒ‹[ƒv
@@ -146,11 +171,11 @@ void C_ResultUi::ScoreDraw()
 
 	//ƒeƒLƒXƒg
 	{
-		Math::Vector2 scale = { 0.3f,0.3f };	
+		Math::Vector2 scale = { 0.4f,0.4f };	
 		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 		//ƒNƒŠƒA
 		{
-			Math::Vector2 pos = { -300,00 };
+			Math::Vector2 pos = { -200,120 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
@@ -162,7 +187,7 @@ void C_ResultUi::ScoreDraw()
 
 		//ƒXƒRƒA
 		{
-			Math::Vector2 pos = { -200,200 };
+			Math::Vector2 pos = { -200,40 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
@@ -174,7 +199,7 @@ void C_ResultUi::ScoreDraw()
 
 		//ƒ‰ƒCƒt
 		{
-			Math::Vector2 pos = { -300,400 };
+			Math::Vector2 pos = { -200,-40 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
@@ -186,7 +211,7 @@ void C_ResultUi::ScoreDraw()
 
 		//ƒ^ƒCƒ€
 		{
-			Math::Vector2 pos = { -300,400 };
+			Math::Vector2 pos = { -200,-120 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
@@ -202,13 +227,14 @@ void C_ResultUi::ScoreDraw()
 		Math::Vector2 scale = { 0.5f,0.5f };
 		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 
-		Math::Vector2 pos = { -300,400 };
+		Math::Vector2 pos = { -200,-200 };
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
 		Math::Matrix mat = s * t;
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TotalTextTex, rect, 1.0f);
+		Math::Color color = { 1.0f,1.0f,0,1.0f };
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TotalTextTex,0,0, &rect, &color);
 	}
 
 	//”Žš•`‰æ
@@ -223,20 +249,23 @@ void C_ResultUi::ScoreDraw()
 		//ƒXƒRƒAŒvŽZ
 		int score = s->score;
 		int clear = 0;
+		int time = 0;
 		if (s->clear)
 		{
-			clear = 1000000;
+			clear = ClearScoreUpNum;
+			time = std::max(0, 300 - s->time) * TimeScoreUpNum;
 		}
 		int lifescore = s->playerlife * PlayerLifeUpNum;
-		int time = s->time;
+		
 		int total = score + clear + lifescore + time;
 
 		//•`‰æ
 		Math::Vector2 numscale = { 0.3f,0.4f };
-		COMMONAPI.NumDraw(score, { 0,200 }, numscale, 10);
-		COMMONAPI.NumDraw(lifescore, { 0,100 }, numscale, 10);
-		COMMONAPI.NumDraw(time, { 0,0 }, numscale, 10);
-		COMMONAPI.NumDraw(total, { 0,-100 }, numscale, 10);
+		COMMONAPI.NumDraw(clear, { 200,120 }, numscale, 10);
+		COMMONAPI.NumDraw(score, { 200,40 }, numscale, 10);
+		COMMONAPI.NumDraw(lifescore, { 200,-40 }, numscale, 10);
+		COMMONAPI.NumDraw(time, { 200,-120 }, numscale, 10);
+		COMMONAPI.NumDraw(total, { 250,-200 }, { 0.35f,0.60f }, 10, { 1.0f,1.0f,0.0f,1.0f });
 	}
 }
 
@@ -245,8 +274,8 @@ void C_ResultUi::StarInit()
 	m_startex.Load("Texture/Ui/Result/Star.png");
 	m_starframetex.Load("Texture/Ui/Result/StarFrame.png");
 
-	m_starstartpos = { 0,0 };
-	m_starscale = { 0.3,0.3 };
+	m_starstartpos = { -150,200 };
+	m_starscale = { 0.4,0.4 };
 }
 void C_ResultUi::StarDraw()
 {
@@ -258,7 +287,7 @@ void C_ResultUi::StarDraw()
 	{
 		Math::Vector2 pos;
 
-		pos.x = m_starstartpos.x + (i * 100);
+		pos.x = m_starstartpos.x + (i * 150);
 		pos.y = m_starstartpos.y + ((int)(i % 2) * 30);
 
 		Math::Matrix s = Math::Matrix::CreateScale(m_starscale.x, m_starscale.y, 1);
@@ -273,7 +302,7 @@ void C_ResultUi::StarDraw()
 	{
 		Math::Vector2 pos;
 
-		pos.x = m_starstartpos.x + (i * 100);
+		pos.x = m_starstartpos.x + (i * 150);
 		pos.y = m_starstartpos.y + ((int)(i % 2) * 30);
 
 		Math::Matrix s = Math::Matrix::CreateScale(m_starscale.x, m_starscale.y, 1);

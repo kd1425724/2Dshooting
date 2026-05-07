@@ -8,6 +8,7 @@ class C_SkillManager;
 class C_HitManager;
 class C_Boss;
 class C_SubBoss;
+class C_Shot;
 
 enum class GameMode
 {
@@ -35,8 +36,12 @@ public:
 	//サブボスゲッター
 	std::vector<std::shared_ptr<C_SubBoss>> C_Game::GetSubBoss();
 
+	void SetShot(std::shared_ptr<C_Shot> shot) { m_shot.push_back(shot); }
 
 private:
+
+	//時間カウント
+	float m_time = 0;
 
 	//一回の呼出し回数
 	static const int OnecountNum = 10;
@@ -51,6 +56,9 @@ private:
 
 	//解放処理
 	void Release()override;
+
+	//弾
+	std::vector<std::shared_ptr<C_Shot>> m_shot;
 
 	//Ui
 	std::shared_ptr<C_GameUi> m_gameui=nullptr;

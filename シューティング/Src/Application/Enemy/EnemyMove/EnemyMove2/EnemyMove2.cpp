@@ -7,7 +7,7 @@
 #include"Application/Input/Input.h"
 #include"../../../Skill/SkillManager.h"
 #include"../../../Hit/HitManager.h"
-
+#include"../../../Scenes/Game/Game.h"
 void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i)
 {
 	//ステータス
@@ -21,11 +21,6 @@ void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::sha
 	//プレイヤーのインスタンス
 	m_player = move(player);
 
-	m_shot = std::make_shared<C_Shot>();
-	if (auto hm = m_hitmanager.lock())
-	{
-		m_shot->SetHitManager(hm);
-	}
 	//アニメーション用
 	m_anim = { 0,0 };
 
@@ -145,11 +140,21 @@ void C_EnemyMove2::Update()
 		{
 			float keep = m_shotangle;
 
-			m_shotangle += DirectX::XMConvertToRadians(i * 45);
-			m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-				m_pos, m_shotangle,6);
+			auto s = std::make_shared<C_Shot>();
+			auto o = m_owner.lock();
+			auto hm = m_hitmanager.lock();
 
-			m_shotangle = keep;
+			m_shotangle += DirectX::XMConvertToRadians(i * 45);
+
+			if (o && s && hm)
+			{
+				s->SetHitManager(hm);
+				s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+					m_pos, m_shotangle, 6);
+
+				o->SetShot(s);
+				m_shotangle = keep;
+			}
 		}
 
 		m_stopcount = m_stopcountmax;
@@ -183,14 +188,10 @@ void C_EnemyMove2::Update()
 		m_alive = false;
 	}
 
-	m_shot->Update();
-
 	m_mat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
 }
 void C_EnemyMove2::Draw()
 {
-	m_shot->Draw();
-
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
 	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_tex,0,0,&Math::Rectangle(0,0,m_rect.x,m_rect.y), &m_color);
 	

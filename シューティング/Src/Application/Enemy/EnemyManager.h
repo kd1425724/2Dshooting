@@ -12,6 +12,8 @@ enum class UseType;
 class C_Boss;
 class C_SubBoss;
 
+class C_Game;
+
 enum class EnemyType
 {
 	enemy3,
@@ -69,7 +71,12 @@ public:
 	//サブボスゲッター
 	std::vector<std::shared_ptr<C_SubBoss>> GetSubBoss() { return m_subbosss; }
 
+	void SetOwner(std::shared_ptr<C_Game> owner) { m_owner = owner; }
+
 private:
+
+	//オーナー
+	std::weak_ptr<C_Game> m_owner;
 
 	//解放処理
 	void Release();

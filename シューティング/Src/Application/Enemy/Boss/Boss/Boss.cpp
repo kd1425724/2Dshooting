@@ -4,6 +4,8 @@
 #include"../../../Common/CommonAPI.h"
 #include"../../../Hit/HitManager.h"
 #include"../../../Info.h"
+#include"../../../Scenes/Game/Game.h"
+
 void C_Boss::Init()
 {
 	m_enemytype = EnemySType::Boss;
@@ -19,11 +21,6 @@ void C_Boss::Init()
 	m_skilltype = SkillType::None;
 
 
-	m_shot = std::make_shared<C_Shot>();
-	if (auto hm = m_hitmanager.lock())
-	{
-		m_shot->SetHitManager(hm);
-	}
 	//アニメーション用
 	m_anim = { 0,0 };
 
@@ -232,9 +229,6 @@ void C_Boss::LoopUpdate()
 	default:
 		break;
 	}
-
-	m_shot->Update();
-
 }
 
 void C_Boss::LoopDraw()
@@ -256,8 +250,6 @@ void C_Boss::LoopDraw()
 	default:
 		break;
 	}
-
-	m_shot->Draw();
 }
 
 void C_Boss::DeathUpdate()
@@ -283,6 +275,10 @@ void C_Boss::DeathDraw()
 
 void C_Boss::NoneInit(BossActionPattern pattern)
 {
+	if (auto sm = m_skillmanager.lock())
+	{
+		sm->SetEnemySkill(SkillType::EnemyGenerate, shared_from_this());
+	}
 	m_actionpattern = BossActionPattern::None;
 	m_nextactionpattern = pattern;
 	m_nonetime = NoneTime;
@@ -382,7 +378,12 @@ void C_Boss::p4_SpiralUpdate()
 		{
 			float angle = m_spiralshotangle + DirectX::XM_2PI * i / count;
 
-			m_shot->ShotManager(
+			auto s = std::make_shared<C_Shot>();
+			auto hm = m_hitmanager.lock();
+			auto o = m_owner.lock();
+
+			s->SetHitManager(hm);
+			s->ShotManager(
 				ShotType::EnemyNormalShot,
 				ShotTextureType::Bolt,
 				{ 4,0 },
@@ -391,6 +392,8 @@ void C_Boss::p4_SpiralUpdate()
 				angle,
 				7
 			);
+
+			o->SetShot(s);
 		}
 	
 		m_spiralshotinterval = SpiralShotInterval;

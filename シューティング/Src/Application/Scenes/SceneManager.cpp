@@ -10,7 +10,7 @@ C_SceneManager::~C_SceneManager()
 
 void C_SceneManager::Init()
 {
-    scenes.push(CreateScene(SceneType::Game));
+    scenes.push(CreateScene(SceneType::Result));
     scenes.top()->Init();
 }
 
@@ -19,6 +19,8 @@ void C_SceneManager::Update()
     //‹ó‚¶‚á‚È‚¯‚ê‚Î
     if (!scenes.empty())
     {
+        if (FEED.GetFeedState() == FeedOut)return;
+
         scenes.top()->Update();
     }
 }

@@ -7,6 +7,7 @@
 #include"../../Player/Player.h"
 #include"../../Enemy/Boss/Boss/Boss.h"
 #include"../../Enemy/Boss/SubBoss/SubBoss.h"
+#include"../../Scenes/SceneManager.h"
 
 void C_GameUi::Init()
 {
@@ -174,7 +175,7 @@ void C_GameUi::ScoreHUDUpdate()
 void C_GameUi::ScoreHUDDraw()
 {
 	//スコア表示
-	COMMONAPI.NumDraw(100, {-290,290}, {0.3f,0.5f}, 10);
+	COMMONAPI.NumDraw(SCENEMANAGER.GetScore(), {-290,290}, {0.3f,0.5f}, 10);
 
 	Math::Matrix s = Math::Matrix::CreateScale(m_scorescale.x, m_scorescale.y, 1);
 	Math::Matrix t = Math::Matrix::CreateTranslation(m_scorepos.x, m_scorepos.y, 0);

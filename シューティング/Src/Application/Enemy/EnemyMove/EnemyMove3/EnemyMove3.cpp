@@ -7,6 +7,7 @@
 #include"../../../Skill/SkillManager.h"
 #include"../../../Skill/SkillBase.h"
 #include"../../../Hit/HitManager.h"
+#include"../../../Scenes/Game/Game.h"
 
 void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 {
@@ -16,11 +17,6 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 	//ステータス
 	m_hp = 20;
 
-	m_shot = std::make_shared<C_Shot>();
-	if (auto hm = m_hitmanager.lock())
-	{
-		m_shot->SetHitManager(hm);
-	}
 	//スキル初期化
 	//m_skillmanager = nullptr;
 	m_skilltype = SkillType::None;
@@ -141,15 +137,31 @@ void C_EnemyMove3::Update()
 		{
 			if (m_shotinterval <= 0)
 			{
+				auto o = m_owner.lock();
+				auto s = std::make_shared<C_Shot>();
+				auto hm = m_hitmanager.lock();
+
 				switch (m_usetype)
 				{
 				case UseType::Player:
-					m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-						m_pos, { m_pos.x + 100,m_pos.y }, 6);
+
+					if (s&&hm&&o)
+					{
+						s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+							m_pos, { m_pos.x + 100,m_pos.y }, 6);
+						s->SetHitManager(hm);
+
+						o->SetShot(s);
+					}
 					break;
 				case UseType::Enemy:
-					m_shot->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-						m_pos, { m_pos.x - 100,m_pos.y }, 6);
+					if (s && hm && o)
+					{
+						s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+							m_pos, { m_pos.x - 100,m_pos.y }, 6);
+						s->SetHitManager(hm);
+						o->SetShot(s);
+					}
 					break;
 				default:
 					break;
@@ -174,9 +186,7 @@ void C_EnemyMove3::Update()
 		break;
 	}
 
-	//弾更新
-	m_shot->Update();
-
+	
 	//死亡演出じゃなかったら
 	if (m_inherentmove != InherentMove3::Death)
 	{
@@ -219,9 +229,6 @@ void C_EnemyMove3::Update()
 
 void C_EnemyMove3::Draw()
 {
-	//弾描画
-	m_shot->Draw();
-
 	if (m_inherentmove == InherentMove3::Death)
 	{
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);

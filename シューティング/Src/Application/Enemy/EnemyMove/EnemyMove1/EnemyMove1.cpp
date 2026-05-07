@@ -6,11 +6,15 @@
 #include"Application/Info.h"
 #include"../../../Skill/SkillManager.h"
 #include"../../../Hit/HitManager.h"
+#include"../../../Scenes/SceneManager.h"
+#include"../../../Scenes/Game/Game.h"
 
 void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::shared_ptr<C_Player> player,int i)
 {
 	//ステータス
-	m_hp = 20;
+	m_hp =1 ;
+	m_score = 10000;
+
 
 	//スキル初期化
 	//m_skillmanager = nullptr;
@@ -19,12 +23,9 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	//プレイヤーのインスタンス
 	m_player = player;
 
-	m_shot = std::make_shared<C_Shot>();
-
 	if (auto hm = m_hitmanager.lock())
 	{
 		hm->SetEnemy(shared_from_this());
-		m_shot->SetHitManager(hm);
 	}
 	//アニメーション用
 	m_anim = { 0,0 };
@@ -100,17 +101,24 @@ void C_EnemyMove1::Update()
 	{
 		if (m_shotinterval <= 0)
 		{
-			if (auto p = m_player.lock())
+			auto hm = m_hitmanager.lock();
+			auto s = std::make_shared<C_Shot>();
+			auto o = m_owner.lock();
+			if (o && hm && s)
 			{
-				m_shot->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-					m_pos, p->GetPos(), 6);//{ m_pos.x,m_pos.y - 100 });
+
+
+				if (auto p = m_player.lock())
+				{
+					s->SetHitManager(hm);
+					s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+						m_pos, p->GetPos(), 6);//{ m_pos.x,m_pos.y - 100 });
+					o->SetShot(s);
+				}
 			}
 			m_shotinterval = m_shotintervaltime;
 		}
 	}
-
-	//弾更新
-	m_shot->Update();
 
 	//発射間隔減少
 	if (m_shotinterval > 0)
@@ -145,6 +153,7 @@ void C_EnemyMove1::Update()
 	if (m_hp <= 0)
 	{
 		m_alive = false;
+		SCENEMANAGER.SetScore(m_score);
 	}
 
 	//移動
@@ -158,9 +167,6 @@ void C_EnemyMove1::Update()
 
 void C_EnemyMove1::Draw()
 {
-	//弾描画
-	m_shot->Draw();
-
 	//発生中なら
 	if (m_alive)
 	{

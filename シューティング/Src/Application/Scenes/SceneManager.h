@@ -47,11 +47,18 @@ public:
 
 	std::shared_ptr<Score> GetScoreData(){return m_scoredata;}
 
+	void SetScore(int value) { m_score += value; }
+
+	int GetScore() { return m_score; }
+
 private:
 
 	std::stack<std::shared_ptr<C_SceneBase>> scenes;
 
 	std::shared_ptr<Score> m_scoredata = std::make_shared<Score>();
+
+	//スコア用
+	int m_score = 0;
 
 
 //シングルトン
