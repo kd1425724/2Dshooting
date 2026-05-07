@@ -84,6 +84,7 @@ void C_Input::PlayerKeyLoad()
 
 		//デフォルトキーセット
 		PlayerDefaultKeySet();
+
 	}
 }
 

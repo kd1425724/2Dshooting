@@ -58,7 +58,7 @@ void C_Laser::SkillActivate()
 
     if (auto p = m_player.lock())
     {
-        m_start = { p->GetPos().x + p->GetSize().x,p->GetPos().y };
+        m_start = { p->GetPos().x + p->GetSize().x + 40,p->GetPos().y };
 
         // 右方向
         m_dir = { 1.0f, 0.0f };
@@ -103,11 +103,12 @@ void C_Laser::Update()
     // 発射位置を追従させる
     if (m_usetype == UseType::Player &&p)
     {
-        m_start = { p->GetPos().x + p->GetSize().x,p->GetPos().y };
+        m_start = { p->GetPos().x + p->GetSize().x+40,p->GetPos().y };
     }
     else if (m_usetype == UseType::Enemy && e)
     {
-        m_start = e->GetPos();
+        m_start.x = e->GetPos().x - 100;
+        m_start.y = e->GetPos().y;
     }
 
     // レーザーを伸ばす
@@ -155,7 +156,7 @@ void C_Laser::Update()
     Math::Matrix rot = Math::Matrix::CreateRotationZ(angle);
 
     // ※平行移動はDrawで1本ずつやる
-    m_mat =m_scalemat*  rot;
+    m_mat = m_scalemat * rot;
 }
 
 void C_Laser::Draw()

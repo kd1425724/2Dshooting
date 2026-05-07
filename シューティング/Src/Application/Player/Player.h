@@ -19,6 +19,10 @@ public:
 	void Update();
 	void Draw();
 
+	void ResultInit();
+	void ResultUpdate();
+	void ResultDraw();
+
 	void Release();
 
 	void ImGui();

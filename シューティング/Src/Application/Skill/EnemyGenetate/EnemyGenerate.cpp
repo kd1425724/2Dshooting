@@ -38,7 +38,7 @@ void C_EnemyGenerate::SkillActivate()
 
 	if (p&&em)
 	{
-		em->SkillEnemySpworn(p->GetPos(), m_usetype);
+		em->SkillEnemySpworn(p->GetPos(), m_usetype,EnemyMoveType::Type3);
 	}
 
 	m_finished = true;
@@ -53,6 +53,6 @@ void C_EnemyGenerate::EnemySkillActivate()
 
 	if (e && em)
 	{
-		em->SkillEnemySpworn(e->GetPos(), m_usetype);
+		em->SkillEnemySpworn(e->GetPos(), m_usetype,EnemyMoveType::Type1);
 	}
 }

@@ -3,7 +3,7 @@
 
 class C_ResultUi;
 
-class C_Result:public C_SceneBase
+class C_Result:public C_SceneBase, public std::enable_shared_from_this<C_Result>
 {
 public:
 	C_Result(){}
@@ -14,10 +14,8 @@ public:
 	void Draw()override;
 
 private:
-
-	
 	void Release()override;
-
+	
 	std::shared_ptr<C_ResultUi> m_resultui;
 
 };

@@ -326,7 +326,7 @@ void C_EnemyManager::BossSpworn()
 	m_enemys.push_back(m_boss);
 }
 
-void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type)
+void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveType movetype)
 {
 	switch (type)
 	{
@@ -347,21 +347,94 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type)
 		}
 		break;
 	case UseType::Enemy:
-		for (int i = 0; i < 4; i++)
+
+		switch (movetype)
 		{
-			m_enemys.emplace_back(std::make_shared<C_EnemyMove3>());
+		case EnemyMoveType::Type1:
+			for (int i = 0; i < 3; i++)
+			{
+ 				m_enemys.emplace_back(std::make_shared<C_EnemyMove1>());
+
+				m_enemys.back()->SetHitManager(m_hitmanager);
+				m_enemys.back()->SetSkillManager(m_skillmanager);
+
+				m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
+					{ 64,64 }, { 0,0 });
+
+				m_enemys.back()->Init(PosPattern::Pattern1, MovePattern::Pattern1,
+					m_player, i);
+
+				m_enemys.emplace_back(std::make_shared<C_EnemyMove1>());
+
+				m_enemys.back()->SetHitManager(m_hitmanager);
+				m_enemys.back()->SetSkillManager(m_skillmanager);
+
+				m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
+					{ 64,64 }, { 0,0 });
+
+
+				m_enemys.back()->Init(PosPattern::Pattern2, MovePattern::Pattern1,
+					m_player, i);
+
+				m_enemys.emplace_back(std::make_shared<C_EnemyMove1>());
+
+				m_enemys.back()->SetHitManager(m_hitmanager);
+				m_enemys.back()->SetSkillManager(m_skillmanager);
+
+				m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
+					{ 64,64 }, { 0,0 });
+
+
+				m_enemys.back()->Init(PosPattern::Pattern3, MovePattern::Pattern4,
+					m_player, i);
+
+				m_enemys.emplace_back(std::make_shared<C_EnemyMove1>());
+
+				m_enemys.back()->SetHitManager(m_hitmanager);
+				m_enemys.back()->SetSkillManager(m_skillmanager);
+
+				m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
+					{ 64,64 }, { 0,0 });
+
+				m_enemys.back()->Init(PosPattern::Pattern4, MovePattern::Pattern5,
+					m_player, i);
+
+
+			}
+			break;
+		case EnemyMoveType::Type2:
+			m_enemys.emplace_back(std::make_shared<C_EnemyMove2>());
+
 			m_enemys.back()->SetHitManager(m_hitmanager);
 			m_enemys.back()->SetSkillManager(m_skillmanager);
 
 			m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
 				{ 64,64 }, { 0,0 });
-			m_enemys.back()->SetMoveTex(&m_enemy3movetex);
-			m_enemys.back()->SetEngineTex(&m_enemy3enginetex);
-			m_enemys.back()->SetDeathTex(&m_enemy3deathtex);
 
-			m_enemys.back()->Init(pos, type, i);
+			m_enemys.back()->Init(PosPattern::Pattern2,MovePattern::Pattern1,
+				m_player, NULL);
 
-		
+			break;
+		case EnemyMoveType::Type3:
+			for (int i = 0; i < 4; i++)
+			{
+				m_enemys.emplace_back(std::make_shared<C_EnemyMove3>());
+				m_enemys.back()->SetHitManager(m_hitmanager);
+				m_enemys.back()->SetSkillManager(m_skillmanager);
+
+				m_enemys.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
+					{ 64,64 }, { 0,0 });
+				m_enemys.back()->SetMoveTex(&m_enemy3movetex);
+				m_enemys.back()->SetEngineTex(&m_enemy3enginetex);
+				m_enemys.back()->SetDeathTex(&m_enemy3deathtex);
+
+				m_enemys.back()->Init(pos, type, i);
+
+
+			}
+			break;
+		default:
+			break;
 		}
 		break;
 	default:

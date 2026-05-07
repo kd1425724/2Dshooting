@@ -16,11 +16,12 @@ enum class ShotType
 enum class ShotTextureType
 {
 	Bolt,
-
+	Pulse,
 };
 
 struct Shot : public std::enable_shared_from_this<Shot>
 {
+	KdTexture* tex;
 	//座標
 	Math::Vector2 pos = {0,0};
 	//移動量
@@ -44,6 +45,7 @@ struct Shot : public std::enable_shared_from_this<Shot>
 	float angle = 0;
 	//テクスチャ設定セット
 	void SetTextureSetting(ShotTextureType type);
+	void SetTexture(KdTexture* _tex) { tex = _tex; }
 	float texangle=0;
 
 	//アニメーション用
@@ -111,11 +113,8 @@ private:
 	std::shared_ptr<C_HitManager> m_hitmanager;
 
 	//弾テクスチャ一覧
-	//入れ物
-	KdTexture m_tex;
-	KdTexture* m_bolttex;
-
-	void SetTexture(ShotTextureType type);
+	KdTexture m_bolttex;
+	KdTexture m_pulsetex;
 
 	//通常ショット（弾一発）
 	vector<std::shared_ptr<Shot>> m_normalshot;
@@ -127,4 +126,5 @@ private:
 	void NormalShotUpdate();
 	void NormalShotDraw();
 
+	KdTexture* SetTextureType(ShotTextureType type);
 };

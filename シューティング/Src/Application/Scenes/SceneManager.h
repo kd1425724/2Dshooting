@@ -8,11 +8,26 @@ enum class SceneType
 	Result	//リザルト
 };
 
+struct Score
+{
+	//スコア保存用
+	//クリア
+	bool clear = false;
+	//スコア
+	int score = 0;
+	//残機
+	int playerlife = 0;
+	//時間
+	int time = 0;
+};
+
+
 class C_SceneManager
 {
 public:
 	~C_SceneManager();
 
+	void Init();
 	void Update();
 	void Draw();
 
@@ -28,20 +43,23 @@ public:
 	//push関数で使ってる
 	std::shared_ptr<C_SceneBase> CreateScene(SceneType type);
 
+	void SetScoreData(std::shared_ptr<Score> data){m_scoredata = data;}
+
+	std::shared_ptr<Score> GetScoreData(){return m_scoredata;}
+
 private:
 
 	std::stack<std::shared_ptr<C_SceneBase>> scenes;
 
-	
+	std::shared_ptr<Score> m_scoredata = std::make_shared<Score>();
 
 
 //シングルトン
 private:
 	
-	C_SceneManager() 
+	C_SceneManager()
 	{
-		scenes.push(CreateScene(SceneType::Game));
-		scenes.top()->Init();
+	
 	}
 
 public:

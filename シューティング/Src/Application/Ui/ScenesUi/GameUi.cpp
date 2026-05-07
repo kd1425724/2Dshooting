@@ -273,6 +273,8 @@ void C_GameUi::LifeDraw()
 
 void C_GameUi::HPBarInit()
 {
+	m_BOSSTexttex.Load("Texture/Ui/Font/BOSS.png");
+
 	m_hpbarrect = {0,0, 980,20 };
 	m_hpbarframerect = { 0,0,1040,30 };
 
@@ -329,6 +331,20 @@ void C_GameUi::HPBarUpdate()
 
 void C_GameUi::HPBarDraw()
 {
+	//ボステキスト
+	{
+		Math::Vector2 pos = { 210,300 };
+		Math::Vector2 scale = {0.6f,0.6f};
+
+		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		Math::Matrix mat = s * t;
+	
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		Math::Rectangle rect = { 0,0,480,100 };
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_BOSSTexttex, rect, 1.0f);
+	}
+
 	auto o = m_owner.lock();
 
 	if (o)

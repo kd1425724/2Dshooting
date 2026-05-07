@@ -8,6 +8,12 @@ C_SceneManager::~C_SceneManager()
 {
 }
 
+void C_SceneManager::Init()
+{
+    scenes.push(CreateScene(SceneType::Game));
+    scenes.top()->Init();
+}
+
 void C_SceneManager::Update()
 {
     //‹ó‚¶‚á‚È‚¯‚ê‚Î
@@ -21,6 +27,8 @@ void C_SceneManager::Draw()
     //‹ó‚¶‚á‚È‚¯‚ê‚Î
     if (!scenes.empty())
     {
+        scenes.top()->Draw();
+
         scenes.top()->Draw();
     }
 }
@@ -74,13 +82,13 @@ std::shared_ptr<C_SceneBase> C_SceneManager::CreateScene(SceneType type)
 {
     switch (type) {
     case SceneType::Title:
-        return make_unique<C_Title>();
+        return make_shared<C_Title>();
 
     case SceneType::Game:
-        return make_unique<C_Game>();
+        return make_shared<C_Game>();
 
     case SceneType::Result:
-        return make_unique<C_Result>();
+        return make_shared<C_Result>();
 
     default:
         return nullptr;

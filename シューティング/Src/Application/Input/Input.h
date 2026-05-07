@@ -13,11 +13,11 @@ enum class PlayerKeyType
 
 enum class PlayerKeyDefaultType
 {
-	Top			= 'W',			//上移動
-	Bottom		= 'S',			//下移動
-	Left		= 'A',			//左移動
-	Right		= 'D',			//右移動
-	NormalShot	= VK_LBUTTON,	//通常攻撃
+	Top			= VK_UP,		//上移動
+	Bottom		= VK_DOWN,		//下移動
+	Left		= VK_LEFT,		//左移動
+	Right		= VK_RIGHT,		//右移動
+	NormalShot	= VK_SPACE,		//通常攻撃
 	Skill		= 'E',			//スキル
 };
 

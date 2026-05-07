@@ -4,14 +4,13 @@
 
 C_Shot::C_Shot()
 {
-	
+	m_bolttex.Load("Texture/Skill/Attack/Bolt.png");
+	m_pulsetex.Load("Texture/Skill/Attack/Pulse.png");
 }
 
 
 void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum,Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed)
 {
-	SetTexture(a_texturetype);
-
 	switch (a_type)
 	{
 	case ShotType::NormalShot:
@@ -29,8 +28,6 @@ void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Ve
 
 void C_Shot::ShotManager(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed)
 {
-	SetTexture(a_texturetype);
-
 	switch (a_type)
 	{
 	case ShotType::NormalShot:
@@ -53,7 +50,7 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 	case ShotType::NormalShot:
 
 		//画像設定セット
-		SetTextureSetting(a_texturetype);
+		 SetTextureSetting(a_texturetype);
 
 		rect = a_rect;
 		speed = movespeed;
@@ -61,7 +58,7 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		angle = atan2(target.y - pos.y, target.x - pos.x);
 		move.x = cosf(angle) * speed;
 		move.y = sinf(angle) * speed;
-		color = { 1,1,1,1 };
+		color = { 0,1,0,1 };
 		alive = true;
 		scale = { 1,1 };
 
@@ -287,23 +284,11 @@ void C_Shot::Draw()
 	}
 }
 
-void C_Shot::SetTexture(ShotTextureType type)
-{
-	//元画像が何か、画像と元画像角度をセットする
-	switch (type)
-	{
-	case ShotTextureType::Bolt:
-		m_tex.Load("Texture/Skill/Attack/Bolt.png");
-		break;
-	default:
-		break;
-	}
-}
-
 void C_Shot::NormalShotInit(ShotType shottype, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed)
 {
 	m_normalshot.emplace_back(std::make_shared<Shot>());
 	m_normalshot.back()->SetHitManager(m_hitmanager);
+	m_normalshot.back()->SetTexture(SetTextureType(a_texturetype));
 	m_normalshot.back()->Init(shottype, a_texturetype,a_animmaxnum, a_rect, a_pos, target,movespeed);
 }
 
@@ -311,6 +296,7 @@ void C_Shot::NormalShotInit(ShotType shottype, ShotTextureType a_texturetype, Ma
 {
 	m_normalshot.emplace_back(std::make_shared<Shot>());
 	m_normalshot.back()->SetHitManager(m_hitmanager);
+	m_normalshot.back()->SetTexture(SetTextureType(a_texturetype));
 	m_normalshot.back()->Init(shottype, a_texturetype, a_animmaxnum, a_rect, a_pos, a_angle,movespeed);
 
 }
@@ -375,10 +361,23 @@ void C_Shot::NormalShotDraw()
 		if (m_normalshot[i]->alive)
 		{
 			SHADER.m_spriteShader.SetMatrix(m_normalshot[i]->mat);
-			SHADER.m_spriteShader.DrawTex(&m_tex, 0, 0, 
+			SHADER.m_spriteShader.DrawTex(m_normalshot[i]->tex, 0, 0, 
 				&Math::Rectangle((int)m_normalshot[i]->anim.x*m_normalshot[i]->rect.x, (int)m_normalshot[i]->anim.y * m_normalshot[i]->rect.y, m_normalshot[i]->rect.x, m_normalshot[i]->rect.y),
 				&m_normalshot[i]->color);
 		}
+	}
+}
+
+KdTexture* C_Shot::SetTextureType(ShotTextureType type)
+{
+	switch (type)
+	{
+	case ShotTextureType::Bolt:
+		return &m_bolttex;
+	case ShotTextureType::Pulse:
+		return &m_pulsetex;
+	default:
+		break;
 	}
 }
 
@@ -393,6 +392,8 @@ void Shot::SetTextureSetting(ShotTextureType type)
 	case ShotTextureType::Bolt: 
 		angle = TextureAngle::Left;
 		break;
+	case ShotTextureType::Pulse:
+		angle = TextureAngle::Right;
 	default:
 		break;
 	}

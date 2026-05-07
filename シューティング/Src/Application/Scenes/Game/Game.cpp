@@ -147,6 +147,17 @@ void C_Game::Update()
 
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 	{
+		auto s = std::make_shared<Score>();
+		if (s)
+		{
+			s->clear = true;
+			s->playerlife = m_player->GetHp();
+			s->score = 10000;
+			s->time = 0;
+
+			SCENEMANAGER.SetScoreData(s);
+		}
+
 		SCENEMANAGER.push(SceneType::Result, true);
 	}
 }

@@ -1,23 +1,39 @@
 #include "ResultUi.h"
 #include"Application/Common/CommonTexture.h"
+#include"../../Scenes/Result/Result.h"
+#include"../../Common/CommonAPI.h"
+#include"../../Info.h"
+#include"../../Player/Player.h"
+#include"../../Scenes/SceneManager.h"
 
 void C_ResultUi::Init()
 {
 	//背景初期化
 	BackGroundInit();
 
+	ScoreInit();
+
+	StarInit();
+
+	PlayerInit();
 }
 
 void C_ResultUi::Update()
 {
 	//背景更新
 	BackGroundUpdate();
+
+	PlayerUpdate();
 }
 
 void C_ResultUi::Draw()
 {
 	//背景描画
 	BackGroundDraw();
+
+	StarDraw();
+
+	ScoreDraw();
 
 
 }
@@ -43,6 +59,13 @@ void C_ResultUi::BackGroundInit()
 	m_backgroundanim = { 0,0 };
 	//カラー
 	m_backgroundcolor = { 1,1,1,1 };
+
+	//枠
+	m_frametex.Load("Texture/Ui/Result/ResuLtHUD.png");
+
+	m_framepos = { 0,0 };
+	m_framescale = { 4,3 };
+	m_framerect = { 0,0,211,211 };
 }
 void C_ResultUi::BackGroundUpdate()
 {
@@ -59,11 +82,236 @@ void C_ResultUi::BackGroundDraw()
 	BlackBackDraw();
 
 	//背景
-	SHADER.m_spriteShader.SetMatrix(m_backgroundmat);
-	SHADER.m_spriteShader.DrawTex(&m_backgroundtex, 0, 0, &Math::Rectangle((int)m_backgroundanim.x * m_backgroundrect.width, m_backgroundrect.y, m_backgroundrect.width, m_backgroundrect.height), &m_backgroundcolor);
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_backgroundmat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_backgroundtex, 0, 0, &Math::Rectangle((int)m_backgroundanim.x * m_backgroundrect.width, m_backgroundrect.y, m_backgroundrect.width, m_backgroundrect.height), &m_backgroundcolor);
+
+	PlayerDraw();
+
+	//枠
+	{
+		Math::Matrix s = Math::Matrix::CreateScale(m_framescale.x, m_framescale.y, 1);
+		Math::Matrix t = Math::Matrix::CreateTranslation(m_framepos.x, m_framepos.y, 0);
+		Math::Matrix mat = s * t;
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_frametex, m_framerect, 0.7f);
+	}
 }
 
 void C_ResultUi::Release()
 {
 	m_backgroundtex.Release();
+}
+
+void C_ResultUi::ScoreInit()
+{
+	m_CrearTextTex.Load("Texture/Ui/Font/CLEAR.png");
+	m_ScoreTextTex.Load("Texture/Ui/Font/SCORE.png");
+	m_LifeTextTex.Load("Texture/Ui/Font/LIFE.png");
+	m_TimeTextTex.Load("Texture/Ui/Font/TIME.png");
+	m_TotalTextTex.Load("Texture/Ui/Font/TOTAL.png");
+	
+	//スコア代入
+	auto s = SCENEMANAGER.GetScoreData();
+
+	if (!s)
+	{
+		return;
+	}
+	int score = s->score;
+	int clear = 0;
+	if (s->clear)
+	{
+		clear = 1000000;
+	}
+	int lifescore = s->playerlife * PlayerLifeUpNum;
+	int time = s->time;
+	int total = score+ clear + lifescore + time;
+	//星の数制御用
+	//５０万ずつ引く
+	//５０万以下になるかm_pickupstarnumが３になるまでループ
+	while (total >= StarControlNum && m_pickstarnum < StarNum)
+	{
+		m_pickstarnum++;
+
+		total -= StarControlNum;
+	}
+
+}
+
+
+void C_ResultUi::ScoreDraw()
+{
+	Math::Rectangle rect = { 0,0,480,100 };
+
+	//テキスト
+	{
+		Math::Vector2 scale = { 0.3f,0.3f };	
+		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		//クリア
+		{
+			Math::Vector2 pos = { -300,00 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_CrearTextTex, rect, 1.0f);
+		}
+
+		//スコア
+		{
+			Math::Vector2 pos = { -200,200 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_ScoreTextTex, rect, 1.0f);
+		}
+
+		//ライフ
+		{
+			Math::Vector2 pos = { -300,400 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_LifeTextTex, rect, 1.0f);
+		}
+
+		//タイム
+		{
+			Math::Vector2 pos = { -300,400 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TimeTextTex, rect, 1.0f);
+		}
+	}
+
+	//トータル
+	{
+		Math::Vector2 scale = { 0.5f,0.5f };
+		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+
+		Math::Vector2 pos = { -300,400 };
+		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+
+		Math::Matrix mat = s * t;
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TotalTextTex, rect, 1.0f);
+	}
+
+	//数字描画
+	{
+		//スコア代入
+		auto s = SCENEMANAGER.GetScoreData();
+
+		if (!s)
+		{
+			return;
+		}
+		//スコア計算
+		int score = s->score;
+		int clear = 0;
+		if (s->clear)
+		{
+			clear = 1000000;
+		}
+		int lifescore = s->playerlife * PlayerLifeUpNum;
+		int time = s->time;
+		int total = score + clear + lifescore + time;
+
+		//描画
+		Math::Vector2 numscale = { 0.3f,0.4f };
+		COMMONAPI.NumDraw(score, { 0,200 }, numscale, 10);
+		COMMONAPI.NumDraw(lifescore, { 0,100 }, numscale, 10);
+		COMMONAPI.NumDraw(time, { 0,0 }, numscale, 10);
+		COMMONAPI.NumDraw(total, { 0,-100 }, numscale, 10);
+	}
+}
+
+void C_ResultUi::StarInit()
+{
+	m_startex.Load("Texture/Ui/Result/Star.png");
+	m_starframetex.Load("Texture/Ui/Result/StarFrame.png");
+
+	m_starstartpos = { 0,0 };
+	m_starscale = { 0.3,0.3 };
+}
+void C_ResultUi::StarDraw()
+{
+
+	Math::Rectangle rect = { 0,0,292,280 };
+
+
+	for (int i = 0; i < StarNum; i++)
+	{
+		Math::Vector2 pos;
+
+		pos.x = m_starstartpos.x + (i * 100);
+		pos.y = m_starstartpos.y + ((int)(i % 2) * 30);
+
+		Math::Matrix s = Math::Matrix::CreateScale(m_starscale.x, m_starscale.y, 1);
+		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		Math::Matrix mat = s * t;
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_starframetex, rect, 1.0f);
+	}
+
+	for (int i = 0; i < m_pickstarnum; i++)
+	{
+		Math::Vector2 pos;
+
+		pos.x = m_starstartpos.x + (i * 100);
+		pos.y = m_starstartpos.y + ((int)(i % 2) * 30);
+
+		Math::Matrix s = Math::Matrix::CreateScale(m_starscale.x, m_starscale.y, 1);
+		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		Math::Matrix mat = s * t;
+		
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_startex, rect, 1.0f);
+	}
+}
+
+void C_ResultUi::PlayerInit()
+{
+	m_player = std::make_shared<C_Player>();
+	
+	//プレイヤーエンジン
+	std::shared_ptr<KdTexture> playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_01.png");
+	m_playerenginetexs.push_back(playerenginetex);
+	playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_02.png");
+	m_playerenginetexs.push_back(playerenginetex);
+	playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_03.png");
+	m_playerenginetexs.push_back(playerenginetex);
+
+	m_player->SetEngineTex(m_playerenginetexs);
+
+	m_player->ResultInit();
+}
+
+void C_ResultUi::PlayerUpdate()
+{
+	m_player->ResultUpdate();
+
+}
+
+void C_ResultUi::PlayerDraw()
+{
+	m_player->ResultDraw();
 }

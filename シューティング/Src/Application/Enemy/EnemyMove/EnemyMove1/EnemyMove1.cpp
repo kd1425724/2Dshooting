@@ -17,7 +17,7 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	m_skilltype = SkillType::None;
 
 	//プレイヤーのインスタンス
-	m_player = move(player);
+	m_player = player;
 
 	m_shot = std::make_shared<C_Shot>();
 
@@ -52,23 +52,23 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	switch (movepattern)
 	{
 	case MovePattern::Pattern1:
-		m_movespeed = { -4,0 };
+		m_movespeed = { -7,0 };
 		m_move = m_movespeed;
 		break;
 	case MovePattern::Pattern2:
-		m_movespeed = { -4,-1 };
+		m_movespeed = { -7,-1 };
 		m_move = m_movespeed;
 		break;
 	case MovePattern::Pattern3:
-		m_movespeed = { -4,1 };
+		m_movespeed = { -7,1 };
 		m_move = m_movespeed;
 		break;
 	case MovePattern::Pattern4:
-		m_movespeed = { 0,-5 };
+		m_movespeed = { 0,-7 };
 		m_move = m_movespeed;
 		break;
 	case MovePattern::Pattern5:
-		m_movespeed = { 0,5 };
+		m_movespeed = { 0,7 };
 		m_move = m_movespeed;
 		break;
 	default:
@@ -90,11 +90,6 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	m_halfsize = m_rect * m_scale / 2;
 	m_radius = m_rect.x * m_scale.x / 2;
 
-	//当たり判定管理に渡す
-	if (auto hm = m_hitmanager.lock())
-	{
-		hm->SetEnemy(shared_from_this());
-	}
 }
 
 void C_EnemyMove1::Update()
@@ -107,7 +102,7 @@ void C_EnemyMove1::Update()
 		{
 			if (auto p = m_player.lock())
 			{
-				m_shot->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+				m_shot->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
 					m_pos, p->GetPos(), 6);//{ m_pos.x,m_pos.y - 100 });
 			}
 			m_shotinterval = m_shotintervaltime;

@@ -121,6 +121,8 @@ private:
 	void HPBarUpdate();
 	void HPBarDraw();
 
+	KdTexture m_BOSSTexttex;
+
 	Math::Rectangle m_hpbarrect;
 	Math::Rectangle m_hpbarframerect;
 	std::shared_ptr<KdTexture> m_hpbartex;

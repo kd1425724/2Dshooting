@@ -48,7 +48,7 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 		m_texangle = DirectX::XMConvertToRadians(180);
 
 		m_color = { 1,1,1,1 };
-		m_stoppos = { m_pos.x - 40,m_pos.y + 150 - (i * 100) };
+		m_stoppos = { m_pos.x - 200,m_pos.y + 150 - (i * 100) };
 		break;
 	default:
 		break;

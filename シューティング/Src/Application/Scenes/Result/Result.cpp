@@ -7,6 +7,9 @@ void C_Result::Init()
 {
 	m_resultui = std::make_shared<C_ResultUi>();
 
+	//オーナーセット
+	m_resultui->SetOwner(shared_from_this());
+
 	m_resultui->Init();
 }
 
@@ -23,8 +26,6 @@ void C_Result::Update()
 void C_Result::Draw()
 {
 	m_resultui->Draw();
-
-	COMMONAPI.NumDraw(10, { 600,0 }, { 0.5f,0.5f },10);
 }
 
 void C_Result::Release()

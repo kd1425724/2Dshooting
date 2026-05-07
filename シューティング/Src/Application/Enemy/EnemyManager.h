@@ -58,7 +58,7 @@ public:
 	void BossSpworn();
 
 	//スキル敵生成用
-	void SkillEnemySpworn(Math::Vector2 pos,UseType type);
+	void SkillEnemySpworn(Math::Vector2 pos, UseType type, EnemyMoveType movetype = EnemyMoveType::Type3);
 
 	//当たり判定管理セット
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }

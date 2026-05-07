@@ -14,6 +14,8 @@ void Scene::Init()
 	
 	//‰¼
 	INFO.PlayerInfoSave();
+
+	SCENEMANAGER.Init();
 }
 
 void Scene::Update()

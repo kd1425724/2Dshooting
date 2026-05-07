@@ -87,8 +87,6 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale,i
 		num = abs(num);
 	}
 
-	
-
 	// 0ëŒçÙÅi0ÇÃèÍçáÇÕ0ÇÃÇ›ï\é¶Åj
 	if (num == 0)
 	{
@@ -132,7 +130,7 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale,i
 		Math::Rectangle rect = { digits[i] * Srect.width,Srect.y,Srect.width,Srect.height };
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(), 0, 0,
-			&rect);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(),
+			rect,1.0f);
 	}
 }
