@@ -48,6 +48,7 @@ public:
 
 	//I—¹ƒtƒ‰ƒO
 	bool GetFinishedFlg() { return m_finished; }
+	void SetFinishedFlg(bool flg) { m_finished = flg; }
 
 	Math::Vector2 GetPos() { return m_pos; }
 

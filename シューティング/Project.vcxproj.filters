@@ -127,6 +127,12 @@
     <Filter Include="Src\Application\Effect\HitEffect\BoltHitEffect">
       <UniqueIdentifier>{cdea7161-df89-4864-83da-04bc59bbccdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Effect\HitEffect\CopyHitEffet">
+      <UniqueIdentifier>{2536ea83-8500-46e5-a238-69a4ad8b55d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Effect\LaserStartEffect">
+      <UniqueIdentifier>{fc9bc50e-f9d1-416b-ae25-49ef3b8322e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -327,6 +333,12 @@
     <ClInclude Include="Src\Application\Ui\ScenesUi\ResultUi.h">
       <Filter>Src\Application\Ui\ScenesUi</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Effect\HitEffect\CopyHitEffect\CopyHitEffect.h">
+      <Filter>Src\Application\Effect\HitEffect\CopyHitEffet</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Effect\LaserStartEffect\LaserStartEffect.h">
+      <Filter>Src\Application\Effect\LaserStartEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -496,6 +508,12 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Ui\ScenesUi\ResultUi.cpp">
       <Filter>Src\Application\Ui\ScenesUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Effect\HitEffect\CopyHitEffect\CopyHitEffect.cpp">
+      <Filter>Src\Application\Effect\HitEffect\CopyHitEffet</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Effect\LaserStartEffect\LaserStartEffect.cpp">
+      <Filter>Src\Application\Effect\LaserStartEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

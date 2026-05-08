@@ -3,11 +3,14 @@
 #include"Application/Info.h"
 #include"Application/Ui/Feed.h"
 #include"Application/Input/Input.h"
+#include"Effect/EffectManager.h"
 
 void Scene::Init()
 {
 	//フェード処理
 	FEED.FeedInInit(30);
+
+	EFFECTMANAGER.Init();
 
 	//キー初期化
 	Input.Init();

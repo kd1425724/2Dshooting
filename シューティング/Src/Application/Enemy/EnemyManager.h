@@ -16,6 +16,8 @@ class C_Game;
 
 enum class EnemyType
 {
+	enemy1,
+	enemy2,
 	enemy3,
 	SubBoss,
 	Boss
@@ -24,7 +26,8 @@ enum class EnemyMoveType
 {
 	Type1,
 	Type2,
-	Type3
+	Type3,
+	TypeNum
 };
 
 struct Enemy
@@ -94,6 +97,7 @@ private:
 
 	//敵まとめ
 	std::vector<std::shared_ptr<C_EnemyMoveBase>> m_enemys;
+	std::vector<std::shared_ptr<C_EnemyMoveBase>> m_addenemylist;
 	//ボス
 	std::shared_ptr<C_Boss> m_boss;
 	//サブボス
@@ -101,6 +105,7 @@ private:
 
 	//スキル用
 	std::vector<std::shared_ptr<C_EnemyMoveBase>> m_skillenemys;
+	std::vector<std::shared_ptr<C_EnemyMoveBase>> m_addskillenemylist;
 
 	//スキル管理用
 	std::shared_ptr<C_SkillManager> m_skillmanager = nullptr;
@@ -113,12 +118,15 @@ private:
 	//画像セット用
 	KdTexture m_enemytex;
 
+	//敵１用
+	KdTexture m_enemy1tex;
+	KdTexture m_enemy1enginetex;
+	//敵２用
+	KdTexture m_enemy2tex;
+	KdTexture m_enemy2enginetex;
 	//敵３用
 	KdTexture m_enemy3tex;
-	KdTexture m_enemy3movetex;
 	KdTexture m_enemy3enginetex;
-	KdTexture m_enemy3deathtex;
-
 	//サブボス用
 	KdTexture m_subbosstex;
 	KdTexture m_subbossmovetex;

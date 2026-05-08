@@ -9,6 +9,8 @@ void C_BoltHitEffect::Init(Math::Vector2 pos)
 	m_rect = { 32,32 };
 	m_alive = true;
 	m_alpha = 1;
+
+	
 }
 
 void C_BoltHitEffect::Update()
@@ -23,10 +25,6 @@ void C_BoltHitEffect::Update()
 		//èIÇÌÇ¡ÇΩÇÁè¡ãé
 		Kill();
 	}
-	//çsóÒ
-	m_scalemat = Math::Matrix::CreateScale(m_scale);
-	m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
-	m_mat = m_scalemat * m_transmat;
 }
 
 void C_BoltHitEffect::Draw()
@@ -35,6 +33,12 @@ void C_BoltHitEffect::Draw()
 
 	if (tex)
 	{
+		//çsóÒ
+		m_scalemat = Math::Matrix::CreateScale(m_scale);
+		m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
+		m_mat = m_scalemat * m_transmat;
+
+
 		Math::Rectangle rect = { (int)m_anim * (long)m_rect.x,0,(long)m_rect.x,(long)m_rect.y };
 		Math::Color color = { 1,1,1,m_alpha };
 

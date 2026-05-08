@@ -15,13 +15,11 @@ public:
 
 	//画面外判定
 	bool OutOfScreen(Math::Vector2 pos, Math::Vector2 radius);
-	//プレイエリア内判定
-	bool OutOfPlayArea(Math::Vector2 pos, Math::Vector2 radius);
+	
 	//画面外判定
 	bool OutOfScreenPlusMargin(Math::Vector2 pos, Math::Vector2 radius);
-	//プレイエリア内判定
-	bool OutOfPlayAreaPlusMargin(Math::Vector2 pos, Math::Vector2 radius);
-
+	
+	
 	//画像向き調整
 	float GetTextureAngleAdjustment(TextureAngle angle);
 

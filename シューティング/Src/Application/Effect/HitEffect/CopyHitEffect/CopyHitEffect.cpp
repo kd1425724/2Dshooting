@@ -1,19 +1,21 @@
-#include "Explosion.h"
+#include"CopyHitEffect.h"
 
-void C_Explosion::Init(Math::Vector2 pos)
+void C_CopyHitEffect::Init(Math::Vector2 pos)
 {
-	//座標
+	//座標代入
 	m_pos = pos;
-	
-	m_scale = 1.5f;   // 最初小さく
+	m_scale = 2.0f;
 	m_anim = 0;
-	m_rect = { 48,48 };
+	m_rect = { 32,32 };
 	m_alive = true;
 	m_alpha = 1;
+
 }
 
-void C_Explosion::Update()
+void C_CopyHitEffect::Update()
 {
+	// フェードアウト的なこともここでやれる（今は省略）
+
 	//アニメーション用
 	m_anim += 0.3f;
 	//マックス以上になったら,4コマなら4
@@ -21,15 +23,11 @@ void C_Explosion::Update()
 	{
 		//終わったら消去
 		Kill();
-		return;
 	}
-
 }
 
-void C_Explosion::Draw()
+void C_CopyHitEffect::Draw()
 {
-	if (!m_alive)return;
-
 	std::shared_ptr<KdTexture> tex = m_tex.lock();
 
 	if (tex)

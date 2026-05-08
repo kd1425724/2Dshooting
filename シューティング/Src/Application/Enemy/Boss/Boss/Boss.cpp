@@ -11,9 +11,10 @@ void C_Boss::Init()
 	m_enemytype = EnemySType::Boss;
 
 	//ステータス
-	m_maxhp = 1000;
+	m_maxhp = 10000;
 	m_hp = m_maxhp;
 
+	m_score = 10000000;
 
 	//プレイヤーのインスタンス
 	//m_player = move(player);
@@ -25,6 +26,9 @@ void C_Boss::Init()
 	m_anim = { 0,0 };
 
 	m_pos = { 700,0 - (float)INFO.HUDAreaHeight/2 };
+
+	m_moveanim = {};
+	m_moveanimmaxnum = { 30,0 };
 
 	//移動量
 
@@ -73,8 +77,8 @@ void C_Boss::Init()
 	m_spiralshotinterval = 0;
 
 	//半径
-	m_halfsize = m_rect * m_scale / 2.5;
-	m_radius = m_rect.x * m_scale.x / 2;
+	m_halfsize = m_rect * m_scale / 3.0;
+	m_radius = m_rect.x * m_scale.x / 3.0;
 
 	//当たり判定
 	//当たり判定管理に渡す
@@ -110,24 +114,24 @@ void C_Boss::Update()
 	
 	if (m_pattern != Pattern::Death)
 	{
-	//アニメーション用
-	m_anim.x += 0.1f;
-	//マックス以上になったら,4コマなら4
-	if (m_anim.x >= m_animmaxnum.x)
-	{
-		m_anim.x = 0;
+		//アニメーション用
+		m_anim.x += 0.1f;
+		//マックス以上になったら,4コマなら4
+		if (m_anim.x >= m_animmaxnum.x)
+		{
+			m_anim.x = 0;
+			if (m_animmaxnum.y != 0)
+			{
+				m_anim.y++;
+			}
+		}
 		if (m_animmaxnum.y != 0)
 		{
-			m_anim.y++;
+			if (m_anim.y > m_animmaxnum.y)
+			{
+				m_anim = { 0,0 };
+			}
 		}
-	}
-	if (m_animmaxnum.y != 0)
-	{
-		if (m_anim.y > m_animmaxnum.y)
-		{
-			m_anim = { 0,0 };
-		}
-	}
 
 
 		//エンジンアニメーション用
@@ -173,7 +177,7 @@ void C_Boss::Draw()
 		break;
 	}
 
-	if (m_pattern != Pattern::Death)
+	if (m_pattern != Pattern::Death&&!m_moveflg)
 	{
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_tex, 0, 0,
@@ -250,6 +254,24 @@ void C_Boss::LoopDraw()
 	default:
 		break;
 	}
+
+	if (m_moveflg)
+	{
+		//行動アニメーション用
+		m_moveanim.x += 0.2f;
+		//マックス以上になったら,4コマなら4
+		if (m_moveanim.x >= m_moveanimmaxnum.x)
+		{
+			m_moveanim.x = 0;
+			m_moveflg = false;
+		}
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
+		//行動中
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_movetex, 0, 0,
+			&Math::Rectangle((int)m_moveanim.x * m_rect.x, (int)m_moveanim.y * m_rect.y, m_rect.x, m_rect.y),
+			&m_color);
+	}
 }
 
 void C_Boss::DeathUpdate()
@@ -275,6 +297,7 @@ void C_Boss::DeathDraw()
 
 void C_Boss::NoneInit(BossActionPattern pattern)
 {
+	m_moveflg = false;
 	if (auto sm = m_skillmanager.lock())
 	{
 		sm->SetEnemySkill(SkillType::EnemyGenerate, shared_from_this());
@@ -332,6 +355,7 @@ void C_Boss::NoneUpdate()
 	m_nonetime--;
 	if (m_nonetime < 0)
 	{
+		m_moveflg = true;
 		SetActionPattern(GetRandomPatternExclude(m_nextactionpattern));
 	}
 }

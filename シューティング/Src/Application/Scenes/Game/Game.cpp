@@ -21,8 +21,6 @@ std::vector<std::shared_ptr<C_SubBoss>> C_Game::GetSubBoss()
 
 void C_Game::Init()
 {
-	EFFECTMANAGER.Init();
-
 	//Ui
 	m_gameui =std::make_shared<C_GameUi>();
 
@@ -149,9 +147,6 @@ void C_Game::Update()
 		{
 			//5秒分セット
 			m_JudgmentTime = m_JudgmentCoolTime;
-
-			//5秒ごとに敵生成
-			//SpwornMnager();
 		}
 	}
 
@@ -179,7 +174,7 @@ void C_Game::Update()
 		return;
 	}
 
-	if (!m_player->GetAlive() ||
+	/*if (!m_player->GetAlive() ||
 		!m_enemymanager->GetBoss())
 	{
 		auto s = std::make_shared<Score>();
@@ -202,7 +197,7 @@ void C_Game::Update()
 
 		SCENEMANAGER.push(SceneType::Result, true);
 		return;
-	}
+	}*/
 }
 
 void C_Game::Draw()
@@ -225,18 +220,21 @@ void C_Game::Draw()
 	//プレイヤー描画
 	m_player->Draw();
 
-	//エフェクト描画
-	EFFECTMANAGER.Draw();
-
+	
 	//スキル描画（プレイヤーや敵の上に描画されるもの）
 	m_skillmanager->TopDraw();
 
 	//当たり判定描画
 	m_hitmanager->Draw();
 
+	//エフェクト描画
+	EFFECTMANAGER.Draw();
 
-	//Ui「最後」
+	//最後
+	//Ui
 	m_gameui->Draw();
+
+	EFFECTMANAGER.IsTopDraw();
 }
 
 void C_Game::ImGui()

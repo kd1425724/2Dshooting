@@ -3,6 +3,7 @@
 #include "../../Player/Player.h"
 #include"../../Common/CommonAPI.h"
 #include"../../Hit/HitManager.h"
+#include"../../Effect/EffectManager.h"
 C_Laser::C_Laser()
 {
     m_length = 0.0f;
@@ -40,12 +41,12 @@ void C_Laser::Init()
 void C_Laser::SkillActivate()
 {
     // プレイヤー用レーザー発動
-  
+   
     m_launchtime = LaunshTime;
     m_scale = { 2,2 };
     m_alive = true;
     m_length = 0.0f;
-    m_color = { 0.2,0.7,1,1 };
+    m_color = { 0,0.8,0,1 };
 
     //太さ
     m_thick = m_rect.x * m_scale.x;
@@ -58,7 +59,8 @@ void C_Laser::SkillActivate()
 
     if (auto p = m_player.lock())
     {
-        m_start = { p->GetPos().x + p->GetSize().x + 40,p->GetPos().y };
+        EFFECTMANAGER.AddEffect(EffectType::LaserStartGreen, { p->GetPos().x + 20,p->GetPos().y});
+        m_start = { p->GetPos().x + p->GetSize().x + 80,p->GetPos().y };
 
         // 右方向
         m_dir = { 1.0f, 0.0f };
@@ -86,6 +88,7 @@ void C_Laser::EnemySkillActivate()
 
     if (auto e = m_enemy.lock())
     {
+        EFFECTMANAGER.AddEffect(EffectType::LaserStartRed, { e->GetPos().x - e->GetSize().x,e->GetPos().y});
         m_start = e->GetPos();
 
         // 左方向
@@ -103,7 +106,7 @@ void C_Laser::Update()
     // 発射位置を追従させる
     if (m_usetype == UseType::Player &&p)
     {
-        m_start = { p->GetPos().x + p->GetSize().x+40,p->GetPos().y };
+        m_start = { p->GetPos().x + p->GetSize().x+80,p->GetPos().y };
     }
     else if (m_usetype == UseType::Enemy && e)
     {

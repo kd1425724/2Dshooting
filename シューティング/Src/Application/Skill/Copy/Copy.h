@@ -28,4 +28,6 @@ private:
 	std::shared_ptr<C_Shot> m_shot;
 
 	std::weak_ptr<C_HitManager> m_hitmanager;
+
+	int m_time;
 };

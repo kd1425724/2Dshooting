@@ -6,6 +6,8 @@
 #include"../Skill/Barrier/Barrier.h"
 #include"../Effect/EffectManager.h"
 #include"../Skill/SkillManager.h"
+#include"../Scenes/SceneManager.h"
+
 
 C_HitManager::C_HitManager()
 {
@@ -84,16 +86,18 @@ void C_HitManager::PlayerHit()
 		//敵の弾との当たり判定
 		for (auto it = m_enemyshot.begin(); it != m_enemyshot.end(); )
 		{
-			std::shared_ptr<Shot> enemy3 = it->lock();
-			if (enemy3)
+			std::shared_ptr<Shot> es = it->lock();
+			if (es)
 			{
-				if (!enemy3->GetAlive())
+				if (!es->GetAlive())
 				{
 					it = m_enemyshot.erase(it);
 					continue;
 				}
-				if (IsHit(p_pos, p_radius, enemy3->GetPos(), enemy3->GetRadius()))
+				if (IsHit(p_pos, p_radius, es->GetPos(), es->GetRadius()))
 				{
+					EFFECTMANAGER.AddEffect(EffectType::BoltHitBule, es->GetPos());
+					es->SetAlive(false);
 					p->Damage();
 					//s->SetAlive(false);
 				}
@@ -125,29 +129,6 @@ void C_HitManager::PlayerHit()
 			else
 			{
 				it = m_enemylaser.erase(it);
-			}
-		}
-
-		//バリアとの当たり判定
-		for (auto it = m_enemybarrier.begin(); it != m_enemybarrier.end(); )
-		{
-			std::shared_ptr<C_Barrier> eb = it->lock(); 
-			if (eb)
-			{
-				if (!eb->GetAlive())
-				{
-					it = m_enemybarrier.erase(it);
-					continue;
-				}
-				if (IsHit(p->GetPos(), p->GetRadius(),eb->GetPos(),eb->GetRadius()))
-				{
-					
-				}
-				++it;
-			}
-			else
-			{
-				it = m_enemybarrier.erase(it);
 			}
 		}
 	}
@@ -187,9 +168,9 @@ void C_HitManager::PlayerShotHit()
 					}
 					if (IsHit(ps_pos, ps_radius, e->GetPos(), e->GetSize().x))
 					{
+						EFFECTMANAGER.AddEffect(EffectType::BoltHitGreen, ps_pos);
 						ps->SetAlive(false);
-						e->Damage(50);
-						EFFECTMANAGER.AddEffect(EffectType::BoltHitEffect, ps_pos);
+						e->Damage(PlayerShotAtk);
 					}
 					++it;
 				}
@@ -212,6 +193,7 @@ void C_HitManager::PlayerShotHit()
 					}
 					if (IsHitLaser(l->GetStart(), l->GetEnd(), l->GetThick(), ps_pos, ps_radius))
 					{
+						EFFECTMANAGER.AddEffect(EffectType::BoltHitGreen, ps_pos);
 						ps->SetAlive(false);
 					}
 					++it;
@@ -237,6 +219,7 @@ void C_HitManager::PlayerShotHit()
 
 					if (IsHit(ps_pos, ps_radius, eb->GetPos(), eb->GetRadius()))
 					{
+						EFFECTMANAGER.AddEffect(EffectType::BoltHitGreen, ps_pos);
 						ps->SetAlive(false);
 					}
 					++it;
@@ -287,7 +270,7 @@ void C_HitManager::PlayerShotHit()
 					if (IsHitLaser(pl_start, pl_end, pl_thick, e->GetPos(), e->GetRadius()))
 					{
 						//敵のダメージ
-						e->Damage(50);
+						e->Damage(PlayerLaserAtk);
 					}
 					++it;
 				}
@@ -311,6 +294,8 @@ void C_HitManager::PlayerShotHit()
 
 					if (IsHitLaser(pl_start, pl_end, pl_thick, es->GetPos(), es->GetRadius()))
 					{
+						EFFECTMANAGER.AddEffect(EffectType::BoltHitBule, es->GetPos());
+						SCENEMANAGER.SetScore(ShotDeleteScoreNum);
 						es->SetAlive(false);
 					}
 					++it;
@@ -362,7 +347,7 @@ void C_HitManager::PlayerShotHit()
 					}
 					if (IsHit(pe_pos, pe_radius, e->GetPos(), e->GetSize().x))
 					{
-						pe->Damage(20);
+						pe->Damage(PlayerGenerateEnemyAtk);
 					}
 					++it;
 				}
@@ -392,7 +377,7 @@ void C_HitManager::PlayerShotHit()
 					if (IsHit(pe_pos, pe_radius, es->GetPos(), es->GetRadius()))
 					{
 						es->SetAlive(false);
-						pe->Damage(10);
+						pe->Damage(EnemyShotAtk);
 					}
 
 					++esit;
@@ -412,7 +397,7 @@ void C_HitManager::PlayerShotHit()
 					}
 					if (IsHitLaser(l->GetStart(), l->GetEnd(), l->GetThick(), pe_pos, pe_radius))
 					{
-						pe->Damage(10);
+						pe->Damage(EnemyLaserAtk);
 					}
 					++it;
 				}
@@ -466,14 +451,13 @@ void C_HitManager::CopyHit()
 					if (IsHit(c_pos, c_radius, e->GetPos(), e->GetSize().x))
 					{
 						c->SetAlive(false);
-						
+						EFFECTMANAGER.AddEffect(EffectType::CopyHit, c_pos);
 						std::shared_ptr<C_SkillManager> sm = m_skillmanager.lock();
 
 						if (sm)
 						{
 							sm->SetPlayerSkill(e->GetSkillType());
 						}
-					//	EFFECTMANAGER.AddEffect(EffectType::Explosion, ps_pos);
 					}
 					++it;
 				}
@@ -496,7 +480,53 @@ void C_HitManager::CopyHit()
 
 void C_HitManager::EnemyHit()
 {
-	
+	//敵との当たり判定
+	for (auto eit = m_enemys.begin(); eit != m_enemys.end(); )
+	{
+		std::shared_ptr<C_EnemyMoveBase> e = eit->lock();
+
+		if (e)
+		{
+			Math::Vector2 e_pos = e->GetPos();
+			Math::Vector2 e_size = e->GetSize();
+			float e_radius = e->GetRadius();
+
+			if (!e->GetAlive())
+			{
+				eit = m_enemys.erase(eit);
+				continue;
+			}
+			//プレイヤーバリアとの当たり判定
+			for (auto it = m_playerbarrier.begin(); it != m_playerbarrier.end(); )
+			{
+				std::shared_ptr<C_Barrier> pb = it->lock();
+
+				if (pb)
+				{
+					if (!pb->GetAlive())
+					{
+						it = m_playerbarrier.erase(it);
+						continue;
+					}
+
+					if (IsHit(e_pos, e_radius, pb->GetPos(), pb->GetRadius()))
+					{
+						e->Damage(1);
+					}
+					++it;
+				}
+				else
+				{
+					it = m_playerbarrier.erase(it);
+				}
+			}
+			++eit;
+		}
+		else
+		{
+			eit = m_enemys.erase(eit);
+		}
+	}
 }
 
 void C_HitManager::EnemyShotHit()
@@ -533,6 +563,8 @@ void C_HitManager::EnemyShotHit()
 
 					if (IsHit(es_pos, es_radius, pb->GetPos(), pb->GetRadius()))
 					{
+						EFFECTMANAGER.AddEffect(EffectType::BoltHitBule, es_pos);
+						SCENEMANAGER.SetScore(ShotDeleteScoreNum);
 						es->SetAlive(false);
 					}
 					++it;

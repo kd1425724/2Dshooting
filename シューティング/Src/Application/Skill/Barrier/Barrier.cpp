@@ -67,7 +67,7 @@ void C_Barrier::EnemySkillActivate(Math::Vector2 scale)
 
     //”¼Œa
     m_halfsize = m_rect * m_scale / 2;
-    m_radius = m_rect.x * m_scale.x / 1.9f;
+    m_radius = m_rect.x * m_scale.x / 2.1f;
 
     auto e = m_enemy.lock();
     auto hm = m_hitmanager.lock();

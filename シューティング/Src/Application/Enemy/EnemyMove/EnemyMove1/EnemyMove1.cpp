@@ -8,7 +8,7 @@
 #include"../../../Hit/HitManager.h"
 #include"../../../Scenes/SceneManager.h"
 #include"../../../Scenes/Game/Game.h"
-
+#include"../../../Effect/EffectManager.h"
 void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::shared_ptr<C_Player> player,int i)
 {
 	//ステータス
@@ -29,21 +29,24 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	}
 	//アニメーション用
 	m_anim = { 0,0 };
+	m_engineanim = {0,0};
+	m_engineanimmaxnum = { 10,0 };
+
 
 	//座標
 	switch (pospattern)
 	{
 	case PosPattern::Pattern1:
-		m_pos = { (float)(i * 60) + 700, (float)200-INFO.HUDAreaHeight };
+		m_pos = { (float)(i * 70) + 700, (float)200-INFO.HUDAreaHeight };
 		break;
 	case PosPattern::Pattern2:
-		m_pos = { (float)(i * 60) + 700, (float)-200  };
+		m_pos = { (float)(i * 70) + 700, (float)-200  };
 		break;
 	case PosPattern::Pattern3:
-		m_pos = { 0,(float)(i * 60) + 640 - INFO.HUDAreaHeight };
+		m_pos = { 0,(float)(i * 70) + 640 - INFO.HUDAreaHeight };
 		break;
 	case PosPattern::Pattern4:
-		m_pos = { 100,(float)(i * 60) - 640 };
+		m_pos = { 100,(float)(i * 70) - 640 };
 		break;
 	default:
 		break;
@@ -53,11 +56,12 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	switch (movepattern)
 	{
 	case MovePattern::Pattern1:
-		m_movespeed = { -7,0 };
+		m_movespeed = { -4,0 };
 		m_move = m_movespeed;
+		m_angle = 0;
 		break;
 	case MovePattern::Pattern2:
-		m_movespeed = { -7,-1 };
+		m_movespeed = { -4,-1 };
 		m_move = m_movespeed;
 		break;
 	case MovePattern::Pattern3:
@@ -65,12 +69,14 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 		m_move = m_movespeed;
 		break;
 	case MovePattern::Pattern4:
-		m_movespeed = { 0,-7 };
+		m_movespeed = { 0,-4 };
 		m_move = m_movespeed;
+		m_angle = 90;
 		break;
 	case MovePattern::Pattern5:
-		m_movespeed = { 0,7 };
+		m_movespeed = { 0,4 };
 		m_move = m_movespeed;
+		m_angle = 90;
 		break;
 	default:
 		break;
@@ -91,13 +97,20 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	m_halfsize = m_rect * m_scale / 2;
 	m_radius = m_rect.x * m_scale.x / 2;
 
+	//行列
+	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
+	m_rotatemat = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(m_angle));
+	m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
+	m_mat = m_scalemat * m_rotatemat * m_transmat;
+
+
 }
 
 void C_EnemyMove1::Update()
 {
 
 	//画面内なら
-	if (!COMMONAPI.OutOfPlayArea(m_pos, m_rect * m_scale / 2))
+	if (!COMMONAPI.OutOfScreen(m_pos, m_rect * m_scale / 2))
 	{
 		if (m_shotinterval <= 0)
 		{
@@ -149,10 +162,30 @@ void C_EnemyMove1::Update()
 		}
 	}
 
+	//エンジンアニメーション用
+	m_engineanim.x += 0.1f;
+	//マックス以上になったら,4コマなら4
+	if (m_engineanim.x >= m_engineanimmaxnum.x)
+	{
+		m_engineanim.x = 0;
+		if (m_engineanimmaxnum.y != 0)
+		{
+			m_engineanim.y++;
+		}
+	}
+	if (m_engineanimmaxnum.y != 0)
+	{
+		if (m_engineanim.y > m_engineanimmaxnum.y)
+		{
+			m_engineanim = { 0,0 };
+		}
+	}
+
 	//hpが０になったら
 	if (m_hp <= 0)
 	{
 		m_alive = false;
+		EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
 		SCENEMANAGER.SetScore(m_score);
 	}
 
@@ -161,8 +194,9 @@ void C_EnemyMove1::Update()
 
 	//行列
 	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
+	m_rotatemat = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(m_angle));
 	m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
-	m_mat = m_scalemat * m_transmat;
+	m_mat = m_scalemat*m_rotatemat * m_transmat;
 }
 
 void C_EnemyMove1::Draw()
@@ -170,10 +204,14 @@ void C_EnemyMove1::Draw()
 	//発生中なら
 	if (m_alive)
 	{
-		SHADER.m_spriteShader.SetMatrix(m_mat);
-		SHADER.m_spriteShader.DrawTex(m_tex, 0, 0,
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_tex, 0, 0,
 			&Math::Rectangle((int)m_anim.x * m_rect.x, (int)m_anim.y * m_rect.y, m_rect.x,m_rect.y),
 			&m_color);
+
+		//エンジン
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetex, 0, 0,
+			&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y), &m_color);
 	}
 }
 

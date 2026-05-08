@@ -9,6 +9,18 @@ class C_Laser;
 class C_Barrier;
 class C_SkillManager;
 
+enum class HitType
+{
+	Player,
+	Enemy,
+	PlayerShot,
+	EnemyShot,
+	PlayerLaser,
+	EnemyLaser,
+	PlayerBarrier,
+	EnemyBarrier
+};
+
 class C_HitManager
 {
 public:
@@ -59,6 +71,17 @@ public:
 	void DrawCircle(Math::Vector2 pos, float radius, Math::Color col);
 
 private:
+
+	//攻撃力
+	static const int PlayerShotAtk = 30;
+	static const int PlayerLaserAtk = 100;
+	static const int PlayerGenerateEnemyAtk = 20;
+
+	static const int EnemyShotAtk = 10;
+	static const int EnemyLaserAtk = 100;
+
+	//スコア
+	static const int ShotDeleteScoreNum = 2500;
 
 	//デバッグ用
 	bool m_DrawHitdebugflg;

@@ -16,7 +16,8 @@ public:
 
 	//ƒvƒŒƒC‰æ–Êİ’è
 	static const int PlayAreaWidth = 1280;
-	static const int PlayAreaHeight = ScrHeight-HUDAreaHeight;
+	static const int PlayAreaTop = ScrHeight/2 - HUDAreaHeight;
+	static const int PlayAreaBottom = -ScrHeight/2;
 
 	////////////
 

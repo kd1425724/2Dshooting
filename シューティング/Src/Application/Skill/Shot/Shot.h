@@ -17,6 +17,7 @@ enum class ShotTextureType
 {
 	Bolt,
 	Pulse,
+	Copy
 };
 
 struct Shot : public std::enable_shared_from_this<Shot>
@@ -115,6 +116,7 @@ private:
 	//弾テクスチャ一覧
 	KdTexture m_bolttex;
 	KdTexture m_pulsetex;
+	KdTexture m_copyshottex;
 
 	//通常ショット（弾一発）
 	vector<std::shared_ptr<Shot>> m_normalshot;

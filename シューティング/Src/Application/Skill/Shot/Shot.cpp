@@ -6,6 +6,7 @@ C_Shot::C_Shot()
 {
 	m_bolttex.Load("Texture/Skill/Attack/Bolt.png");
 	m_pulsetex.Load("Texture/Skill/Attack/Pulse.png");
+	m_copyshottex.Load("Texture/Skill/Attack/CopyShot.png");
 }
 
 
@@ -55,10 +56,11 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		rect = a_rect;
 		speed = movespeed;
 		pos = a_pos;
+		pos.x += rect.x/2;
 		angle = atan2(target.y - pos.y, target.x - pos.x);
 		move.x = cosf(angle) * speed;
 		move.y = sinf(angle) * speed;
-		color = { 0,1,0,1 };
+		color = { 0,0.8,0,1 };
 		alive = true;
 		scale = { 1,1 };
 
@@ -336,7 +338,7 @@ void C_Shot::NormalShotUpdate()
 	//çÌèú
 	for (int i = 0; i < m_normalshot.size(); )
 	{
-		if (COMMONAPI.OutOfPlayAreaPlusMargin(m_normalshot[i]->pos, m_normalshot[i]->rect / 2))
+		if (COMMONAPI.OutOfScreenPlusMargin(m_normalshot[i]->pos, m_normalshot[i]->rect / 2))
 		{
 			m_normalshot[i]->alive = false;
 		}
@@ -376,6 +378,8 @@ KdTexture* C_Shot::SetTextureType(ShotTextureType type)
 		return &m_bolttex;
 	case ShotTextureType::Pulse:
 		return &m_pulsetex;
+	case ShotTextureType::Copy:
+		return &m_copyshottex;
 	default:
 		break;
 	}
@@ -394,6 +398,10 @@ void Shot::SetTextureSetting(ShotTextureType type)
 		break;
 	case ShotTextureType::Pulse:
 		angle = TextureAngle::Right;
+		break;
+	case ShotTextureType::Copy:
+		angle = TextureAngle::Right;
+		break;
 	default:
 		break;
 	}

@@ -29,6 +29,8 @@ private:
 
 	void Release()	override;
 
+	bool m_moveflg = false;
+
 	//‰½‚à‚µ‚È‚¢ŽžŠÔ
 	static const int NoneTime = 60;
 	int m_nonetime;

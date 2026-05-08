@@ -20,15 +20,15 @@ void C_Player::Init()
 	m_move = { 0.0f,0.0f };
 	m_movespeed = { 8.0f,8.0f };
 	//サイズ
-	m_scale = { 1.2f,1.2f };
+	m_scale = { 1.0f,1.0f };
 	//カラー
 	m_color = { 1,1,1,1 };
 	//切り取り範囲
 	m_rect = { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height };
 
 	//半径
-	m_halfsize = m_rect * m_scale / 2;
-	m_radius = m_rect.x /** m_scale.x *//3;
+	m_halfsize = m_rect * m_scale / 3;
+	m_radius = m_rect.x /** m_scale.x */ / 3;
 
 	//当たり判定用
 	if (m_hitmanager)
@@ -76,7 +76,25 @@ void C_Player::Update()
 	}
 
 	m_pos += m_move * m_movespeed;
-	
+
+	//画面端判定
+	if (m_pos.x - m_halfsize.x < -INFO.PlayAreaWidth / 2)
+	{
+		m_pos.x = -INFO.PlayAreaWidth / 2 + m_halfsize.x;
+	}
+	if (m_pos.x + m_halfsize.x > INFO.PlayAreaWidth / 2)
+	{
+		m_pos.x = INFO.PlayAreaWidth / 2 - m_halfsize.x;
+	}
+	if (m_pos.y - m_halfsize.y < INFO.PlayAreaBottom )
+	{
+		m_pos.y = INFO.PlayAreaBottom+ m_halfsize.y;
+	}
+	if (m_pos.y + m_halfsize.y > INFO.PlayAreaTop)
+	{
+		m_pos.y = INFO.PlayAreaTop - m_halfsize.y;
+	}
+
 	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
 	m_transmat = Math::Matrix::CreateTranslation((int)(m_pos.x+0.5f), (int)(m_pos.y+0.5f), 0);//+0.5f四捨五入してる
 	m_mat = m_scalemat * m_transmat;
@@ -93,7 +111,7 @@ void C_Player::Draw()
 	Math::Rectangle enginerect = { 0,0, 64,64 };
 
 	Math::Matrix enginscale = Math::Matrix::CreateScale(0.8f, 0.8f, 0);
-	Math::Matrix engintrans = Math::Matrix::CreateTranslation((int)(m_pos.x - 60+0.5f), (int)(m_pos.y+0.5f), 0);
+	Math::Matrix engintrans = Math::Matrix::CreateTranslation((int)(m_pos.x - 50+0.5f), (int)(m_pos.y+0.5f), 0);
 
 	Math::Matrix mat = enginscale * engintrans;
 	
@@ -197,11 +215,11 @@ void C_Player::ShotUpdate()
 				s->SetHitManager(m_hitmanager);
 
 				s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
-					m_pos, { m_pos.x + 100,m_pos.y + 10 }, 18);
+					m_pos, { m_pos.x + 100,m_pos.y + 5 }, 18);
 				s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
 					m_pos, { m_pos.x + 100,m_pos.y }, 18);
 				s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
-					m_pos, { m_pos.x + 100,m_pos.y - 10 }, 18);
+					m_pos, { m_pos.x + 100,m_pos.y - 5 }, 18);
 			
 				o->SetShot(s);
 				
@@ -231,7 +249,14 @@ void C_Player::Damage()
 
 		m_hittimer = HitTime;
 
-		EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
+		float w = CommonTex.GetPlayerRect().width;
+
+		if (m_Hp > 0)
+		{
+			EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
+		}
+		
+		EFFECTMANAGER.AddEffect(EffectType::ExplosionTopDraw, { -420 + (m_Hp * w * 0.7f),235 });
 	}
 }
 

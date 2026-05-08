@@ -8,7 +8,8 @@
 #include"../../../Skill/SkillBase.h"
 #include"../../../Hit/HitManager.h"
 #include"../../../Scenes/Game/Game.h"
-
+#include"../../../Effect/EffectManager.h"
+#include"../../../Scenes/SceneManager.h"
 void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 {
 
@@ -16,6 +17,7 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 
 	//ステータス
 	m_hp = 20;
+	
 
 	//スキル初期化
 	//m_skillmanager = nullptr;
@@ -25,7 +27,8 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 
 	//アニメーション用
 	m_anim = { 0,0 };
-
+	m_engineanim = { 0,0 };
+	m_engineanimmaxnum = { 12,0 };
 
 
 	m_movespeed = { 4,4 };
@@ -33,6 +36,7 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 	switch (m_usetype)
 	{
 	case UseType::Player:
+		m_score = 0;
 		m_texangle = DirectX::XMConvertToRadians(0);
 
 		m_stoppos = { m_pos.x + 40,m_pos.y + 150 - (i * 100) };
@@ -41,6 +45,7 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 		break;
 	case UseType::Enemy:
 
+		m_score = 15555;
 		m_texangle = DirectX::XMConvertToRadians(180);
 
 		m_color = { 1,1,1,1 };
@@ -104,7 +109,9 @@ void C_EnemyMove3::Update()
 	//hpが０になったら
 	if (m_hp <= 0)
 	{
-		m_inherentmove = InherentMove3::Death;
+		EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
+		SCENEMANAGER.SetScore(m_score);
+		m_alive = false;;
 	}
 
 	switch (m_inherentmove)
@@ -133,7 +140,7 @@ void C_EnemyMove3::Update()
 		break;
 	case InherentMove3::Stop:
 		//画面内なら
-		if (!COMMONAPI.OutOfPlayArea(m_pos, m_rect * m_scale / 2))
+		if (!COMMONAPI.OutOfScreen(m_pos, m_rect * m_scale / 2))
 		{
 			if (m_shotinterval <= 0)
 			{
@@ -147,19 +154,18 @@ void C_EnemyMove3::Update()
 
 					if (s&&hm&&o)
 					{
+						s->SetHitManager(hm);
 						s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
 							m_pos, { m_pos.x + 100,m_pos.y }, 6);
-						s->SetHitManager(hm);
-
 						o->SetShot(s);
 					}
 					break;
 				case UseType::Enemy:
 					if (s && hm && o)
 					{
+						s->SetHitManager(hm);
 						s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
 							m_pos, { m_pos.x - 100,m_pos.y }, 6);
-						s->SetHitManager(hm);
 						o->SetShot(s);
 					}
 					break;
@@ -218,6 +224,25 @@ void C_EnemyMove3::Update()
 				m_anim = { 0,0 };
 			}
 		}
+
+		//エンジンアニメーション用
+		m_engineanim.x += 0.1f;
+		//マックス以上になったら,4コマなら4
+		if (m_engineanim.x >= m_engineanimmaxnum.x)
+		{
+			m_engineanim.x = 0;
+			if (m_engineanimmaxnum.y != 0)
+			{
+				m_engineanim.y++;
+			}
+		}
+		if (m_engineanimmaxnum.y != 0)
+		{
+			if (m_engineanim.y > m_engineanimmaxnum.y)
+			{
+				m_engineanim = { 0,0 };
+			}
+		}
 	}
 
 	//行列
@@ -238,10 +263,15 @@ void C_EnemyMove3::Draw()
 	}
 	else
 	{
-		SHADER.m_spriteShader.SetMatrix(m_mat);
-		SHADER.m_spriteShader.DrawTex(m_tex, 0, 0,
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_tex, 0, 0,
 			&Math::Rectangle((int)m_anim.x * m_rect.x, (int)m_anim.y * m_rect.y, m_rect.x, m_rect.y),
 			&m_color);
+
+		//エンジン
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetex, 0, 0,
+			&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y), &m_color);
+
 	}
 }
 

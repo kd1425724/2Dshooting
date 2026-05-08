@@ -43,13 +43,19 @@ void C_SkillManager::Init()
 }
 void C_SkillManager::Update()
 {
+	if (GetAsyncKeyState('P') & 0x8000)
+	{
+		SetPlayerSkill(SkillType::Laser);
+	}
+
 	if (m_playerskills)
 	{
 		m_playerskills->Update();
 
 		//スキル発動
 		if (Input.GetPlayerKey(PlayerKeyType::Skill) &&
-			!Input.GetPlayerKeyFlg(PlayerKeyType::Skill))
+			!Input.GetPlayerKeyFlg(PlayerKeyType::Skill)&&
+			!m_playerskills->GetAlive())
 		{
 			m_playerskills->SkillActivate();
 		}
@@ -82,7 +88,12 @@ void C_SkillManager::Update()
 		i++;
 	}
 
+	for (auto& s : m_addenemyskill)
+	{
+		m_enemyskills.push_back(s);
+	}
 
+	m_addenemyskill.clear();
 }
 void C_SkillManager::Draw()
 {
@@ -97,10 +108,10 @@ void C_SkillManager::Draw()
 
 	for (int i = 0; i < m_enemyskills.size(); i++)
 	{
-		//画像順番調整用
-		if (!m_enemyskills[i]->IsTopDraw())
+		if (m_enemyskills[i])
 		{
-			if (m_enemyskills[i])
+			//画像順番調整用
+			if (!m_enemyskills[i]->IsTopDraw())
 			{
 				m_enemyskills[i]->Draw();
 			}
@@ -121,10 +132,10 @@ void C_SkillManager::TopDraw()
 
 	for (int i = 0; i < m_enemyskills.size(); i++)
 	{
-		//画像順番調整用
-		if (m_enemyskills[i]->IsTopDraw())
+		if (m_enemyskills[i])
 		{
-			if (m_enemyskills[i])
+			//画像順番調整用
+			if (m_enemyskills[i]->IsTopDraw())
 			{
 				m_enemyskills[i]->Draw();
 			}
@@ -213,46 +224,46 @@ void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyM
 	case SkillType::CopyShot:
 		break;
 	case SkillType::EnemyGenerate:
-		m_enemyskills.emplace_back(std::make_shared<C_EnemyGenerate>());
-		m_enemyskills.back()->SetUseType(UseType::Enemy);	
+		m_addenemyskill.emplace_back(std::make_shared<C_EnemyGenerate>());
+		m_addenemyskill.back()->SetUseType(UseType::Enemy);	
 		if (em)
 		{
-			m_enemyskills.back()->SetEnemyMagager(em);
+			m_addenemyskill.back()->SetEnemyMagager(em);
 		}
-		m_enemyskills.back()->SetEnemy(enemybase);
-		m_enemyskills.back()->Init();
-		m_enemyskills.back()->EnemySkillActivate();
+		m_addenemyskill.back()->SetEnemy(enemybase);
+		m_addenemyskill.back()->Init();
+		m_addenemyskill.back()->EnemySkillActivate();
 		break;
 	case SkillType::Barrier:
-		m_enemyskills.emplace_back(std::make_shared<C_Barrier>());
-		m_enemyskills.back()->SetUseType(UseType::Enemy);
+		m_addenemyskill.emplace_back(std::make_shared<C_Barrier>());
+		m_addenemyskill.back()->SetUseType(UseType::Enemy);
 		if (hm)
 		{
-			m_enemyskills.back()->SetHitManager(hm);
+			m_addenemyskill.back()->SetHitManager(hm);
 		}
-		m_enemyskills.back()->SetEnemy(enemybase);
-		m_enemyskills.back()->SetTexture(m_barriertex);
-		m_enemyskills.back()->Init();
+		m_addenemyskill.back()->SetEnemy(enemybase);
+		m_addenemyskill.back()->SetTexture(m_barriertex);
+		m_addenemyskill.back()->Init();
 		if (enemybase->GetEnemyType() != EnemySType::SubBoss)
 		{
-			m_enemyskills.back()->EnemySkillActivate({ 2.6f,2.6f });
+			m_addenemyskill.back()->EnemySkillActivate({ 2.8f,2.8f });
 		}
 		else
 		{
-			m_enemyskills.back()->EnemySkillActivate({ 1.6f,1.6f });
+			m_addenemyskill.back()->EnemySkillActivate({ 1.6f,1.6f });
 		}
 		break;
 	case SkillType::Laser:
-		m_enemyskills.emplace_back(std::make_shared<C_Laser>());
-		m_enemyskills.back()->SetUseType(UseType::Enemy);
+		m_addenemyskill.emplace_back(std::make_shared<C_Laser>());
+		m_addenemyskill.back()->SetUseType(UseType::Enemy);
 		if (hm)
 		{
-			m_enemyskills.back()->SetHitManager(hm);
+			m_addenemyskill.back()->SetHitManager(hm);
 		}
-		m_enemyskills.back()->SetEnemy(enemybase);
-		m_enemyskills.back()->SetTexture(m_lasertex);
-		m_enemyskills.back()->Init();
-		m_enemyskills.back()->EnemySkillActivate();
+		m_addenemyskill.back()->SetEnemy(enemybase);
+		m_addenemyskill.back()->SetTexture(m_lasertex);
+		m_addenemyskill.back()->Init();
+		m_addenemyskill.back()->EnemySkillActivate();
 		break;
 	default:
 		break;

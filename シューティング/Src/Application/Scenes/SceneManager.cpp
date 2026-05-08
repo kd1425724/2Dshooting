@@ -10,8 +10,9 @@ C_SceneManager::~C_SceneManager()
 
 void C_SceneManager::Init()
 {
-    scenes.push(CreateScene(SceneType::Result));
+    scenes.push(CreateScene(SceneType::Game));
     scenes.top()->Init();
+
 }
 
 void C_SceneManager::Update()
@@ -29,8 +30,6 @@ void C_SceneManager::Draw()
     //‹ó‚¶‚á‚È‚¯‚ê‚Î
     if (!scenes.empty())
     {
-        scenes.top()->Draw();
-
         scenes.top()->Draw();
     }
 }

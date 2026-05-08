@@ -22,6 +22,7 @@ void C_EnemyGenerate::Update()
 	if (m_time <= 0)
 	{
 		m_alive = false;
+		m_finished = true;
 	}
 }
 
@@ -32,7 +33,7 @@ void C_EnemyGenerate::Draw()
 void C_EnemyGenerate::SkillActivate()
 {
 	m_alive = true;
-	m_time = 30;
+	m_time = 60;
 	auto p = m_player.lock();
 	auto em = m_enemymanager.lock();
 
@@ -40,8 +41,6 @@ void C_EnemyGenerate::SkillActivate()
 	{
 		em->SkillEnemySpworn(p->GetPos(), m_usetype,EnemyMoveType::Type3);
 	}
-
-	m_finished = true;
 }
 
 void C_EnemyGenerate::EnemySkillActivate()
@@ -53,6 +52,19 @@ void C_EnemyGenerate::EnemySkillActivate()
 
 	if (e && em)
 	{
-		em->SkillEnemySpworn(e->GetPos(), m_usetype,EnemyMoveType::Type1);
+		// —”¶¬Šíi1‰ñ‚¾‚¯¶¬j
+		static std::random_device rd;
+		static std::mt19937 mt(rd());
+
+		// 0`EnemyMoveTypeNum
+		std::uniform_int_distribution<int> dist((int)EnemyMoveType::Type1, (int)EnemyMoveType::Type3);
+
+		EnemyMoveType type =(EnemyMoveType)dist(mt);
+
+		em->SkillEnemySpworn(
+			e->GetPos(),
+			m_usetype,
+			type
+		);
 	}
 }

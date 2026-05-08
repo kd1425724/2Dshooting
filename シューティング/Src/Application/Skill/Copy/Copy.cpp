@@ -10,11 +10,22 @@ void C_Copy::Init()
 	{
 		m_shot->SetHitManager(hm);
 	}
+
+	m_alive = false;
+
+	m_time = 0;
 }
 
 void C_Copy::Update()
 {
 	m_shot->Update();
+
+	m_time--;
+	if (m_time <= 0)
+	{
+		m_time = 0;
+		m_alive = false;
+	}
 }
 
 void C_Copy::Draw()
@@ -26,14 +37,17 @@ void C_Copy::Draw()
 
 void C_Copy::SkillActivate()
 {
+	m_alive = true;
+	m_time = 60;
+
 	std::shared_ptr<C_Player> p = m_player.lock();
 
 	if (p)
 	{
 		Math::Vector2 p_pos = p->GetPos();
 
-		m_shot->ShotManager(ShotType::CopyShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-			p_pos, { p_pos.x + 100,p_pos.y }, 7);
+		m_shot->ShotManager(ShotType::CopyShot, ShotTextureType::Copy, { 5,0 }, { 63,32 },
+			p_pos, { p_pos.x + 100,p_pos.y }, 10);
 	}
 }
 

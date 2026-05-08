@@ -87,7 +87,6 @@ public:
 	virtual void Init(Math::Vector2 pos){}
 	virtual void Init(Math::Vector2 pos,UseType type,int i){}
 
-
 	//À•Wæ“¾—p
 	Math::Vector2 GetPos() { return m_pos; }
 
@@ -203,7 +202,7 @@ protected:
 
 	//“–‚½‚è”»’èŠÇ——p
 	std::weak_ptr<C_HitManager> m_hitmanager;
-	static const int HitTimer = 30;
+	static const int HitTimer = 10;
 	int m_hittimer;
 
 

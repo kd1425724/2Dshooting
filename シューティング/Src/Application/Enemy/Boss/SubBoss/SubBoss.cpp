@@ -2,6 +2,7 @@
 #include"../../../Common/CommonAPI.h"
 #include"../../../Skill/SkillManager.h"
 #include"../../../Hit/HitManager.h"
+#include"../../../Scenes/SceneManager.h"
 
 void C_SubBoss::Init(Math::Vector2 pos)
 {
@@ -10,8 +11,10 @@ void C_SubBoss::Init(Math::Vector2 pos)
 	m_nonetime = 0;
 	
 	//ステータス
-	m_maxhp = 500;
+	m_maxhp = 4000;
 	m_hp = m_maxhp;
+
+	m_score = 5000000;
 
 	m_skilltype = SkillType::None;
 
@@ -96,26 +99,26 @@ void C_SubBoss::Update()
 
 	if (m_pattern != Pattern::Death)
 	{
-	//アニメーション用
-	m_anim.x += 0.1f;
-	//マックス以上になったら,4コマなら4
-	if (m_anim.x >= m_animmaxnum.x)
-	{
-		m_anim.x = 0;
+		//アニメーション用
+		m_anim.x += 0.1f;
+		//マックス以上になったら,4コマなら4
+		if (m_anim.x >= m_animmaxnum.x)
+		{
+			m_anim.x = 0;
+			if (m_animmaxnum.y != 0)
+			{
+				m_anim.y++;
+			}
+		}
 		if (m_animmaxnum.y != 0)
 		{
-			m_anim.y++;
+			if (m_anim.y > m_animmaxnum.y)
+			{
+				m_anim = { 0,0 };
+			}
 		}
-	}
-	if (m_animmaxnum.y != 0)
-	{
-		if (m_anim.y > m_animmaxnum.y)
-		{
-			m_anim = { 0,0 };
-		}
-	}
 
-	
+
 		//エンジンアニメーション用
 		m_engineanim.x += 0.1f;
 		//マックス以上になったら,4コマなら4
@@ -254,6 +257,7 @@ void C_SubBoss::DeathUpdate()
 		m_deathanim.x = m_deathanimmaxnum.x;
 		//死亡演出が終了したら消去
 		m_alive = false;
+		SCENEMANAGER.SetScore(m_score);
 	}
 }
 
