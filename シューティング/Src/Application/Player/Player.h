@@ -23,6 +23,10 @@ public:
 	void ResultUpdate();
 	void ResultDraw();
 
+	void TitleInit();
+	void TitleUpdate();
+	void TitleDraw();
+
 	void Release();
 
 	void ImGui();

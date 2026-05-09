@@ -193,6 +193,9 @@ void C_GameUi::SkillHUDInit()
 
 	m_skillpos = { -150,330 };
 	m_skillscale = { 0.4f,0.4f };
+
+	m_OKicontex.Load("Texture/Ui/HUD/OKIcon.png");
+	m_NOicontex.Load("Texture/Ui/HUD/NOIcon.png");
 }
 
 void C_GameUi::SkillHUDUpdate()
@@ -224,6 +227,39 @@ void C_GameUi::SkillHUDDraw()
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_SKILLtex.get(), rect, 1.0f);
 
 	}
+
+	//OKNOƒAƒCƒRƒ“
+	{
+		auto o = m_owner.lock();
+		
+		if (o)
+		{
+			auto sm = o->GetSkillManager();
+
+			if (sm)
+			{
+				Math::Rectangle rect = { 0,0,210,210 };
+				Math::Vector2 pos = { -20,330 };
+				Math::Vector2 scale = { 0.22f,0.22f };
+
+				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+				Math::Matrix mat = s * t;
+
+				if (sm->GetPlayerSkillFlg())
+				{
+					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_NOicontex, rect, 1.0f);
+				}
+				else
+				{
+					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_OKicontex, rect, 1.0f);
+				}
+			}
+		}
+	}
+
 }
 
 void C_GameUi::LifeHUDInit()

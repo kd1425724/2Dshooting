@@ -230,6 +230,9 @@ void C_Boss::LoopUpdate()
 	case BossActionPattern::p4_SpiralShot:
 		p4_SpiralUpdate();
 		break;
+	case BossActionPattern::p5_Shot2:
+		p5_Shot2Update();
+		break;
 	default:
 		break;
 	}
@@ -237,23 +240,6 @@ void C_Boss::LoopUpdate()
 
 void C_Boss::LoopDraw()
 {
-	switch (m_actionpattern)
-	{
-	case BossActionPattern::p1_EnemyGenerate:
-		p1_EnemyGenerateDrawSprite();
-		break;
-	case BossActionPattern::p2_Laser:
-		p2_LaserDrawSprite();
-		break;
-	case BossActionPattern::p3_Barrier:
-		p3_BarrierDrawSprite();
-		break;
-	case BossActionPattern::p4_SpiralShot:
-		p4_SpiralDrawSprite();
-		break;
-	default:
-		break;
-	}
 
 	if (m_moveflg)
 	{
@@ -350,6 +336,11 @@ void C_Boss::p4_SpiralInit()
 	m_spiraltime = SpiralTime;
 }
 
+void C_Boss::p5_Shot2Init()
+{
+	m_shot2time = Shot2Time;
+}
+
 void C_Boss::NoneUpdate()
 {
 	m_nonetime--;
@@ -430,22 +421,40 @@ void C_Boss::p4_SpiralUpdate()
 	}
 }
 
-void C_Boss::p1_EnemyGenerateDrawSprite()
+void C_Boss::p5_Shot2Update()
 {
+	m_shot2interval--;
+
+	if (m_shot2interval < 0)
+	{
+
+		auto s = std::make_shared<C_Shot>();
+		auto hm = m_hitmanager.lock();
+		auto o = m_owner.lock();
+
+		s->SetHitManager(hm);
+		s->ShotManager(ShotType::EnemyNormalShot,ShotTextureType::Pulse,{ 4,0 },{ 63,32 },
+			{ m_pos.x-100,m_pos.y+50 },
+			{m_pos.x-200,m_pos.y+40},
+			10);
+		s->ShotManager(ShotType::EnemyNormalShot,ShotTextureType::Pulse,{ 4,0 },{ 63,32 },
+			{ m_pos.x - 100,m_pos.y - 50 },
+			{ m_pos.x - 200,m_pos.y-40 },
+					10);
+
+		o->SetShot(s);
+		
+
+		m_shot2interval = Shot2Interval;
+	}
+
+	m_shot2time--;
+	if (m_shot2time <= 0)
+	{
+		NoneInit(BossActionPattern::p5_Shot2);
+	}
 }
 
-void C_Boss::p2_LaserDrawSprite()
-{
-}
-
-void C_Boss::p3_BarrierDrawSprite()
-{
-}
-
-void C_Boss::p4_SpiralDrawSprite()
-{
-
-}
 
 void C_Boss::SetActionPattern(BossActionPattern pattern)
 {
@@ -470,6 +479,11 @@ void C_Boss::SetActionPattern(BossActionPattern pattern)
 		m_actionpattern = BossActionPattern::p4_SpiralShot;
 		
 		p4_SpiralInit();
+		break;
+	case BossActionPattern::p5_Shot2:
+		m_actionpattern = BossActionPattern::p5_Shot2;
+		
+		p5_Shot2Init();
 		break;
 
 	case BossActionPattern::None:

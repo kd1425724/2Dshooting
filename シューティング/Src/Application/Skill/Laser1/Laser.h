@@ -3,6 +3,13 @@
 
 class C_EnemyMoveBase;
 
+enum LaserPattern
+{
+    Time,
+    ShotLa,
+    Upd
+};
+
 class C_Laser : public C_SkillBase, public std::enable_shared_from_this<C_Laser>
 {
 public:
@@ -68,4 +75,12 @@ private:
 
     //“–‚½‚è”»’è
     std::weak_ptr<C_HitManager> m_hitmanager;
+
+    //—\üŠÔ
+    int m_warningtime = 0;
+
+    void P_Active();
+    void E_Active();
+
+    LaserPattern m_pattern;
 };

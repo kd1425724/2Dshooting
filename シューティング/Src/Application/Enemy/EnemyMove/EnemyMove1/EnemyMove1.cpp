@@ -13,7 +13,7 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 {
 	//ステータス
 	m_hp =1 ;
-	m_score = 10000;
+	m_score = 30000;
 
 
 	//スキル初期化

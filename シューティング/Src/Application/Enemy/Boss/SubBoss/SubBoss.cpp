@@ -336,7 +336,7 @@ void C_SubBoss::p1_LaserUpdate()
 			}
 
 			m_laserflg = true;
-			m_laserprogresstime = 120;
+			m_laserprogresstime = 180;
 		}
 	}
 

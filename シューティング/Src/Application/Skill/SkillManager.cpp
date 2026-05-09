@@ -269,3 +269,11 @@ void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyM
 		break;
 	}
 }
+
+bool C_SkillManager::GetPlayerSkillFlg()
+{
+	if (m_playerskills)
+	{
+		 return m_playerskills->GetAlive();
+	}
+}

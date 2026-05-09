@@ -8,6 +8,7 @@ enum class BossActionPattern
 	p2_Laser,
 	p3_Barrier,
 	p4_SpiralShot,
+	p5_Shot2,
 	BossActionPatternNum,
 };
 
@@ -54,17 +55,25 @@ private:
 
 	//一行動の時間
 	//敵生成
-	static const int EnemyGenerateTime = 300;
-	int m_enemygeneratetime;
+	static const int EnemyGenerateTime = 60;
+	int m_enemygeneratetime=0;
 	//レーザー
 	static const int LaserTime = 300;
-	int m_lasertime;
+	int m_lasertime=0;
 	//バリア
 	static const int BarrierTime = 300;
-	int m_barriertime;
+	int m_barriertime=0;
 	//螺旋
 	static const int SpiralTime = 300;
-	int m_spiraltime;
+	int m_spiraltime=0;
+
+	//弾
+	static const int Shot2Time = 120;
+	int m_shot2time=0;
+
+	static const int Shot2Interval = 20;
+	int m_shot2interval;
+
 
 
 	//スタート
@@ -83,6 +92,7 @@ private:
 	void p2_LaserInit();
 	void p3_BarrierInit();
 	void p4_SpiralInit();
+	void p5_Shot2Init();
 
 	//ループ中行動パターン更新
 	void NoneUpdate();
@@ -90,12 +100,7 @@ private:
 	void p2_LaserUpdate();
 	void p3_BarrierUpdate();
 	void p4_SpiralUpdate();
-
-	//ループ中行動パターン描画
-	void p1_EnemyGenerateDrawSprite();
-	void p2_LaserDrawSprite();
-	void p3_BarrierDrawSprite();
-	void p4_SpiralDrawSprite();
+	void p5_Shot2Update();
 
 	//行動パターンセット
 	void SetActionPattern(BossActionPattern pattern);

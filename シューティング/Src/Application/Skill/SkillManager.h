@@ -45,6 +45,8 @@ public:
 	//モザイク用
 	void SetGameUi(std::shared_ptr<C_GameUi> gameui) { m_gameui = gameui; }
 
+	bool GetPlayerSkillFlg();
+
 private:
 
 	//プレイヤースキルまとめ

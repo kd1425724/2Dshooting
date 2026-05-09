@@ -205,6 +205,8 @@ void C_Game::Draw()
 	//”wŒiuÅ‰v
 	m_gameui->BackGroundDraw();
 
+	EFFECTMANAGER.IsBottomDraw();
+
 	//’e•`‰æ
 	for (auto& it : m_shot)
 	{

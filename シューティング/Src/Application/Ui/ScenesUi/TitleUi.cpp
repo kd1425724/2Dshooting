@@ -1,5 +1,6 @@
 #include "TitleUi.h"
-#include"Application/Common/CommonTexture.h"
+#include"../../Common/CommonTexture.h"
+#include"../../Player/Player.h"
 
 void C_TitleUi::Init()
 {
@@ -7,10 +8,13 @@ void C_TitleUi::Init()
 	BackGroundInit();
 
 	//タイトル初期化
-	TitleNameInit();
+	TitleLogoInit();
 
 	//スタート初期化
 	StartInit();
+
+	//プレイヤー
+	PlayerInit();
 
 	//画像作成
 	//CreateSpriteItemInit({ -300,0 }, { 0,0,1280,720 }, { 0.1,0.1 }, &CommonTex.GetWhiteBackTex(), {1,1,1,1});
@@ -24,6 +28,9 @@ void C_TitleUi::Update()
 
 	//スタート更新
 	StartUpdate();
+
+	//プレイヤー
+	PlayerUpdate();
 	
 	//ボタン更新
 	CreateSpriteItemUpdate();
@@ -35,10 +42,13 @@ void C_TitleUi::Draw()
 	BackGroundDraw();
 
 	//タイトル描画
-	TitleNameDraw();
+	TitleLogoDraw();
 
 	//スタート描画
 	StartDraw();
+
+	//プレイヤー
+	PlayerDraw();
 
 	//ボタン更新
 	CreateSpriteItemDraw();
@@ -91,18 +101,10 @@ void C_TitleUi::Release()
 	m_backgroundtex.Release();
 }
 
-void C_TitleUi::TitleNameInit()
-{
-	m_titlepos = { 0,200 };
-}
-void C_TitleUi::TitleNameDraw()
-{
-	//KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_titletex.get(), m_titlepos.x, m_titlepos.y);
-}
 
 void C_TitleUi::StartInit()
 {
-	m_startpos = {0,-200};
+	m_startpos = {0,-230};
 
 	m_startalpha = 1;
 
@@ -138,6 +140,53 @@ void C_TitleUi::StartDraw()
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 	Math::Color color = { 1,1,1,m_startalpha };
-	Math::Rectangle r= { 0,0,1200,100 };
+	Math::Rectangle r= { 0,0,1500,100 };
 	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_starttex.get(), 0, 0, &r, &color);
+}
+
+void C_TitleUi::TitleLogoInit()
+{
+	m_titlelogotex.Load("Texture/Ui/Font/COPYDRIVE.png");
+}
+
+void C_TitleUi::TitleLogoDraw()
+{
+	Math::Vector2 pos = { 0,240 };
+	Math::Vector2 scale = { 1,1 };
+
+	Math::Matrix s = Math::Matrix::CreateScale(scale.x,scale.y,1);
+	Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+	Math::Matrix mat = s * t;
+
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+	Math::Rectangle rect = { 0,0,926,132 };
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_titlelogotex, rect, 1.0f);
+}
+
+void C_TitleUi::PlayerInit()
+{
+	m_player = std::make_shared<C_Player>();
+
+	//プレイヤーエンジン
+	std::shared_ptr<KdTexture> playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_01.png");
+	m_playerenginetexs.push_back(playerenginetex);
+	playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_02.png");
+	m_playerenginetexs.push_back(playerenginetex);
+	playerenginetex = std::make_shared<KdTexture>();
+	playerenginetex->Load("Texture/Player/PlayerEngine_03.png");
+	m_playerenginetexs.push_back(playerenginetex);
+
+	m_player->SetEngineTex(m_playerenginetexs);
+
+	m_player->TitleInit();
+}
+void C_TitleUi::PlayerUpdate()
+{
+	m_player->TitleUpdate();
+}
+void C_TitleUi::PlayerDraw()
+{
+	m_player->TitleDraw();
 }

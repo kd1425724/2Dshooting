@@ -81,7 +81,7 @@ private:
 	static const int EnemyLaserAtk = 100;
 
 	//スコア
-	static const int ShotDeleteScoreNum = 2500;
+	static const int ShotDeleteScoreNum = 25000;
 
 	//デバッグ用
 	bool m_DrawHitdebugflg;

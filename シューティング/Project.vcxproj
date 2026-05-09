@@ -167,6 +167,7 @@
     <ClInclude Include="Src\Application\Effect\HitEffect\BoltHitEffect\BoltHitEffect.h" />
     <ClInclude Include="Src\Application\Effect\HitEffect\CopyHitEffect\CopyHitEffect.h" />
     <ClInclude Include="Src\Application\Effect\LaserStartEffect\LaserStartEffect.h" />
+    <ClInclude Include="Src\Application\Effect\WarningLine\WarningLine.h" />
     <ClInclude Include="Src\Application\Enemy\Boss\BossBase.h" />
     <ClInclude Include="Src\Application\Enemy\Boss\Boss\Boss.h" />
     <ClInclude Include="Src\Application\Enemy\Boss\SubBoss\SubBoss.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="Src\Application\Effect\HitEffect\BoltHitEffect\BoltHitEffect.cpp" />
     <ClCompile Include="Src\Application\Effect\HitEffect\CopyHitEffect\CopyHitEffect.cpp" />
     <ClCompile Include="Src\Application\Effect\LaserStartEffect\LaserStartEffect.cpp" />
+    <ClCompile Include="Src\Application\Effect\WarningLine\WarningLine.cpp" />
     <ClCompile Include="Src\Application\Enemy\Boss\BossBase.cpp" />
     <ClCompile Include="Src\Application\Enemy\Boss\Boss\Boss.cpp" />
     <ClCompile Include="Src\Application\Enemy\Boss\SubBoss\SubBoss.cpp" />

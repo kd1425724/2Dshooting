@@ -85,5 +85,4 @@ private:
 	void PlayerDraw();
 	//プレイヤーエンジン
 	std::vector<std::shared_ptr<KdTexture>> m_playerenginetexs;
-	Math::Vector2 m_playerpos;
 };

@@ -76,7 +76,7 @@ void C_Barrier::EnemySkillActivate(Math::Vector2 scale)
 
     if (e&&hm)
     {
-        m_pos = { e->GetPos().x - e->GetSize().x + 100,e->GetPos().y };
+        m_pos = { e->GetPos().x,e->GetPos().y };
         hm->SetEnemyBarrier(shared_from_this());
     }
 }

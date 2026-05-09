@@ -4,8 +4,9 @@
 enum TitleButton
 {
 	START,	//スタートボタン
-	w
 };
+
+class C_Player;
 
 class C_TitleUi:public C_ScenesUiBase
 {
@@ -29,13 +30,6 @@ private:
 
 	void Release()override;
 
-	//タイトル用
-	void TitleNameInit();
-	void TitleNameDraw();
-	//座標
-	Math::Vector2 m_titlepos;
-	//テクスチャ
-	//std::shared_ptr<KdTexture> m_titletex;
 	//スタート
 	void StartInit();
 	void StartUpdate();
@@ -56,5 +50,18 @@ private:
 	Math::Vector2 m_startscale;
 
 	StartAlphaPattern m_startalphapattern = StartAlphaPattern::None;
+
+	//タイトルロゴ
+	void TitleLogoInit();
+	void TitleLogoDraw();
+	KdTexture m_titlelogotex;
+
+	//プレイヤー
+	void PlayerInit();
+	void PlayerUpdate();
+	void PlayerDraw();
+
+	std::shared_ptr<C_Player> m_player;
+	std::vector<std::shared_ptr<KdTexture>> m_playerenginetexs;
 
 };

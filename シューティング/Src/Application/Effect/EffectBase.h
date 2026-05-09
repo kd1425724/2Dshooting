@@ -8,7 +8,8 @@ public:
 	virtual ~C_EffectBase() {}
 
 	// äÓñ{èàóù
-	virtual void Init(Math::Vector2 pos) { m_pos = pos; }
+	virtual void Init(Math::Vector2 pos) {}
+	virtual void Init(Math::Vector2 pos, Math::Vector2 scale,int time) {}
 	virtual void Update() {}
 	virtual void Draw() {}
 

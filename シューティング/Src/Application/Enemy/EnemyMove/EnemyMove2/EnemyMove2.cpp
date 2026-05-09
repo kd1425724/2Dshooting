@@ -14,7 +14,7 @@ void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::sha
 {
 	//ステータス
 	m_hp = 1;
-	m_score = 10000;
+	m_score = 30000;
 
 	//スキル初期化
 	//m_skillmanager = nullptr;

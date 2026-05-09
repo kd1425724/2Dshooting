@@ -38,6 +38,8 @@ public:
 
 	void SetShot(std::shared_ptr<C_Shot> shot) { m_shot.push_back(shot); }
 
+	std::shared_ptr<C_SkillManager> GetSkillManager() { return m_skillmanager; }
+
 private:
 
 	//ŠÔƒJƒEƒ“ƒg

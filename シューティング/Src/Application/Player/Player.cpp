@@ -185,6 +185,67 @@ void C_Player::ResultDraw()
 
 }
 
+void C_Player::TitleInit()
+{
+	//座標
+	m_pos = { -250,-50 };
+	//移動量
+	m_move = { 1.0f,0.0f };
+	m_movespeed = { 0.5f,0.0f };
+	//サイズ
+	m_scale = { 0.5f,0.5f };
+	//カラー
+	m_color = { 1,1,1,1 };
+	//切り取り範囲
+	m_rect = { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height };
+
+	//半径
+	m_halfsize = m_rect * m_scale / 2;
+	m_radius = m_rect.x /** m_scale.x */ / 3;
+
+	m_engineanim = 0;
+}
+
+void C_Player::TitleUpdate()
+{
+	if (COMMONAPI.OutOfScreen(m_pos, { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height / 2 }))
+	{
+		m_pos.x = -(float)INFO.ScrWidth / 2 - (float)CommonTex.GetPlayerRect().width;
+	}
+
+	//m_pos += m_move * m_movespeed;
+
+
+	//エンジンアニメーション用
+	m_engineanim += 0.05f;
+	if (m_engineanim >= m_enginetexs.size())
+	{
+		m_engineanim = 0;
+	}
+	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
+	m_transmat = Math::Matrix::CreateTranslation(m_pos.x,m_pos.y, 0);//+0.5f四捨五入してる
+	m_mat = m_scalemat * m_transmat;
+}
+
+void C_Player::TitleDraw()
+{
+	Math::Color color = { 1,1,1,1 };
+	Math::Rectangle enginerect = { 0,0, 64,64 };
+
+	Math::Matrix enginscale = Math::Matrix::CreateScale(0.5f, 0.4f, 0);
+	Math::Matrix engintrans = Math::Matrix::CreateTranslation(m_pos.x-20,m_pos.y, 0);
+
+	Math::Matrix mat = enginscale * engintrans;
+
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetexs[(int)m_engineanim].get(), 0, 0, &enginerect, &color);
+
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPlayerTex(), 0, 0, &CommonTex.GetPlayerRect(), &m_color);
+
+
+}
+
 void C_Player::Release()
 {
 }

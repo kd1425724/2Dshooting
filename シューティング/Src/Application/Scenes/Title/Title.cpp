@@ -12,7 +12,7 @@ void C_Title::Init()
 	m_titleui = std::make_shared<C_TitleUi>();
 
 	m_starttex = std::make_shared<KdTexture>();
-	m_starttex->Load("Texture/Ui/Font/PressEntertoStart.png");
+	m_starttex->Load("Texture/Ui/Font/PRESSENTERTOSTART.png");
 
 	m_titleui->SetStartTex(m_starttex);
 

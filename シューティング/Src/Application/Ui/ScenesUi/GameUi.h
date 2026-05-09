@@ -91,15 +91,14 @@ private:
 
 	Math::Vector2 m_skilliconpos;
 	Math::Vector2 m_skilliconscale;
-	
 	std::vector<std::shared_ptr<KdTexture>> m_skillicontexs;
-
 	int m_skilliconindex = 0;
-
-
 	Math::Vector2 m_skillpos;
 	Math::Vector2 m_skillscale;
 	std::shared_ptr<KdTexture> m_SKILLtex;
+
+	KdTexture m_OKicontex;
+	KdTexture m_NOicontex;
 
 	//Žc‹@HUD
 	void LifeHUDInit();
