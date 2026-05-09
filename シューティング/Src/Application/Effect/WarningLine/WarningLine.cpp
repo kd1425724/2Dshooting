@@ -8,7 +8,6 @@ void C_WarningLine::Init(Math::Vector2 pos, Math::Vector2 scale,int time)
 	m_rect = { 100,36 };
 	m_alive = true;
 	m_alpha = 0;
-	m_killcnt = 0;
 
 	m_linealpha = LineAlpha::Up;
 }
@@ -29,7 +28,6 @@ void C_WarningLine::Update()
 		m_alpha += 0.5f / m_linetime;
 		if (m_alpha > 0.5f)
 		{
-			m_killcnt++;
 			m_alpha = 0.5f;
 			Kill();
 			m_linealpha = LineAlpha::Down;

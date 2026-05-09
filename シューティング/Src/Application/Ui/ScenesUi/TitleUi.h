@@ -1,67 +1,67 @@
 #pragma once
-#include"Application/Ui/ScenesUi/ScenesUiBase.h"
+#include "Application/Ui/ScenesUi/ScenesUiBase.h"
 
 enum TitleButton
 {
-	START,	//スタートボタン
+    START, // スタートボタン
 };
 
 class C_Player;
 
-class C_TitleUi:public C_ScenesUiBase
+class C_TitleUi : public C_ScenesUiBase
 {
 public:
-	C_TitleUi(){}
-	~C_TitleUi()override { Release(); }
+    C_TitleUi() {}
+    ~C_TitleUi() override { Release(); }
 
-	void Init()override;
-	void Update()override;
-	void Draw()override;
+    void Init() override;
+    void Update() override;
+    void Draw() override;
 
-	//スタートテクスチャセット
-	void SetStartTex(std::shared_ptr<KdTexture> tex) { m_starttex = tex; }
+    // スタートテクスチャセット
+    void SetStartTex(std::shared_ptr<KdTexture> tex)
+    {
+        m_starttex = tex;
+    }
 
-	//背景用
-	void BackGroundInit()override;
-	void BackGroundUpdate()override;
-	void BackGroundDraw()override; 
+    // 背景
+    void BackGroundInit() override;
+    void BackGroundUpdate() override;
+    void BackGroundDraw() override;
 
 private:
+    void Release() override;
 
-	void Release()override;
+    // ===== スタート =====
+    void StartInit();
+    void StartUpdate();
+    void StartDraw();
 
-	//スタート
-	void StartInit();
-	void StartUpdate();
-	void StartDraw();
+    enum class StartAlphaPattern
+    {
+        None,
+        Up,
+        Down
+    };
 
-	enum class StartAlphaPattern
-	{
-		None,
-		Up,
-		Down
-	};
-	//座標
-	Math::Vector2 m_startpos;
-	//テクスチャ
-	std::shared_ptr<KdTexture> m_starttex;
-	//点滅用
-	float m_startalpha;
-	Math::Vector2 m_startscale;
+    Math::Vector2 m_startpos = { 0, 0 };
+    std::shared_ptr<KdTexture> m_starttex = nullptr;
+    float m_startalpha = 1.0f;
+    Math::Vector2 m_startscale = { 1.0f, 1.0f };
 
-	StartAlphaPattern m_startalphapattern = StartAlphaPattern::None;
+    StartAlphaPattern m_startalphapattern = StartAlphaPattern::None;
 
-	//タイトルロゴ
-	void TitleLogoInit();
-	void TitleLogoDraw();
-	KdTexture m_titlelogotex;
+    // ===== タイトルロゴ =====
+    void TitleLogoInit();
+    void TitleLogoDraw();
 
-	//プレイヤー
-	void PlayerInit();
-	void PlayerUpdate();
-	void PlayerDraw();
+    KdTexture m_titlelogotex;
 
-	std::shared_ptr<C_Player> m_player;
-	std::vector<std::shared_ptr<KdTexture>> m_playerenginetexs;
+    // ===== プレイヤー =====
+    void PlayerInit();
+    void PlayerUpdate();
+    void PlayerDraw();
 
+    std::shared_ptr<C_Player> m_player = nullptr;
+    std::vector<std::shared_ptr<KdTexture>> m_playerenginetexs;
 };

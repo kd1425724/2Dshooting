@@ -1,111 +1,96 @@
 #pragma once
-#include<functional>
-
+#include <functional>
 using namespace std;
 
 struct SpriteItem
 {
-	Math::Vector2 pos;
-	Math::Rectangle rect;
-	Math::Vector2 radius;
-	Math::Vector2 scale;
-	Math::Color color;
+    Math::Vector2 pos = { 0, 0 };
+    Math::Rectangle rect = { 0, 0, 0, 0 };
+    Math::Vector2 radius = { 0, 0 };
+    Math::Vector2 scale = { 1, 1 };
+    Math::Color color = {};
 
-	const KdTexture* tex;
+    const KdTexture* tex = nullptr;
 
-	Math::Matrix transMat;
-	Math::Matrix scaleMat;
-	Math::Matrix mat;
+    Math::Matrix transMat = Math::Matrix::Identity;
+    Math::Matrix scaleMat = Math::Matrix::Identity;
+    Math::Matrix mat = Math::Matrix::Identity;
 
-	//フレーム用
-	Math::Vector2 framescale;
-	Math::Matrix framescalemat;
-	Math::Matrix framemat;
+    //// フレーム用
+    //Math::Vector2 framescale = { 1, 1 };
+    //Math::Matrix framescalemat = Math::Matrix::Identity;
+    //Math::Matrix framemat = Math::Matrix::Identity;
 
-	//上に乗っているか
-	bool GetIsOnTop();
+    // 上に乗っているか
+    bool GetIsOnTop();
 
-	//何をするか
-	function<void()> action;
+    // 何をするか
+    function<void()> action = nullptr;
 };
 
 class C_ScenesUiBase
 {
 public:
-	C_ScenesUiBase() { m_frametex.Load("Texture/Ui/IsOnTopFrame.png"); }
-	virtual ~C_ScenesUiBase() { Release(); }
+    C_ScenesUiBase()
+    {
+    }
 
-	virtual void Init();
-	virtual void Update();
-	virtual void Draw();
-	
-	//背景用
-	virtual void BackGroundInit();
-	virtual void BackGroundUpdate();
-	virtual void BackGroundDraw();
+    virtual ~C_ScenesUiBase() { Release(); }
 
-	//共通背景
-	void BlackBackInit();
-	void BlackBackUpdate();
-	void BlackBackDraw();
+    virtual void Init();
+    virtual void Update();
+    virtual void Draw();
 
-	//押せるUiが押された
-	void ClickableUi();
-	//上に乗っている間描画
-	void IsOnTopDraw();
-	//Initを呼び出すたびに画像を増やせる
-	void CreateSpriteItemInit(Math::Vector2 pos, Math::Rectangle rect, Math::Vector2 scale,const KdTexture* tex, Math::Color color);
-	void CreateSpriteItemUpdate();
-	void CreateSpriteItemDraw();
+    // 背景用
+    virtual void BackGroundInit();
+    virtual void BackGroundUpdate();
+    virtual void BackGroundDraw();
 
-	//ボタンごとにactionを入れる
-	void SetAction(int index, function<void()> action) { m_SpriteItem[index].action = action; };
+    // 共通背景
+    void BlackBackInit();
+    void BlackBackUpdate();
+    void BlackBackDraw();
+
+    void ClickableUi();
+    void IsOnTopDraw();
+
+    void CreateSpriteItemInit(
+        Math::Vector2 pos,
+        Math::Rectangle rect,
+        Math::Vector2 scale,
+        const KdTexture* tex,
+        Math::Color color);
+
+    void CreateSpriteItemUpdate();
+    void CreateSpriteItemDraw();
+
+    void SetAction(int index, function<void()> action)
+    {
+        m_SpriteItem[index].action = action;
+    }
 
 protected:
+    virtual void Release() {}
 
-	virtual void Release(){}
+    // ===== 背景 =====
+    KdTexture m_backgroundtex;
 
-	//背景用///
-	
-	//画像
-	KdTexture m_backgroundtex;
-	//切り取り範囲
-	Math::Rectangle m_backgroundrect;
-	//行列
-	Math::Matrix m_backgroundscalemat;
-	Math::Matrix m_backgroundtransmat;
-	Math::Matrix m_backgroundmat;
-	//座標
-	Math::Vector2 m_backgroundpos;
-	//サイズ
-	Math::Vector2 m_backgroundscale;
-	//アニメーション用
-	Math::Vector2 m_backgroundanim;
-	//カラー
-	Math::Color m_backgroundcolor;
-	////////////
+    Math::Rectangle m_backgroundrect = { 0, 0, 0, 0 };
+    Math::Matrix m_backgroundscalemat = Math::Matrix::Identity;
+    Math::Matrix m_backgroundtransmat = Math::Matrix::Identity;
+    Math::Matrix m_backgroundmat = Math::Matrix::Identity;
 
-	//押せるUi用////
+    Math::Vector2 m_backgroundpos = { 0, 0 };
+    Math::Vector2 m_backgroundscale = { 1, 1 };
+    Math::Vector2 m_backgroundanim = { 0, 0 };
+    Math::Color m_backgroundcolor = {};
 
-	std::vector<SpriteItem> m_SpriteItem;
-
-	////////////////
+    // ===== UIスプライト =====
+    std::vector<SpriteItem> m_SpriteItem;
 
 private:
-
-	//共通背景用///
-	//座標
-	Math::Vector2 m_blackbackpos;
-	//行列
-	Math::Matrix m_blackbackmat;
-	//カラー
-	Math::Color m_blackbackcolor;
-	///////////////
-
-	//フレーム用///
-	KdTexture m_frametex;
-	Math::Rectangle m_framerect = { 0,0,360,360 };
-	//////////////
-
+    // ===== 共通背景 =====
+    Math::Vector2 m_blackbackpos = { 0, 0 };
+    Math::Matrix m_blackbackmat = Math::Matrix::Identity;
+    Math::Color m_blackbackcolor = {};
 };
-

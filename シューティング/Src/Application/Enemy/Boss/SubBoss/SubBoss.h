@@ -1,91 +1,79 @@
 #pragma once
-#include"Application/Enemy/Boss/BossBase.h"
+#include "Application/Enemy/Boss/BossBase.h"
 
 enum class SubBossActionPattern
 {
-	None,
-	p1_Laser,
-	p2_Barrier,
-	SubBossActionPatternNum
+    None,
+    p1_Laser,
+    p2_Barrier,
+    SubBossActionPatternNum
 };
 
-class C_SubBoss :public C_BossBase, public std::enable_shared_from_this<C_SubBoss>
+class C_SubBoss : public C_BossBase, public std::enable_shared_from_this<C_SubBoss>
 {
 public:
-	C_SubBoss() {}
-	~C_SubBoss() { Release(); }
+    C_SubBoss() {}
+    ~C_SubBoss() { Release(); }
 
-	void Init(Math::Vector2 pos)		override;
-	void Update()	override;
-	void Draw()		override;
+    void Init(Math::Vector2 pos) override;
+    void Update() override;
+    void Draw() override;
 
-	void SetId(int id) { m_id = id; }
-
-	int GetId() { return m_id; }
+    void SetId(int id) { m_id = id; }
+    int GetId() { return m_id; }
 
 private:
+    int m_id = 0;
 
-	int m_id;
+    void Release() override;
 
-	void Release()	override;
+    // ===== 状態管理 =====
+    static const int NoneTime = 60;
+    int m_nonetime = 0;
 
-	//何もしない時間
-	static const int NoneTime = 60;
-	int m_nonetime;
+    Pattern m_pattern = Pattern::Start;
 
-	//ボスパターン
-	Pattern m_pattern;
+    SubBossActionPattern m_actionpattern = SubBossActionPattern::None;
+    SubBossActionPattern m_nextactionpattern = SubBossActionPattern::None;
 
-	//ボス行動パターン
-	SubBossActionPattern m_actionpattern;
-	SubBossActionPattern m_nextactionpattern;
+    Math::Vector2 m_stoppos = { 0, 0 };
 
-	//止まる座標
-	Math::Vector2 m_stoppos;
+    float m_texangle = 0.0f;
 
-	float m_texangle;
+    KdTexture tex;
 
-	KdTexture tex;
+    // ===== 行動時間 =====
+    static const int LaserTime = 300;
+    int m_lasertime = 0;
+    int m_laserprogresstime = 0;
+    bool m_laserflg = false;
 
-	//一行動の時間
-	//レーザー
-	static const int LaserTime = 300;
-	int m_lasertime;
-	int m_laserprogresstime;
-	bool m_laserflg;
-	//バリア
-	static const int BarrierTime = 300;
-	int m_barriertime;
-	
-	//スタート
-	void StartUpdate();
-	void StartDraw();
-	//ループ更新
-	void LoopUpdate();
-	void LoopDraw();
-	//デス中更新
-	void DeathUpdate();
-	void DeathDraw();
+    static const int BarrierTime = 300;
+    int m_barriertime = 0;
 
-	//ループ中行動パターン初期化
-	void NoneInit(SubBossActionPattern pattern);
-	void p1_LaserInit();
-	void p2_BarrierInit();
-	
+    // ===== 状態遷移 =====
+    void StartUpdate();
+    void StartDraw();
+    void LoopUpdate();
+    void LoopDraw();
+    void DeathUpdate();
+    void DeathDraw();
 
-	//ループ中行動パターン更新
-	void NoneUpdate();
-	void p1_LaserUpdate();
-	void p2_BarrierUpdate();
+    // ===== 行動初期化 =====
+    void NoneInit(SubBossActionPattern pattern);
+    void p1_LaserInit();
+    void p2_BarrierInit();
 
-	//ループ中行動パターン描画
-	void p1_LaserDrawSprite();
-	void p2_BarrierDrawSprite();
+    // ===== 行動更新 =====
+    void NoneUpdate();
+    void p1_LaserUpdate();
+    void p2_BarrierUpdate();
 
-	//行動パターンセット
-	void SetActionPattern(SubBossActionPattern pattern);
+    // ===== 描画 =====
+    void p1_LaserDrawSprite();
+    void p2_BarrierDrawSprite();
 
-	//指定したもの以外の値を返す
-	SubBossActionPattern GetRandomPatternExclude(SubBossActionPattern exclude);
-
+    // ===== パターン制御 =====
+    void SetActionPattern(SubBossActionPattern pattern);
+    SubBossActionPattern GetRandomPatternExclude(SubBossActionPattern exclude);
 };

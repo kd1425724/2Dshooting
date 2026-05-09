@@ -3,59 +3,38 @@
 class C_Info
 {
 public:
-	~C_Info(){}
+   
+    // ===== 画面設定（定数） =====
+    static const int ScrWidth = 1280;
+    static const int ScrHeight = 720;
 
-	//画面設定//
+    // HUDエリア
+    static const int HUDAreaWidth = 1280;
+    static const int HUDAreaHeight = 160;
 
-	static const int ScrWidth = 1280;
-	static const int ScrHeight = 720;
+    // プレイエリア
+    static const int PlayAreaWidth = 1280;
+    static const int PlayAreaTop = ScrHeight / 2 - HUDAreaHeight;
+    static const int PlayAreaBottom = -ScrHeight / 2;
 
-	//HUDエリア設定
-	static const int HUDAreaWidth = 1280;
-	static const int HUDAreaHeight = 160;
+    // ===== プレイヤー情報（セーブデータ） =====
+    void PlayerInfoLoad();
+    void PlayerInfoSave();
 
-	//プレイ画面設定
-	static const int PlayAreaWidth = 1280;
-	static const int PlayAreaTop = ScrHeight/2 - HUDAreaHeight;
-	static const int PlayAreaBottom = -ScrHeight/2;
-
-	////////////
-
-
-	//プレイヤー情報//
-	
-	//読み込み
-	void PlayerInfoLoad();
-	//書き込み
-	void PlayerInfoSave();
-	//HP強化幅保存用
-	int PlayerHpEnhancement = 1;
-	//Power強化幅保存用
-	int PlayerPowerEnhancement = 5;
-	//Speed強化幅保存用
-	int PlayerSpeedEnhancement = 2;
-
-	//////////////////
-
-
+    int PlayerHpEnhancement = 1;
+    int PlayerPowerEnhancement = 5;
+    int PlayerSpeedEnhancement = 2;
 
 private:
-
-//シングルトン
-private:
-	
-	C_Info() {}
+    C_Info() {}
+    ~C_Info() {}
 
 public:
-	
-
-	static C_Info& GetInstans()
-	{
-		static C_Info instans;
-		return instans;
-	}
+    static C_Info& GetInstans()
+    {
+        static C_Info instans;
+        return instans;
+    }
 };
 
-//情報まとめ
 #define INFO C_Info::GetInstans()
-

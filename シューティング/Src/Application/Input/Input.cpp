@@ -3,7 +3,6 @@
 
 C_Input::~C_Input()
 {
-
 	PlayerKeySave();
 }
 

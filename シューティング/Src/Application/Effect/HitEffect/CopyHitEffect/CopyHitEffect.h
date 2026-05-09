@@ -16,5 +16,5 @@ private:
 
 	static const int AnimMax = 5;
 
-	float m_anim;
+	float m_anim=0;
 };

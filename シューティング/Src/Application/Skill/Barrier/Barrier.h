@@ -13,7 +13,7 @@ class C_Barrier : public C_SkillBase, public std::enable_shared_from_this<C_Barr
 {
 public:
     C_Barrier();
-    ~C_Barrier()override;
+    ~C_Barrier() override {};
 
     void Init() override;
     void Update() override;
@@ -23,43 +23,43 @@ public:
     void EnemySkillActivate(Math::Vector2 scale) override;
 
     void SetTexture(std::shared_ptr<KdTexture> tex);
+    void SetEnemy(std::shared_ptr<C_EnemyMoveBase> enemybase) override
+    {
+        m_enemy = enemybase;
+    }
 
-    void SetEnemy(std::shared_ptr<C_EnemyMoveBase> enemybase) override{ m_enemy = enemybase; }
+    bool IsTopDraw() override { return true; }
 
-    bool IsTopDraw()override { return true; }
-
-    void SetHitManager(std::shared_ptr<C_HitManager> hitmanager)override { m_hitmanager = hitmanager; }
+    void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) override
+    {
+        m_hitmanager = hitmanager;
+    }
 
 private:
-
-    //発生時間
+    // ===== 基本状態 =====
     static const int MaxTime = 300;
-    int m_time;
+    int m_time = 0;
 
-    // 位置
-    //Math::Vector2 m_pos;
-
-    // 描画
+    // ===== 描画 =====
     std::weak_ptr<KdTexture> m_tex;
-    Math::Vector2 m_rect;
-    Math::Color m_color;
 
-    Math::Matrix m_mat;
+    Math::Vector2 m_rect = { 0,0 };
+    Math::Color m_color = {};
 
-    Math::Vector2 m_scale;
+    Math::Matrix m_mat = Math::Matrix::Identity;
 
-    // 演出
-    float m_rot;
-    Math::Vector2 m_dir;
-    float m_alpha;
+    Math::Vector2 m_scale = { 1.0f, 1.0f };
+
+    // ===== 演出 =====
+    float m_rot = 0.0f;
+    Math::Vector2 m_dir = { 0,0 };
+    float m_alpha = 1.0f;
 
     static const int AnimMaxNum = 6;
-    float m_anim;
+    float m_anim = 0.0f;
 
-    Flashing m_flashing;
+    Flashing m_flashing = Flashing::Up;
 
     std::weak_ptr<C_EnemyMoveBase> m_enemy;
-
-    //当たり判定
     std::weak_ptr<C_HitManager> m_hitmanager;
 };

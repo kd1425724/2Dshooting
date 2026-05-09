@@ -14,72 +14,107 @@ enum class UseType
 class C_SkillBase
 {
 public:
-	C_SkillBase() {
+	C_SkillBase()
+	{
 		m_usetype = UseType::Player;
+
+		m_alive = true;
+
+		m_pos = { 0,0 };
+
+		m_radius = 0.0f;
+		m_halfsize = { 0,0 };
+
+		m_finished = false;
 	}
-	virtual ~C_SkillBase(){}
+
+	virtual ~C_SkillBase() {}
 
 	virtual void Init();
 	virtual void Update();
 	virtual void Draw();
 
 	//スキル発動用
-	virtual void SkillActivate(){}
-	virtual void EnemySkillActivate(){}
-	virtual void EnemySkillActivate(Math::Vector2 scale){}
+	virtual void SkillActivate() {}
+	virtual void EnemySkillActivate() {}
+	virtual void EnemySkillActivate(Math::Vector2 scale) {}
 
-	void SetUseType(UseType type) { m_usetype = type; }
+	void SetUseType(UseType type)
+	{
+		m_usetype = type;
+	}
 
 	//敵管理取得用
 	virtual void SetEnemyMagager(std::shared_ptr<C_EnemyManager> manager) {}
+
 	//敵取得用
 	virtual void SetEnemy(std::shared_ptr<C_EnemyMoveBase> enemybase) {}
 
 	//プレイヤーインスタンス取得用
-	void SetPlayer(std::shared_ptr<C_Player> player) { m_player = player; }
+	void SetPlayer(std::shared_ptr<C_Player> player)
+	{
+		m_player = player;
+	}
 
 	//画像設定
-	virtual void SetTexture(std::shared_ptr<KdTexture> tex){}
+	virtual void SetTexture(std::shared_ptr<KdTexture> tex) {}
 
 	//画像描画順調整
 	virtual bool IsTopDraw() = 0;
 
-	bool GetAlive() { return m_alive; }
+	bool GetAlive()
+	{
+		return m_alive;
+	}
 
 	//終了フラグ
-	bool GetFinishedFlg() { return m_finished; }
-	void SetFinishedFlg(bool flg) { m_finished = flg; }
+	bool GetFinishedFlg()
+	{
+		return m_finished;
+	}
 
-	Math::Vector2 GetPos() { return m_pos; }
+	void SetFinishedFlg(bool flg)
+	{
+		m_finished = flg;
+	}
+
+	Math::Vector2 GetPos()
+	{
+		return m_pos;
+	}
 
 	//半径x,y別（矩形）
-	Math::Vector2 GetSize() { return m_halfsize; }
+	Math::Vector2 GetSize()
+	{
+		return m_halfsize;
+	}
 
 	//半径（円判定）
-	float GetRadius() { return m_radius; }
+	float GetRadius()
+	{
+		return m_radius;
+	}
 
-	virtual void SetHitManager(std::shared_ptr<C_HitManager> hitmanager){}
+	virtual void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) {}
 
 protected:
-	
-	UseType m_usetype;
+
+	UseType m_usetype = UseType::Player;
 
 	std::weak_ptr<C_Player> m_player;
 
-	bool m_alive;
+	bool m_alive = true;
 
-	Math::Vector2 m_pos;
+	Math::Vector2 m_pos = { 0,0 };
 
 	//半径
-	float m_radius;
-	Math::Vector2 m_halfsize;
+	float m_radius = 0.0f;
+
+	Math::Vector2 m_halfsize = { 0,0 };
 
 	//終了フラグ
-	bool m_finished=false;
-
+	bool m_finished = false;
 
 private:
-
-
 
 };

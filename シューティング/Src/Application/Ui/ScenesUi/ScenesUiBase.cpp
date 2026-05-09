@@ -60,9 +60,9 @@ void C_ScenesUiBase::CreateSpriteItemInit(Math::Vector2 pos, Math::Rectangle rec
 
 	d.action = nullptr;
 
-	//フレーム用
-	d.framescale = {d.rect.width * d.scale.x / m_framerect.width,
-		d.rect.height * d.scale.y / m_framerect.height };
+	////フレーム用
+	//d.framescale = {d.rect.width * d.scale.x / m_framerect.width,
+	//	d.rect.height * d.scale.y / m_framerect.height };
 
 	m_SpriteItem.push_back(d);
 }
@@ -75,8 +75,8 @@ void C_ScenesUiBase::CreateSpriteItemUpdate()
 		m_SpriteItem[i].transMat = Math::Matrix::CreateTranslation(m_SpriteItem[i].pos.x, m_SpriteItem[i].pos.y, 1);
 		m_SpriteItem[i].mat = m_SpriteItem[i].scaleMat * m_SpriteItem[i].transMat;
 
-		m_SpriteItem[i].framescalemat = Math::Matrix::CreateScale(m_SpriteItem[i].framescale.x, m_SpriteItem[i].framescale.y, 1);
-		m_SpriteItem[i].framemat=m_SpriteItem[i].framescalemat * m_SpriteItem[i].transMat;
+	/*	m_SpriteItem[i].framescalemat = Math::Matrix::CreateScale(m_SpriteItem[i].framescale.x, m_SpriteItem[i].framescale.y, 1);
+		m_SpriteItem[i].framemat=m_SpriteItem[i].framescalemat * m_SpriteItem[i].transMat;*/
 	}
 }
 
@@ -92,14 +92,14 @@ void C_ScenesUiBase::CreateSpriteItemDraw()
 
 void C_ScenesUiBase::IsOnTopDraw()
 {
-	for (int i = 0; i < m_SpriteItem.size(); i++)
+	/*for (int i = 0; i < m_SpriteItem.size(); i++)
 	{
 		if (m_SpriteItem[i].GetIsOnTop())
 		{
 			SHADER.m_spriteShader.SetMatrix(m_SpriteItem[i].framemat);
 			SHADER.m_spriteShader.DrawTex(&m_frametex, 0, 0, &m_framerect, &Math::Color(1, 1, 1, 1));
 		}
-	}
+	}*/
 }
 
 void C_ScenesUiBase::ClickableUi()

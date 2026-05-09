@@ -7,27 +7,28 @@ class C_HitManager;
 class C_Copy : public C_SkillBase
 {
 public:
-	C_Copy(){}
-	~C_Copy()override{}
+    C_Copy() {}
+    ~C_Copy() override {}
 
-	void Init() override;
-	void Update() override;
-	void Draw() override;
+    void Init() override;
+    void Update() override;
+    void Draw() override;
 
-	// スキル発動
-	void SkillActivate() override;
-	void EnemySkillActivate() override;
+    // スキル発動
+    void SkillActivate() override;
+    void EnemySkillActivate() override;
 
-	// 描画順
-	bool IsTopDraw() override { return false; }
+    // 描画順
+    bool IsTopDraw() override { return false; }
 
-	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager)override { m_hitmanager = hitmanager; }
+    void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) override
+    {
+        m_hitmanager = hitmanager;
+    }
 
 private:
+    std::shared_ptr<C_Shot> m_shot = nullptr;
+    std::weak_ptr<C_HitManager> m_hitmanager;
 
-	std::shared_ptr<C_Shot> m_shot;
-
-	std::weak_ptr<C_HitManager> m_hitmanager;
-
-	int m_time;
+    int m_time = 0;
 };

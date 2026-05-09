@@ -4,7 +4,7 @@
 
 void C_Title::Release()
 {
-
+	m_starttex->Release();
 }
 
 void C_Title::Init()

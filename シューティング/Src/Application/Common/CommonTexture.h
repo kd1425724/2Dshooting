@@ -3,7 +3,6 @@
 class C_CommonTexture
 {
 public:
-	~C_CommonTexture();
 
 	//フェード用
 	const KdTexture& GetWhiteBackTex()const { return m_whitebacktex; }
@@ -35,6 +34,7 @@ private:
 private:
 
 	C_CommonTexture();
+	~C_CommonTexture();
 
 public:
 	

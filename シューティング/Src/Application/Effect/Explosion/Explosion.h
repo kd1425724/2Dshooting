@@ -4,17 +4,16 @@
 class C_Explosion : public C_EffectBase
 {
 public:
-	C_Explosion(){}
+    C_Explosion() {}
 
-	~C_Explosion() {}
+    ~C_Explosion() override {}
 
-	void Init(Math::Vector2 pos) override;
-	void Update() override;
-	void Draw() override;
+    void Init(Math::Vector2 pos) override;
+    void Update() override;
+    void Draw() override;
 
 private:
+    static const int AnimMax = 7;
 
-	static const int AnimMax = 7;
-
-	float m_anim;
+    float m_anim = 0.0f;
 };

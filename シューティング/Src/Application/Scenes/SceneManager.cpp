@@ -12,7 +12,6 @@ void C_SceneManager::Init()
 {
     scenes.push(CreateScene(SceneType::Game));
     scenes.top()->Init();
-
 }
 
 void C_SceneManager::Update()

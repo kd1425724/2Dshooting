@@ -5,7 +5,6 @@ class C_LaserStartEffect : public C_EffectBase
 {
 public:
 	C_LaserStartEffect() {}
-
 	~C_LaserStartEffect() {}
 
 	void Init(Math::Vector2 pos) override;
@@ -16,5 +15,5 @@ private:
 
 	static const int AnimMax = 7;
 
-	float m_anim;
+	float m_anim=0;
 };

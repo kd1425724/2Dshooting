@@ -99,6 +99,7 @@ void C_TitleUi::BackGroundDraw()
 void C_TitleUi::Release()
 {
 	m_backgroundtex.Release();
+	m_titlelogotex.Release();
 }
 
 

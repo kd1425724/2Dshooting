@@ -16,7 +16,7 @@ class C_Boss:public C_BossBase, public std::enable_shared_from_this<C_Boss>
 {
 public:
 	C_Boss(){}
-	~C_Boss() { Release(); }
+	~C_Boss()override { Release(); }
 
 	//ŽG‹›“G—p‚È‚Ì‚ÅŽg‚í‚È‚¢
 	void Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i)override {}

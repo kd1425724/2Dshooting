@@ -34,6 +34,10 @@ void C_EnemyMoveBase::HitUpdate()
 			m_color = { 1.0f, 1.0f, 1.0f, 1.0f }; // í èÌ
 		}
 	}
+	else
+	{
+		m_color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	}
 }
 void C_EnemyMoveBase::Release()
 {

@@ -103,6 +103,15 @@ void C_ResultUi::BackGroundDraw()
 void C_ResultUi::Release()
 {
 	m_backgroundtex.Release();
+	m_frametex.Release();
+	m_ENTERTex.Release();
+	m_CrearTextTex.Release();
+	m_ScoreTextTex.Release();
+	m_LifeTextTex.Release();
+	m_TimeTextTex.Release();
+	m_TotalTextTex.Release();
+	m_starframetex.Release();
+	m_startex.Release();
 }
 
 void C_ResultUi::ENTERInit()

@@ -174,7 +174,7 @@ void C_Game::Update()
 		return;
 	}
 
-	/*if (!m_player->GetAlive() ||
+	if (!m_player->GetAlive() ||
 		!m_enemymanager->GetBoss())
 	{
 		auto s = std::make_shared<Score>();
@@ -197,7 +197,7 @@ void C_Game::Update()
 
 		SCENEMANAGER.push(SceneType::Result, true);
 		return;
-	}*/
+	}
 }
 
 void C_Game::Draw()

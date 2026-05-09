@@ -6,8 +6,9 @@ enum class SkillType
 	CopyShot,		//コピー
 	EnemyGenerate,	//敵生成
 	Barrier,		//バリア
-	Laser,		//レーザー
+	Laser,			//レーザー
 };
+
 class C_EnemyGenerate;
 class C_SkillBase;
 class C_EnemyManager;
@@ -19,8 +20,8 @@ class C_GameUi;
 class C_SkillManager
 {
 public:
-	C_SkillManager(){}
-	~C_SkillManager(){}
+	C_SkillManager() {}
+	~C_SkillManager() {}
 
 	void Init();
 	void Update();
@@ -33,17 +34,33 @@ public:
 	void SetPlayerSkill(SkillType skilltype);
 
 	//敵管理取得用
-	void SetEnemyManager(std::shared_ptr<C_EnemyManager> manager) { m_enemymanager = manager; }
-	//敵スキル発動用
-	void SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyMoveBase> enemybase);
+	void SetEnemyManager(std::shared_ptr<C_EnemyManager> manager)
+	{
+		m_enemymanager = manager;
+	}
 
-	void SetPlayer(std::shared_ptr<C_Player> player) { m_player = player; }
+	//敵スキル発動用
+	void SetEnemySkill(
+		SkillType skilltype,
+		std::shared_ptr<C_EnemyMoveBase> enemybase
+	);
+
+	void SetPlayer(std::shared_ptr<C_Player> player)
+	{
+		m_player = player;
+	}
 
 	//当たり判定用
-	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
+	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager)
+	{
+		m_hitmanager = hitmanager;
+	}
 
 	//モザイク用
-	void SetGameUi(std::shared_ptr<C_GameUi> gameui) { m_gameui = gameui; }
+	void SetGameUi(std::shared_ptr<C_GameUi> gameui)
+	{
+		m_gameui = gameui;
+	}
 
 	bool GetPlayerSkillFlg();
 
@@ -72,8 +89,10 @@ private:
 	std::weak_ptr<C_GameUi> m_gameui;
 
 	//画像読み込み用（本体）
+
 	//レーザー
-	std::shared_ptr<KdTexture> m_lasertex;
+	std::shared_ptr<KdTexture> m_lasertex = nullptr;
+
 	//スキル
-	std::shared_ptr<KdTexture> m_barriertex;
+	std::shared_ptr<KdTexture> m_barriertex = nullptr;
 };

@@ -1,21 +1,20 @@
 #pragma once
-#include"Application/Scenes/SceneBase.h"
+#include "Application/Scenes/SceneBase.h"
 
 class C_ResultUi;
 
-class C_Result:public C_SceneBase, public std::enable_shared_from_this<C_Result>
+class C_Result : public C_SceneBase, public std::enable_shared_from_this<C_Result>
 {
 public:
-	C_Result(){}
-	~C_Result()override{}
+    C_Result() {}
+    ~C_Result() override { Release(); }
 
-	void Init()override;
-	void Update()override;
-	void Draw()override;
+    void Init() override;
+    void Update() override;
+    void Draw() override;
 
 private:
-	void Release()override;
-	
-	std::shared_ptr<C_ResultUi> m_resultui;
+    void Release() override;
 
+    std::shared_ptr<C_ResultUi> m_resultui = nullptr;
 };

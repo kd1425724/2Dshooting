@@ -448,7 +448,7 @@ void C_HitManager::CopyHit()
 						continue;
 					}
 
-					if (IsHit(c_pos, c_radius, e->GetPos(), e->GetSize().x))
+					if (IsHit(c_pos, c_radius, e->GetPos(), e->GetRadius()))
 					{
 						c->SetAlive(false);
 						EFFECTMANAGER.AddEffect(EffectType::CopyHit, c_pos);

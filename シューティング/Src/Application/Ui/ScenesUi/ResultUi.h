@@ -67,7 +67,7 @@ private:
 	void StarInit();
 	void StarDraw();
 
-	static const int StarControlNum = 1000000;
+	static const int StarControlNum = 10000000;//‚P‚O‚O‚O–œ
 	static const int StarNum = 3;
 
 	int m_pickstarnum = 0;

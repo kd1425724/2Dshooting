@@ -39,43 +39,15 @@ enum class EnemySType
 class C_EnemyMoveBase
 {
 public:
-	C_EnemyMoveBase()
-	{
-		m_tex = nullptr;
-		m_enginetex = nullptr;
-		m_movetex = nullptr;
-		m_deathtex = nullptr;
+	C_EnemyMoveBase() {}
+	virtual ~C_EnemyMoveBase() {}
 
-		m_alive = true;
-
-		m_pos = { 0, 0 };
-		m_move = { 0, 0 };
-		m_movespeed = { 0, 0 };
-		m_scale = { 1, 1 };
-
-		m_anim = { 0, 0 };
-		m_animmaxnum = { 0, 0 };
-
-		m_engineanim = { 0, 0 };
-		m_deathanim = { 0, 0 };
-		m_moveanim = { 0, 0 };
-
-		m_shotinterval = 0;
-		m_shotintervaltime = 0;
-
-		m_angle = 0.0f;
-
-		m_skilltype = (SkillType)0;
-		m_usetype = (UseType)0;
-	}
-	virtual ~C_EnemyMoveBase(){}
-
-	virtual void Init(PosPattern pospattern,MovePattern movepattern ,std::shared_ptr<C_Player> player,int i){}
+	virtual void Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i) {}
 	virtual void Update();
 	virtual void Draw();
 
 	void SetTexandRectandAnimMax(KdTexture* tex, Math::Vector2 rect,
-		Math::Vector2 animmaxnum={0,0})
+		Math::Vector2 animmaxnum = { 0,0 })
 	{
 		m_tex = tex;
 		m_rect = rect;
@@ -83,9 +55,9 @@ public:
 	}
 
 	//ボス用
-	virtual void Init(){}
-	virtual void Init(Math::Vector2 pos){}
-	virtual void Init(Math::Vector2 pos,UseType type,int i){}
+	virtual void Init() {}
+	virtual void Init(Math::Vector2 pos) {}
+	virtual void Init(Math::Vector2 pos, UseType type, int i) {}
 
 	//座標取得用
 	Math::Vector2 GetPos() { return m_pos; }
@@ -107,8 +79,10 @@ public:
 
 	//エンジンテクスチャ
 	void SetEngineTex(KdTexture* tex) { m_enginetex = tex; }
+
 	//死亡演出用テクスチャ
 	void SetDeathTex(KdTexture* tex) { m_deathtex = tex; }
+
 	//行動用テクスチャ
 	void SetMoveTex(KdTexture* tex) { m_movetex = tex; }
 
@@ -116,10 +90,16 @@ public:
 	SkillType GetSkillType() { return m_skilltype; }
 
 	//スキル管理用
-	void SetSkillManager(std::shared_ptr<C_SkillManager> skillmanager) { m_skillmanager = skillmanager; }
+	void SetSkillManager(std::shared_ptr<C_SkillManager> skillmanager)
+	{
+		m_skillmanager = skillmanager;
+	}
 
 	//当たり判定管理用
-	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
+	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager)
+	{
+		m_hitmanager = hitmanager;
+	}
 
 	//ダメージ処理
 	void Damage(int value);
@@ -129,7 +109,10 @@ public:
 
 	EnemySType GetEnemyType() { return m_enemytype; }
 
-	void SetOwner(std::weak_ptr<C_Game> owner) { m_owner = owner; }
+	void SetOwner(std::weak_ptr<C_Game> owner)
+	{
+		m_owner = owner;
+	}
 
 protected:
 
@@ -145,73 +128,85 @@ protected:
 	EnemySType m_enemytype = EnemySType::Normal;
 
 	//ステータス
-	int m_maxhp;
-	int m_hp;
+	int m_maxhp = 1;
+	int m_hp = 1;
 
 	//テクスチャ
-	KdTexture* m_tex;
+	KdTexture* m_tex = nullptr;
+
 	//切り取り範囲
-	Math::Vector2 m_rect;
+	Math::Vector2 m_rect = { 0,0 };
+
 	//座標
-	Math::Vector2 m_pos;
+	Math::Vector2 m_pos = { 0,0 };
+
 	//移動量
-	Math::Vector2 m_move;
-	Math::Vector2 m_movespeed;
+	Math::Vector2 m_move = { 0,0 };
+	Math::Vector2 m_movespeed = { 0,0 };
+
 	//サイズ
-	Math::Vector2 m_scale;
+	Math::Vector2 m_scale = { 1,1 };
+
 	//行列
-	Math::Matrix m_scalemat;
-	Math::Matrix m_rotatemat;
-	Math::Matrix m_transmat;
-	Math::Matrix m_mat;
+	Math::Matrix m_scalemat = Math::Matrix::Identity;
+	Math::Matrix m_rotatemat = Math::Matrix::Identity;
+	Math::Matrix m_transmat = Math::Matrix::Identity;
+	Math::Matrix m_mat = Math::Matrix::Identity;
+
 	//カラー
-	Math::Color m_color;
+	Math::Color m_color = { 1,1,1,1 };
+
 	//生存フラグ
-	bool m_alive;
+	bool m_alive = true;
+
 	//アニメーション用
-	Math::Vector2 m_anim;
-	Math::Vector2 m_animmaxnum;
+	Math::Vector2 m_anim = { 0,0 };
+	Math::Vector2 m_animmaxnum = { 0,0 };
+
 	//攻撃間隔
-	int m_shotinterval;
+	int m_shotinterval = 0;
+
 	//攻撃間隔時間
-	int m_shotintervaltime;
+	int m_shotintervaltime = 0;
+
 	//移動方向用
-	float m_angle;
+	float m_angle = 0.0f;
+
 	//半径
-	float m_radius;
-	Math::Vector2 m_halfsize;
+	float m_radius = 0.0f;
+
+	Math::Vector2 m_halfsize = { 0,0 };
 
 	//プレイヤーインスタンス受け取り用
 	std::weak_ptr<C_Player> m_player;
 
 	//テクスチャ
-	KdTexture* m_enginetex;
-	KdTexture* m_movetex;
-	KdTexture* m_deathtex;
+	KdTexture* m_enginetex = nullptr;
+	KdTexture* m_movetex = nullptr;
+	KdTexture* m_deathtex = nullptr;
 
-	Math::Vector2 m_engineanimmaxnum;
-	Math::Vector2 m_deathanimmaxnum;
-	Math::Vector2 m_moveanimmaxnum;
+	Math::Vector2 m_engineanimmaxnum = { 0,0 };
+	Math::Vector2 m_deathanimmaxnum = { 0,0 };
+	Math::Vector2 m_moveanimmaxnum = { 0,0 };
 
-	Math::Vector2 m_engineanim;
-	Math::Vector2 m_deathanim;
-	Math::Vector2 m_moveanim;
+	Math::Vector2 m_engineanim = { 0,0 };
+	Math::Vector2 m_deathanim = { 0,0 };
+	Math::Vector2 m_moveanim = { 0,0 };
 
 	//スキル用
 	std::weak_ptr<C_SkillManager> m_skillmanager;
 
 	//当たり判定管理用
 	std::weak_ptr<C_HitManager> m_hitmanager;
+
 	static const int HitTimer = 10;
-	int m_hittimer;
 
+	int m_hittimer = 0;
 
-	SkillType m_skilltype;
+	SkillType m_skilltype = (SkillType)0;
 
-	UseType m_usetype;
+	UseType m_usetype = (UseType)0;
 
 private:
-
-	
 
 };

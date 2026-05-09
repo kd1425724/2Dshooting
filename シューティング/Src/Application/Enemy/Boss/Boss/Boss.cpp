@@ -177,11 +177,14 @@ void C_Boss::Draw()
 		break;
 	}
 
-	if (m_pattern != Pattern::Death&&!m_moveflg)
+	if (m_pattern != Pattern::Death)
 	{
-		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_tex, 0, 0,
-			&Math::Rectangle(0, 0, m_rect.x, m_rect.y), &m_color);
+		if (!m_moveflg)
+		{
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_tex, 0, 0,
+				&Math::Rectangle(0, 0, m_rect.x, m_rect.y), &m_color);
+		}
 		//ƒGƒ“ƒWƒ“
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetex, 0, 0,
 			&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y), &m_color);
@@ -399,7 +402,7 @@ void C_Boss::p4_SpiralUpdate()
 			auto s = std::make_shared<C_Shot>();
 			auto hm = m_hitmanager.lock();
 			auto o = m_owner.lock();
-
+			
 			s->SetHitManager(hm);
 			s->ShotManager(
 				ShotType::EnemyNormalShot,

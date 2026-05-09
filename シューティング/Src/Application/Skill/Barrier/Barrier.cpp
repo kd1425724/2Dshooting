@@ -17,10 +17,6 @@ C_Barrier::C_Barrier()
     m_finished = false;
 }
 
-C_Barrier::~C_Barrier()
-{
-}
-
 void C_Barrier::Init()
 {
     m_anim = 0;

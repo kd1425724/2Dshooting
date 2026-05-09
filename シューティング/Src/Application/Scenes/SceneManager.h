@@ -57,7 +57,7 @@ private:
 
 	std::stack<std::shared_ptr<C_SceneBase>> scenes;
 
-	std::shared_ptr<Score> m_scoredata = std::make_shared<Score>();
+	std::shared_ptr<Score> m_scoredata = nullptr;
 
 	//スコア用
 	int m_score = 0;
