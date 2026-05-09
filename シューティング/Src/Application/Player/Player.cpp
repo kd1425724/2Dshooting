@@ -27,8 +27,8 @@ void C_Player::Init()
 	m_rect = { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height };
 
 	//半径
-	m_halfsize = m_rect * m_scale / 3;
-	m_radius = m_rect.x /** m_scale.x */ / 3;
+	m_halfsize = m_rect * m_scale / 5;
+	m_radius = m_rect.x * m_scale.x  / 5;
 
 	//当たり判定用
 	if (m_hitmanager)
@@ -99,9 +99,10 @@ void C_Player::Update()
 	m_transmat = Math::Matrix::CreateTranslation((int)(m_pos.x+0.5f), (int)(m_pos.y+0.5f), 0);//+0.5f四捨五入してる
 	m_mat = m_scalemat * m_transmat;
 
-	if (m_Hp <= 0)
+	if (m_Hp <= 1)
 	{
-		m_alive = false;
+		m_Hp = 1;
+		//m_alive = false;
 	}
 }
 void C_Player::Draw()
@@ -193,14 +194,14 @@ void C_Player::TitleInit()
 	m_move = { 1.0f,0.0f };
 	m_movespeed = { 0.5f,0.0f };
 	//サイズ
-	m_scale = { 0.5f,0.5f };
+	m_scale = { 0.4f,0.4f };
 	//カラー
 	m_color = { 1,1,1,1 };
 	//切り取り範囲
 	m_rect = { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height };
 
 	//半径
-	m_halfsize = m_rect * m_scale / 2;
+	m_halfsize = m_rect * m_scale / 3;
 	m_radius = m_rect.x /** m_scale.x */ / 3;
 
 	m_engineanim = 0;

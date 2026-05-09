@@ -191,11 +191,13 @@ void C_GameUi::SkillHUDInit()
 	m_skilliconpos = { -70,255 };
 	m_skilliconscale = { 1,1 };
 
-	m_skillpos = { -150,330 };
+	m_skillpos = { -160,330 };
 	m_skillscale = { 0.4f,0.4f };
 
 	m_OKicontex.Load("Texture/Ui/HUD/OKIcon.png");
 	m_NOicontex.Load("Texture/Ui/HUD/NOIcon.png");
+	m_Readytex.Load("Texture/Ui/HUD/READY.png");
+	m_Locktex.Load("Texture/Ui/HUD/LOCK.png");
 }
 
 void C_GameUi::SkillHUDUpdate()
@@ -205,6 +207,9 @@ void C_GameUi::SkillHUDUpdate()
 
 void C_GameUi::SkillHUDDraw()
 {
+
+	auto o = m_owner.lock();
+
 	//スキルアイコン
 	{
 		Math::Matrix s = Math::Matrix::CreateScale(m_skilliconscale.x, m_skilliconscale.y, 1);
@@ -213,7 +218,24 @@ void C_GameUi::SkillHUDDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,300,100 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_skillicontexs[m_skilliconindex].get(), rect, 1.0f);
+
+		auto sm = o->GetSkillManager();
+
+		Math::Color color = { 1,1,1,1 };
+
+		if (sm)
+		{
+			if (!sm->GetPlayerSkillFlg())
+			{
+				color = { 1,1,1,1 };
+			}
+			else
+			{
+				color = { 0.3f,0.3f,0.3f,1.0f };
+			}
+		}
+
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_skillicontexs[m_skilliconindex].get(),0,0, &rect, &color);
 	}
 	
 	//スキル
@@ -228,10 +250,38 @@ void C_GameUi::SkillHUDDraw()
 
 	}
 
+	//READY LOCK
+	{
+		if (o)
+		{
+			auto sm = o->GetSkillManager();
+
+			if (sm)
+			{
+				Math::Rectangle rect = { 0,0,700,210 };
+				Math::Vector2 pos = { 10,330 };
+				Math::Vector2 scale = { 0.22f,0.22f };
+
+				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+				Math::Matrix mat = s * t;
+
+				if (sm->GetPlayerSkillFlg())
+				{
+					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_Locktex, rect, 1.0f);
+				}
+				else
+				{
+					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_Readytex, rect, 1.0f);
+				}
+			}
+		}
+	}
+
 	//OKNOアイコン
 	{
-		auto o = m_owner.lock();
-		
 		if (o)
 		{
 			auto sm = o->GetSkillManager();
@@ -239,7 +289,7 @@ void C_GameUi::SkillHUDDraw()
 			if (sm)
 			{
 				Math::Rectangle rect = { 0,0,210,210 };
-				Math::Vector2 pos = { -20,330 };
+				Math::Vector2 pos = { -60,330 };
 				Math::Vector2 scale = { 0.22f,0.22f };
 
 				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);

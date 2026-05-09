@@ -52,7 +52,7 @@ void C_Laser::EnemySkillActivate()
     m_alive = true;
     if (auto e = m_enemy.lock())
     {
-        EFFECTMANAGER.AddEffect(EffectType::WarningLine, { -100,e->GetPos().y },{12,2},m_warningtime);
+        EFFECTMANAGER.AddEffect(EffectType::WarningLine, { -100,e->GetPos().y },{12,1},m_warningtime);
     }
 }
 
@@ -67,7 +67,7 @@ void C_Laser::P_Active()
     m_color = { 0,0.8,0,1 };
 
     //‘¾‚³
-    m_thick = m_rect.x * m_scale.x;
+    m_thick = m_rect.x * m_scale.x/2;
 
     //“–‚½‚è”»’èŠÇ—‚É“n‚·
     if (auto hm = m_hitmanager.lock())
@@ -96,7 +96,7 @@ void C_Laser::E_Active()
     m_color = { 1,1,1,1 };
 
     //‘¾‚³
-    m_thick = m_rect.x * m_scale.x;
+    m_thick = m_rect.x * m_scale.x/2;
 
     //“–‚½‚è”»’èŠÇ—‚É“n‚·
     if (auto hm = m_hitmanager.lock())

@@ -24,7 +24,7 @@ void C_EffectManager::Init()
 	//Hit‰æ‘œ
 	//boltÂ
 	m_boltbluehiteffecttex = std::make_shared<KdTexture>();
-	m_boltbluehiteffecttex->Load("Texture/Effect/Game/Hit/BleeHit5.png");
+	m_boltbluehiteffecttex->Load("Texture/Effect/Game/Hit/BlueHit5.png");
 	//bolt—Î
 	m_boltgreenhiteffecttex = std::make_shared<KdTexture>();
 	m_boltgreenhiteffecttex->Load("Texture/Effect/Game/Hit/GreenHit5.png");
@@ -150,7 +150,7 @@ void C_EffectManager::AddEffect(EffectType type, Math::Vector2 pos,Math::Vector2
 		m_addeffects.back()->SetTexture(m_laserstartredeffecttex);
 		m_addeffects.back()->Init(pos);
 		break;
-	case EffectType::BoltHitBule:
+	case EffectType::BoltHitBlue:
 		m_addeffects.push_back(std::make_shared<C_BoltHitEffect>());
 		m_addeffects.back()->SetTexture(m_boltbluehiteffecttex);
 		m_addeffects.back()->Init(pos);

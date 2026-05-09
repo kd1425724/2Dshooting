@@ -45,7 +45,7 @@ void C_SkillManager::Update()
 {
 	if (GetAsyncKeyState('P') & 0x8000)
 	{
-		SetPlayerSkill(SkillType::Laser);
+		SetPlayerSkill(SkillType::CopyShot);
 	}
 
 	if (m_playerskills)
@@ -150,17 +150,6 @@ void C_SkillManager::SetPlayerSkill(SkillType skilltype)
 	auto em = m_enemymanager.lock();
 	auto hm = m_hitmanager.lock();
 
-	//‚È‚µˆÈŠO‚ÌŽž
-	if (skilltype != SkillType::None)
-	{
-		auto gu = m_gameui.lock();
-
-		if (gu)
-		{
-			gu->SetSkill(skilltype);
-		}
-	}
-
 	switch (skilltype)
 	{
 	case SkillType::None:
@@ -210,6 +199,18 @@ void C_SkillManager::SetPlayerSkill(SkillType skilltype)
 	default:
 		break;
 	}	
+
+	//‚È‚µˆÈŠO‚ÌŽž
+	if (skilltype != SkillType::None)
+	{
+		auto gu = m_gameui.lock();
+
+		if (gu)
+		{
+			gu->SetSkill(skilltype);
+		}
+	}
+
 }
 
 void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyMoveBase> enemybase)

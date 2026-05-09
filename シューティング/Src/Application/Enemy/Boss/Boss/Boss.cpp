@@ -295,8 +295,6 @@ void C_Boss::NoneInit(BossActionPattern pattern)
 
 void C_Boss::p1_EnemyGenerateInit()
 {
-	m_skilltype = SkillType::EnemyGenerate;
-
 	m_enemygeneratetime = EnemyGenerateTime;
 
 	if (auto sm = m_skillmanager.lock())
@@ -307,8 +305,6 @@ void C_Boss::p1_EnemyGenerateInit()
 
 void C_Boss::p2_LaserInit()
 {
-	m_skilltype = SkillType::Laser;
-
 	//m_pattern = Pattern::Death;
 	m_lasertime = LaserTime;
 
@@ -320,8 +316,6 @@ void C_Boss::p2_LaserInit()
 
 void C_Boss::p3_BarrierInit()
 {
-	m_skilltype = SkillType::Barrier;
-
 	//m_pattern = Pattern::Death;
 	m_barriertime = BarrierTime;
 
@@ -373,6 +367,15 @@ void C_Boss::p2_LaserUpdate()
 void C_Boss::p3_BarrierUpdate()
 {
 	m_barriertime--;
+
+	if (m_barriertime % 60 == 0)
+	{
+		if (auto sm = m_skillmanager.lock())
+		{
+			sm->SetEnemySkill(SkillType::EnemyGenerate, shared_from_this());
+		}
+	}
+
 	if (m_barriertime < 0)
 	{
 		NoneInit(BossActionPattern::p3_Barrier);
@@ -462,27 +465,27 @@ void C_Boss::SetActionPattern(BossActionPattern pattern)
 	{
 	case BossActionPattern::p1_EnemyGenerate:
 		m_actionpattern = BossActionPattern::p1_EnemyGenerate;
-	
+		m_skilltype = SkillType::EnemyGenerate;
 		p1_EnemyGenerateInit();
 		break;
 	case BossActionPattern::p2_Laser:
 		m_actionpattern = BossActionPattern::p2_Laser;
-		
+		m_skilltype = SkillType::Laser;
 		p2_LaserInit();
 		break;
 	case BossActionPattern::p3_Barrier:
 		m_actionpattern = BossActionPattern::p3_Barrier;
-	
+		m_skilltype = SkillType::Barrier;
 		p3_BarrierInit();
 		break;
 	case BossActionPattern::p4_SpiralShot:
 		m_actionpattern = BossActionPattern::p4_SpiralShot;
-		
+		m_skilltype= GetRandomSkillType();
 		p4_SpiralInit();
 		break;
 	case BossActionPattern::p5_Shot2:
 		m_actionpattern = BossActionPattern::p5_Shot2;
-		
+		m_skilltype= GetRandomSkillType();
 		p5_Shot2Init();
 		break;
 
@@ -510,6 +513,22 @@ BossActionPattern C_Boss::GetRandomPatternExclude(BossActionPattern exclude)
 	{
 		result = static_cast<BossActionPattern>(dist(mt));
 	} while (result == exclude);
+
+	return result;
+}
+SkillType C_Boss::GetRandomSkillType()
+{
+	static std::random_device rd;
+	static std::mt19937 mt(rd());
+
+	int min = (int)SkillType::EnemyGenerate;
+	int max = static_cast<int>(SkillType::Laser);
+
+	std::uniform_int_distribution<int> dist(min, max - 1);
+
+	SkillType result;
+
+	result = static_cast<SkillType>(dist(mt));
 
 	return result;
 }

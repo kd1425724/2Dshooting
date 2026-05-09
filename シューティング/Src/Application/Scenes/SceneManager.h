@@ -51,6 +51,8 @@ public:
 
 	int GetScore() { return m_score; }
 
+	void ResetScoreData(){ m_scoredata = std::make_shared<Score>(); }
+
 private:
 
 	std::stack<std::shared_ptr<C_SceneBase>> scenes;

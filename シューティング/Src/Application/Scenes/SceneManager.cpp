@@ -43,9 +43,9 @@ void C_SceneManager::ImGui()
     }
 }
 
-void C_SceneManager::push(SceneType type,bool popflg)
+void C_SceneManager::push(SceneType type, bool popflg)
 {
-    FEED.FeedOutInit(30,[this,type,popflg]()
+    FEED.FeedOutInit(30, [this, type, popflg]()
         {
             //popフラグがtrueなら今のシーンを消す
             if (popflg)
@@ -59,6 +59,13 @@ void C_SceneManager::push(SceneType type,bool popflg)
             //存在するか
             if (scene != nullptr)
             {
+                //タイトルに戻る時
+                if (type == SceneType::Title)
+                {
+                    //スコアリセット
+                    ResetScoreData();
+                }
+
                 //シーン初期化
                 scene->Init();
                 //scenesに作ったシーンを移動
@@ -67,7 +74,6 @@ void C_SceneManager::push(SceneType type,bool popflg)
                 FEED.FeedInInit(30);
             }
         });
-   
 }
 
 void C_SceneManager::pop()

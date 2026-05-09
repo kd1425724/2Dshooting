@@ -8,7 +8,7 @@ enum class EffectType
 	ExplosionTopDraw,
 	LaserStartGreen,
 	LaserStartRed,
-	BoltHitBule,
+	BoltHitBlue,
 	BoltHitGreen,
 	CopyHit,
 	WarningLine

@@ -108,4 +108,5 @@ private:
 	//Žw’è‚µ‚½‚à‚ÌˆÈŠO‚Ì’l‚ð•Ô‚·
 	BossActionPattern GetRandomPatternExclude(BossActionPattern exclude);
 
+	SkillType C_Boss::GetRandomSkillType();
 };

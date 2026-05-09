@@ -7,6 +7,9 @@
 
 void Scene::Init()
 {
+	//マウス消去
+	ShowCursor(false);
+
 	//フェード処理
 	FEED.FeedInInit(30);
 

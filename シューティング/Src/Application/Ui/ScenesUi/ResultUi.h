@@ -53,7 +53,7 @@ private:
 	void ScoreDraw();
 	
 	
-	static const int PlayerLifeUpNum = 100000;//‚P‚O–œ
+	static const int PlayerLifeUpNum = 1000000;//‚P‚O‚O–œ
 	static const int ClearScoreUpNum = 10000000;//‚P‚O‚O‚O–œ
 	static const int TimeScoreUpNum = 100000;//‚P‚O–œ
 

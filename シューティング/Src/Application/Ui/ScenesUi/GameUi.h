@@ -99,6 +99,8 @@ private:
 
 	KdTexture m_OKicontex;
 	KdTexture m_NOicontex;
+	KdTexture m_Readytex;
+	KdTexture m_Locktex;
 
 	//Žc‹@HUD
 	void LifeHUDInit();

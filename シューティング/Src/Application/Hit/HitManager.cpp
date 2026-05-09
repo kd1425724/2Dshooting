@@ -96,7 +96,7 @@ void C_HitManager::PlayerHit()
 				}
 				if (IsHit(p_pos, p_radius, es->GetPos(), es->GetRadius()))
 				{
-					EFFECTMANAGER.AddEffect(EffectType::BoltHitBule, es->GetPos());
+					EFFECTMANAGER.AddEffect(EffectType::BoltHitBlue, es->GetPos());
 					es->SetAlive(false);
 					p->Damage();
 					//s->SetAlive(false);
@@ -294,7 +294,7 @@ void C_HitManager::PlayerShotHit()
 
 					if (IsHitLaser(pl_start, pl_end, pl_thick, es->GetPos(), es->GetRadius()))
 					{
-						EFFECTMANAGER.AddEffect(EffectType::BoltHitBule, es->GetPos());
+						EFFECTMANAGER.AddEffect(EffectType::BoltHitBlue, es->GetPos());
 						SCENEMANAGER.SetScore(ShotDeleteScoreNum);
 						es->SetAlive(false);
 					}
@@ -563,7 +563,7 @@ void C_HitManager::EnemyShotHit()
 
 					if (IsHit(es_pos, es_radius, pb->GetPos(), pb->GetRadius()))
 					{
-						EFFECTMANAGER.AddEffect(EffectType::BoltHitBule, es_pos);
+						EFFECTMANAGER.AddEffect(EffectType::BoltHitBlue, es_pos);
 						SCENEMANAGER.SetScore(ShotDeleteScoreNum);
 						es->SetAlive(false);
 					}
