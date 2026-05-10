@@ -270,11 +270,11 @@ void C_ResultUi::ScoreDraw()
 
 		//•`‰æ
 		Math::Vector2 numscale = { 0.3f,0.4f };
-		COMMONAPI.NumDraw(clear, { 200,120 }, numscale, 10);
-		COMMONAPI.NumDraw(score, { 200,40 }, numscale, 10);
-		COMMONAPI.NumDraw(lifescore, { 200,-40 }, numscale, 10);
-		COMMONAPI.NumDraw(time, { 200,-120 }, numscale, 10);
-		COMMONAPI.NumDraw(total, { 250,-200 }, { 0.35f,0.60f }, 10, { 1.0f,1.0f,0.0f,1.0f });
+		COMMONAPI.NumDraw(clear, { 200,120 }, numscale);
+		COMMONAPI.NumDraw(score, { 200,40 }, numscale);
+		COMMONAPI.NumDraw(lifescore, { 200,-40 }, numscale);
+		COMMONAPI.NumDraw(time, { 200,-120 }, numscale);
+		COMMONAPI.NumDraw(total, { 250,-200 }, { 0.35f,0.60f }, { 1.0f,1.0f,0.0f,1.0f });
 	}
 }
 

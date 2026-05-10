@@ -16,10 +16,11 @@ struct SpriteItem
     Math::Matrix scaleMat = Math::Matrix::Identity;
     Math::Matrix mat = Math::Matrix::Identity;
 
-    //// フレーム用
-    //Math::Vector2 framescale = { 1, 1 };
-    //Math::Matrix framescalemat = Math::Matrix::Identity;
-    //Math::Matrix framemat = Math::Matrix::Identity;
+    // フレーム用
+    Math::Vector2 framescale = { 1, 1 };
+    Math::Matrix framescalemat = Math::Matrix::Identity;
+    Math::Matrix framemat = Math::Matrix::Identity;
+    const KdTexture* frametex = nullptr;
 
     // 上に乗っているか
     bool GetIsOnTop();
@@ -51,7 +52,9 @@ public:
     void BlackBackUpdate();
     void BlackBackDraw();
 
-    void ClickableUi();
+    //指定しているindexのactionを実行
+    void ButtonUpdate(int index);
+    void ButtonDraw(int index);
     void IsOnTopDraw();
 
     void CreateSpriteItemInit(
@@ -59,7 +62,8 @@ public:
         Math::Rectangle rect,
         Math::Vector2 scale,
         const KdTexture* tex,
-        Math::Color color);
+        Math::Color color,
+        const KdTexture* frametex);
 
     void CreateSpriteItemUpdate();
     void CreateSpriteItemDraw();

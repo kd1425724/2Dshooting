@@ -160,11 +160,11 @@ LRESULT KdGameWindow::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		PostQuitMessage(0);
 		break;
 	case WM_KEYDOWN:
-		switch (wParam) {
+		/*switch (wParam) {
 		case VK_ESCAPE:
 			Release();
 			break;
-		}
+		}*/
 		return 0;
 	default:
 		// メッセージのデフォルト処理

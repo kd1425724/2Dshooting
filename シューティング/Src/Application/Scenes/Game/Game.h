@@ -50,6 +50,9 @@ public:
 		return m_skillmanager;
 	}
 
+	//時間ゲッター
+	float GetTime() { return m_time; }
+
 private:
 
 	//時間カウント

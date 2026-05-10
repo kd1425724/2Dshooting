@@ -136,6 +136,9 @@
     <Filter Include="Src\Application\Effect\WarningLine">
       <UniqueIdentifier>{67cd7b64-93a2-4e60-95b0-5e7075cccac6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Scenes\GamePause">
+      <UniqueIdentifier>{a0d4521f-7ea7-44dd-9860-2ad993f5fe62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -345,6 +348,12 @@
     <ClInclude Include="Src\Application\Effect\WarningLine\WarningLine.h">
       <Filter>Src\Application\Effect\WarningLine</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Scenes\GamePause\GamePause.h">
+      <Filter>Src\Application\Scenes\GamePause</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Ui\ScenesUi\GamePauseUi.h">
+      <Filter>Src\Application\Ui\ScenesUi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -523,6 +532,12 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Effect\WarningLine\WarningLine.cpp">
       <Filter>Src\Application\Effect\WarningLine</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Scenes\GamePause\GamePause.cpp">
+      <Filter>Src\Application\Scenes\GamePause</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Ui\ScenesUi\GamePauseUi.cpp">
+      <Filter>Src\Application\Ui\ScenesUi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

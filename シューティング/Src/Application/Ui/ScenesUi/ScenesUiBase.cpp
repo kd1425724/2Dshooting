@@ -48,7 +48,7 @@ void C_ScenesUiBase::BlackBackDraw()
 	SHADER.m_spriteShader.DrawTex(&CommonTex.GetWhiteBackTex(), 0, 0, &CommonTex.GetWhiteBackTexRect(), &m_blackbackcolor);
 }
 
-void C_ScenesUiBase::CreateSpriteItemInit(Math::Vector2 pos, Math::Rectangle rect, Math::Vector2 scale,const KdTexture* tex, Math::Color color)
+void C_ScenesUiBase::CreateSpriteItemInit(Math::Vector2 pos, Math::Rectangle rect, Math::Vector2 scale,const KdTexture* tex, Math::Color color,const KdTexture* frametex)
 {
 	SpriteItem d;
 	d.pos = pos;
@@ -58,11 +58,21 @@ void C_ScenesUiBase::CreateSpriteItemInit(Math::Vector2 pos, Math::Rectangle rec
 	d.color = color;
 	d.tex = tex;
 
+	d.scaleMat = Math::Matrix::CreateScale(d.scale.x,d.scale.y, 1);
+	d.transMat = Math::Matrix::CreateTranslation(d.pos.x, d.pos.y, 1);
+	d.mat = d.scaleMat * d.transMat;
+
+
+
 	d.action = nullptr;
 
-	////フレーム用
-	//d.framescale = {d.rect.width * d.scale.x / m_framerect.width,
-	//	d.rect.height * d.scale.y / m_framerect.height };
+	//フレーム用
+	d.framescale = {d.rect.width * d.scale.x / d.rect.width,
+		d.rect.height * d.scale.y / d.rect.height };
+	d.frametex = frametex;
+
+	d.framescalemat= Math::Matrix::CreateScale(d.framescale.x,d.framescale.y, 1);
+	d.framemat = d.framescalemat * d.transMat;
 
 	m_SpriteItem.push_back(d);
 }
@@ -75,8 +85,8 @@ void C_ScenesUiBase::CreateSpriteItemUpdate()
 		m_SpriteItem[i].transMat = Math::Matrix::CreateTranslation(m_SpriteItem[i].pos.x, m_SpriteItem[i].pos.y, 1);
 		m_SpriteItem[i].mat = m_SpriteItem[i].scaleMat * m_SpriteItem[i].transMat;
 
-	/*	m_SpriteItem[i].framescalemat = Math::Matrix::CreateScale(m_SpriteItem[i].framescale.x, m_SpriteItem[i].framescale.y, 1);
-		m_SpriteItem[i].framemat=m_SpriteItem[i].framescalemat * m_SpriteItem[i].transMat;*/
+		m_SpriteItem[i].framescalemat = Math::Matrix::CreateScale(m_SpriteItem[i].framescale.x, m_SpriteItem[i].framescale.y, 1);
+		m_SpriteItem[i].framemat=m_SpriteItem[i].framescalemat * m_SpriteItem[i].transMat;
 	}
 }
 
@@ -84,10 +94,36 @@ void C_ScenesUiBase::CreateSpriteItemDraw()
 {
 	for (int i = 0; i < m_SpriteItem.size(); i++)
 	{
-		SHADER.m_spriteShader.SetMatrix(m_SpriteItem[i].mat);
+		Math::Matrix mat = m_SpriteItem[i].mat;
+
+		SHADER.m_spriteShader.SetMatrix(mat);
 		SHADER.m_spriteShader.DrawTex(m_SpriteItem[i].tex, 0, 0, &m_SpriteItem[i].rect, &m_SpriteItem[i].color);
 	}
-	IsOnTopDraw();
+}
+
+void C_ScenesUiBase::ButtonUpdate(int index)
+{
+	//範囲外なら処理しない
+	if (index < 0 || index >= static_cast<int>(m_SpriteItem.size()))
+	{
+		return;
+	}
+
+	m_SpriteItem[index].action();
+}
+
+void C_ScenesUiBase::ButtonDraw(int index)
+{
+	//範囲外なら処理しない
+	if (index < 0 || index >= static_cast<int>(m_SpriteItem.size()))
+	{
+		return;
+	}
+
+	Math::Matrix mat = m_SpriteItem[index].framemat;
+
+	SHADER.m_spriteShader.SetMatrix(mat);
+	SHADER.m_spriteShader.DrawTex(m_SpriteItem[index].frametex, 0, 0, &m_SpriteItem[index].rect, &m_SpriteItem[index].color);
 }
 
 void C_ScenesUiBase::IsOnTopDraw()
@@ -100,20 +136,6 @@ void C_ScenesUiBase::IsOnTopDraw()
 			SHADER.m_spriteShader.DrawTex(&m_frametex, 0, 0, &m_framerect, &Math::Color(1, 1, 1, 1));
 		}
 	}*/
-}
-
-void C_ScenesUiBase::ClickableUi()
-{
-	for (int i = 0; i < m_SpriteItem.size(); i++)
-	{
-		if (m_SpriteItem[i].GetIsOnTop() && Input.GetClickFlg())
-		{
-			if (m_SpriteItem[i].action)
-			{
-				m_SpriteItem[i].action();
-			}
-		}
-	}
 }
 
 bool SpriteItem::GetIsOnTop()

@@ -9,6 +9,7 @@
 #include"../../Effect/EffectManager.h"
 #include"../../Skill/Shot/Shot.h"
 #include"../../Enemy/Boss/Boss/Boss.h"
+#include"../../Input/Input.h"
 std::shared_ptr<C_Boss> C_Game::GetBoss()
 {
 	return m_enemymanager->GetBoss();
@@ -81,15 +82,6 @@ void C_Game::Init()
 	lifetex->Load("Texture/Ui/Font/LIFE.png");
 	m_gameui->SetLifeTex(lifetex);
 
-	//Hpバー
-	std::shared_ptr<KdTexture> hpbartex = std::make_shared<KdTexture>();
-	hpbartex->Load("Texture/Ui/HUD/HPBar.png");
-	m_gameui->SetHpBarTex(hpbartex);
-	//枠
-	std::shared_ptr<KdTexture> hpbarframetex = std::make_shared<KdTexture>();
-	hpbarframetex->Load("Texture/Ui/HUD/HPBarFrame.png");
-	m_gameui->SetHpBarFrameTex(hpbarframetex);
-
 	//ボス生成用（仮）
 	m_enemymanager->BossSpworn();
 
@@ -118,9 +110,9 @@ void C_Game::Update()
 	m_time += 1.0f / 60.0f;
 
 	//弾
-	for (auto& it : m_shot)
+	for (auto& s : m_shot)
 	{
-		it->Update();
+		s->Update();
 	}
 
 	//プレイヤー
@@ -150,27 +142,9 @@ void C_Game::Update()
 		}
 	}
 
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	if (Input.GetUserKey(UserKeyType::ESCAPE) && !Input.GetUserKeyFlg(UserKeyType::ESCAPE))
 	{
-		auto s = std::make_shared<Score>();
-		if (s)
-		{
-			if (!m_enemymanager->GetBoss())
-			{
-				s->clear = true;
-			}
-			else
-			{
-				s->clear = false;
-			}
-			s->playerlife = m_player->GetHp();
-			s->score = SCENEMANAGER.GetScore();
-			s->time = (int)m_time;
-
-			SCENEMANAGER.SetScoreData(s);
-		}
-
-		SCENEMANAGER.push(SceneType::Result, true);
+		SCENEMANAGER.NoFeedpush(SceneType::GamePause,false);
 		return;
 	}
 

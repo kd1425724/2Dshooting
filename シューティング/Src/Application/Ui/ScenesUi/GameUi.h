@@ -49,18 +49,6 @@ public:
 		m_LIFETexttex = tex;
 	}
 
-	//Hpバー
-	void SetHpBarTex(std::shared_ptr<KdTexture> tex)
-	{
-		m_hpbartex = tex;
-	}
-
-	//Hpバー枠
-	void SetHpBarFrameTex(std::shared_ptr<KdTexture> tex)
-	{
-		m_hpbarframetex = tex;
-	}
-
 private:
 
 	void Release() override;
@@ -103,7 +91,6 @@ private:
 
 	//スコア
 	void ScoreHUDInit();
-	void ScoreHUDUpdate();
 	void ScoreHUDDraw();
 
 	Math::Vector2 m_scorepos = { 0,0 };
@@ -113,7 +100,6 @@ private:
 
 	//スキル
 	void SkillHUDInit();
-	void SkillHUDUpdate();
 	void SkillHUDDraw();
 
 	Math::Vector2 m_skilliconpos = { 0,0 };
@@ -148,31 +134,20 @@ private:
 
 	Math::Rectangle m_LIFETextrect = { 0,0,0,0 };
 
-	//Hpバー
-	void HPBarInit();
-	void HPBarUpdate();
-	void HPBarDraw();
+	//タイム
+	void TimeInit();
+	void TimeDraw();
 
-	KdTexture m_BOSSTexttex = {};
+	KdTexture m_TimeTextTex;
 
-	Math::Rectangle m_hpbarrect = { 0,0,0,0 };
-	Math::Rectangle m_hpbarframerect = { 0,0,0,0 };
+	//コロン:
+	KdTexture m_colontex;
 
-	std::shared_ptr<KdTexture> m_hpbartex = nullptr;
-	std::shared_ptr<KdTexture> m_hpbarframetex = nullptr;
+	//一時停止
+	void PauseIconInit();
+	void PauseIconDraw();
 
-	float m_bossHpRate = 1.0f;
-
-	bool m_isBossExist = false;
-
-	std::vector<float> m_subBossHpRates;
-
-	//ボス
-	Math::Vector2 m_bosshpbarstartpos = { 0,0 };
-	Math::Vector2 m_bosshpbarpos = { 0,0 };
-	Math::Vector2 m_bosshpbarscale = { 1,1 };
-
-	//サブボス用
-	Math::Vector2 m_subbosshpbarstartpos = { 0,0 };
-	Math::Vector2 m_subbosshpbarscale = { 1,1 };
+	KdTexture m_PauseIcontex;
+	KdTexture m_ESCtex;
+	
 };

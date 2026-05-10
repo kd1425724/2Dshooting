@@ -5,6 +5,7 @@ enum class SceneType
 {
 	Title,	//タイトル
 	Game,	//ゲーム
+	GamePause,	//ゲーム一時停止
 	Result	//リザルト
 };
 
@@ -35,7 +36,8 @@ public:
 
 	//指定したシーンを上に被せる
 	//popflg...push時popするかどうか
-	void push(SceneType type,bool popflg);
+	void push(SceneType type, bool popflg, bool Allpopflg=false);
+	void NoFeedpush(SceneType type, bool popflg, bool Allpopflg = false);
 	//今のシーンを終了
 	void pop();
 
@@ -51,11 +53,11 @@ public:
 
 	int GetScore() { return m_score; }
 
-	void ResetScoreData(){ m_scoredata = std::make_shared<Score>(); }
+	void ResetScoreData() { m_scoredata = std::make_shared<Score>(); m_score = 0; }
 
 private:
 
-	std::stack<std::shared_ptr<C_SceneBase>> scenes;
+	std::vector<std::shared_ptr<C_SceneBase>> scenes;
 
 	std::shared_ptr<Score> m_scoredata = nullptr;
 

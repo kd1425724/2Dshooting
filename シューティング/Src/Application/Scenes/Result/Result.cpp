@@ -3,7 +3,7 @@
 #include"../../Ui/ScenesUi/ResultUi.h"
 #include"../../Common/CommonAPI.h"
 #include"../../Effect/EffectManager.h"
-
+#include"../../Input/Input.h"
 void C_Result::Init()
 {
 
@@ -24,7 +24,7 @@ void C_Result::Update()
 
 	m_resultui->Update();
 
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	if (Input.GetUserKey(UserKeyType::ENTER) && !Input.GetUserKeyFlg(UserKeyType::ENTER))
 	{
 		SCENEMANAGER.push(SceneType::Title, true);
 	}

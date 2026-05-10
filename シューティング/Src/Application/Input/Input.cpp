@@ -19,8 +19,15 @@ void C_Input::Init()
 		m_playerkeyflg[i] = false;
 	}
 
+	for (int i = 0; i < (int)UserKeyType::UserKeyNum; i++)
+	{
+		m_userkeyflg[i] = false;
+	}
+
 	//プレイヤーキーロード
 	PlayerKeyLoad();
+
+	UserDefaultKeySet();
 }
 void C_Input::Update(HWND hwnd)
 {
@@ -46,6 +53,18 @@ void C_Input::Update(HWND hwnd)
 		else
 		{
 			m_playerkeyflg[i] = false;
+		}
+	}
+
+	for (int i = 0; i < (int)UserKeyType::UserKeyNum; i++)
+	{
+		if (GetAsyncKeyState(m_userkey[i])&0x8000)
+		{
+			m_userkeyflg[i] = true;
+		}
+		else
+		{
+			m_userkeyflg[i] = false;
 		}
 	}
 }
@@ -129,6 +148,23 @@ void C_Input::PlayerDefaultKeySet()
 	for (int i = 0; i < num; i++)
 	{
 		m_playerkey[i] = defaultkey[i];
+	}
+}
+
+void C_Input::UserDefaultKeySet()
+{
+	static const int num = (int)UserKeyType::UserKeyNum;
+
+	int defaultkey[num] = { (int)UserKeyDefaultType::Top,
+						(int)UserKeyDefaultType::Bottom,
+						(int)UserKeyDefaultType::Left,
+						(int)UserKeyDefaultType::Right,
+						(int)UserKeyDefaultType::ENTER,
+						(int)UserKeyDefaultType::ESCAPE};
+
+	for (int i = 0; i < num; i++)
+	{
+		m_userkey[i] = defaultkey[i];
 	}
 }
 

@@ -48,7 +48,7 @@ float C_CommonAPI::GetTextureAngleAdjustment(TextureAngle angle)
 	}
 }
 
-void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, int maxdigits, Math::Color color)
+void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, Math::Color color, bool maxdigitsflg, int maxdigits)
 {
 	Math::Matrix s;
 	Math::Matrix t;
@@ -74,7 +74,7 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(), 0, 0, &rect, &color);
 
-		/*for (int i = 1; i < maxdigits; i++)
+		for (int i = 1; i < maxdigits; i++)
 		{
 			Math::Vector2 pos = startpos;
 			pos.x -= Srect.width * scale.x * i;
@@ -87,7 +87,7 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, 
 
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNumTex(), 0, 0, &rect, &color);
-		}*/
+		}
 
 		return;
 	}
@@ -101,11 +101,14 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, 
 		num /= 10;
 	}
 
-	////Å‘åŒ…”‚Ü‚Å‚O‘ã“ü
-	//while (digits.size() < maxdigits)
-	//{
-	//	digits.push_back(0);
-	//}
+	if (maxdigitsflg)
+	{
+		//Å‘åŒ…”‚Ü‚Å‚O‘ã“ü
+		while (digits.size() < maxdigits)
+		{
+			digits.push_back(0);
+		}
+	}
 
 	for (int i = 0; i < digits.size(); i++)
 	{
