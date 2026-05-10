@@ -43,6 +43,8 @@ void C_Player::Init()
 }
 void C_Player::Update()
 {
+	EFFECTMANAGER.SetScoreUpPos(m_pos);
+
 	//“–‚½‚Á‚½Žž
 	HitUpdate();
 

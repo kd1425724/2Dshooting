@@ -33,7 +33,8 @@ void C_Title::Update()
 
 	if (Input.GetUserKey(UserKeyType::ESCAPE) && !Input.GetUserKeyFlg(UserKeyType::ESCAPE))
 	{
-		//APP
+		APP.End();
+		return;
 	}
 
 }

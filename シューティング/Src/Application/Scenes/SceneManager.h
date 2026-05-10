@@ -49,7 +49,7 @@ public:
 
 	std::shared_ptr<Score> GetScoreData(){return m_scoredata;}
 
-	void SetScore(int value) { m_score += value; }
+	void SetScore(int value);
 
 	int GetScore() { return m_score; }
 
@@ -63,7 +63,6 @@ private:
 
 	//スコア用
 	int m_score = 0;
-
 
 //シングルトン
 private:

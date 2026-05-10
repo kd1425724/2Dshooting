@@ -139,6 +139,9 @@
     <Filter Include="Src\Application\Scenes\GamePause">
       <UniqueIdentifier>{a0d4521f-7ea7-44dd-9860-2ad993f5fe62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Effect\ScoreUp">
+      <UniqueIdentifier>{8c7d1eec-1acc-4fc2-88ba-7a4264824beb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -354,6 +357,9 @@
     <ClInclude Include="Src\Application\Ui\ScenesUi\GamePauseUi.h">
       <Filter>Src\Application\Ui\ScenesUi</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Effect\ScoreUp\ScoreUp.h">
+      <Filter>Src\Application\Effect\ScoreUp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -538,6 +544,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Ui\ScenesUi\GamePauseUi.cpp">
       <Filter>Src\Application\Ui\ScenesUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Effect\ScoreUp\ScoreUp.cpp">
+      <Filter>Src\Application\Effect\ScoreUp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -28,9 +28,13 @@ public:
 
     void AddEffect(
         EffectType type,
-        Math::Vector2 pos,
+        Math::Vector2 pos={0,0},
         Math::Vector2 scale = { 1.0f, 1.0f },
         int time = 0);
+
+    void ScoreEffect(int value);
+
+    void SetScoreUpPos(Math::Vector2 pos) { m_scoreeffectpos = pos; }
 
 private:
     // ===== エフェクト管理 =====
@@ -53,6 +57,8 @@ private:
     std::shared_ptr<KdTexture> m_boltbluehiteffecttex = nullptr;
     std::shared_ptr<KdTexture> m_boltgreenhiteffecttex = nullptr;
     std::shared_ptr<KdTexture> m_copyhiteffecttex = nullptr;
+
+    Math::Vector2 m_scoreeffectpos = {};
 
 private:
     C_EffectManager() {};

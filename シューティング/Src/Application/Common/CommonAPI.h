@@ -27,6 +27,7 @@ public:
 	//startpos...ˆê‚ÌˆÊ
 	void NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, Math::Color color = { 1.0f,1.0f,1.0f,1.0f }, bool maxdigitsflg = false, int maxdigits = 0);
 
+
 private:
 
 	//‰æ–ÊŠO”»’è—]è•ª

@@ -10,6 +10,7 @@ public:
     // äÓñ{èàóù
     virtual void Init(Math::Vector2 pos) {}
     virtual void Init(Math::Vector2 pos, Math::Vector2 scale, int time) {}
+    virtual void Init(Math::Vector2 pos,int value) {}
     virtual void Update() {}
     virtual void Draw() {}
 

@@ -4,6 +4,7 @@
 #include"GamePause/GamePause.h"
 #include"Application/Scenes/Result/Result.h"
 #include"Application/Ui/Feed.h"
+#include"../Effect/EffectManager.h"
 
 C_SceneManager::~C_SceneManager()
 {
@@ -11,7 +12,7 @@ C_SceneManager::~C_SceneManager()
 
 void C_SceneManager::Init()
 {
-    scenes.push_back(CreateScene(SceneType::Game));
+    scenes.push_back(CreateScene(SceneType::Title));
     scenes.back()->Init();
 }
 
@@ -166,4 +167,10 @@ std::shared_ptr<C_SceneBase> C_SceneManager::CreateScene(SceneType type)
     default:
         return nullptr;
     }
+}
+
+void C_SceneManager::SetScore(int value)
+{
+    EFFECTMANAGER.ScoreEffect(value);
+    m_score += value; 
 }

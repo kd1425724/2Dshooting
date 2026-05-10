@@ -11,7 +11,7 @@ void C_SubBoss::Init(Math::Vector2 pos)
 	m_nonetime = 0;
 	
 	//ステータス
-	m_maxhp = 4000;
+	m_maxhp = 2000;
 	m_hp = m_maxhp;
 
 	m_score = 5000000;

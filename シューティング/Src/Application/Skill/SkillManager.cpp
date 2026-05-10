@@ -39,13 +39,13 @@ void C_SkillManager::Init()
 		gu->SetSkillIconTex(tex);
 	}
 
-	SetPlayerSkill(SkillType::EnemyGenerate);
+	SetPlayerSkill(SkillType::CopyShot);
 }
 void C_SkillManager::Update()
 {
 	if (GetAsyncKeyState('P') & 0x8000)
 	{
-		SetPlayerSkill(SkillType::CopyShot);
+		SetPlayerSkill(SkillType::Laser);
 	}
 
 	if (m_playerskills)

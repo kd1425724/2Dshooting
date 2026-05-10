@@ -4,6 +4,8 @@
 #include"HitEffect/CopyHitEffect/CopyHitEffect.h"
 #include"LaserStartEffect/LaserStartEffect.h"
 #include"WarningLine/WarningLine.h"
+#include"ScoreUp/ScoreUp.h"
+
 void C_EffectManager::Init()
 {
 	//”š”­‰æ‘œ
@@ -174,6 +176,12 @@ void C_EffectManager::AddEffect(EffectType type, Math::Vector2 pos,Math::Vector2
 	default:
 		break;
 	}
+}
+
+void C_EffectManager::ScoreEffect(int value)
+{
+	m_addeffects.push_back(std::make_shared<C_ScoreUp>());
+	m_addeffects.back()->Init(m_scoreeffectpos, value);
 }
 
 void C_EffectManager::Release()
