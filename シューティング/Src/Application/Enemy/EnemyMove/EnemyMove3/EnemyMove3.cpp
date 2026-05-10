@@ -45,7 +45,7 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 		break;
 	case UseType::Enemy:
 
-		m_score = 55555;
+		m_score = 40000;
 		m_texangle = DirectX::XMConvertToRadians(180);
 
 		m_color = { 1,1,1,1 };

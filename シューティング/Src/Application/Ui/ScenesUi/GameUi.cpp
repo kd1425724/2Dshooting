@@ -123,6 +123,10 @@ void C_GameUi::HUDInit()
 	
 	m_HUDareapos = { 0,(float)INFO.ScrHeight / 2 - INFO.HUDAreaHeight / 2 };
 
+	m_HUDareascalemat = Math::Matrix::CreateScale(m_HUDareascale.x, m_HUDareascale.y, 1);
+	m_HUDareatransmat = Math::Matrix::CreateTranslation(m_HUDareapos.x, m_HUDareapos.y, 0);
+	m_HUDareamat = m_HUDareascalemat * m_HUDareatransmat;
+
 	//スコア表示用
 	ScoreHUDInit();
 
@@ -315,7 +319,7 @@ void C_GameUi::LifeHUDInit()
 {
 	m_lifestartpos = { -420,235 };
 
-	m_lifescale = { 0.5f,0.5f };
+	m_lifescale = { 0.7f,0.7f };
 
 	m_LIFETextpos = { -517,235 };
 	m_LIFETextscale = { 0.4f,0.4f };

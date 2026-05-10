@@ -46,6 +46,8 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
+	virtual void StartDirectionUpdate(){}
+
 	void SetTexandRectandAnimMax(KdTexture* tex, Math::Vector2 rect,
 		Math::Vector2 animmaxnum = { 0,0 })
 	{

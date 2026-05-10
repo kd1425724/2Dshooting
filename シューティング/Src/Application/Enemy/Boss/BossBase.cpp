@@ -12,6 +12,10 @@ void C_BossBase::Draw()
 {
 }
 
+void C_BossBase::StartDirectionUpdate()
+{
+}
+
 void C_BossBase::Release()
 {
 }

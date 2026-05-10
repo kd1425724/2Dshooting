@@ -12,6 +12,13 @@ enum class BossActionPattern
 	BossActionPatternNum,
 };
 
+enum class StartPattern
+{
+	BossStartMove,
+	BossStartLaser,
+	BossStartStop,
+};
+
 class C_Boss:public C_BossBase, public std::enable_shared_from_this<C_Boss>
 {
 public:
@@ -25,8 +32,12 @@ public:
 	void Update()	override;
 	void Draw()		override;
 
+	void StartDirectionUpdate()override;
+
 
 private:
+
+	StartPattern m_startpattern = StartPattern::BossStartMove;
 
 	void Release()	override;
 

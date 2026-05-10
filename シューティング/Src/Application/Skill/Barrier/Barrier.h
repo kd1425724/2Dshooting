@@ -28,7 +28,7 @@ public:
         m_enemy = enemybase;
     }
 
-    bool IsTopDraw() override { return true; }
+    DrawType IsDrawType() override { return DrawType::TopDraw; }
 
     void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) override
     {

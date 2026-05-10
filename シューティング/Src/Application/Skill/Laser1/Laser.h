@@ -33,7 +33,7 @@ public:
         m_tex = tex;
     }
 
-    bool IsTopDraw() override { return false; }
+    DrawType IsDrawType() override { return DrawType::MidDraw; }
 
     float GetThick() { return m_thick; }
     Math::Vector2 GetStart() { return m_start; }

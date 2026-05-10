@@ -12,8 +12,15 @@ class C_Shot;
 
 enum class GameMode
 {
-	Stage1,
-	Stage2,
+	Start,
+	Loop
+};
+
+enum class GameStartPattern
+{
+	GameStartDirection,
+	StartDirection,
+	GameStart,
 };
 
 class C_Game : public C_SceneBase, public std::enable_shared_from_this<C_Game>
@@ -54,6 +61,20 @@ public:
 	float GetTime() { return m_time; }
 
 private:
+
+	GameMode m_gamemode=GameMode::Start;
+
+	static const int GameStartDirectionTime = 300;
+	int m_gamestartdirectiontime = GameStartDirectionTime;
+
+	GameStartPattern m_gamestartpattern = GameStartPattern::GameStartDirection;
+
+	KdTexture m_starttex;
+
+	Math::Vector2 m_startscale = {};
+	float m_startalpha = 1;
+	bool m_startflg = false;
+
 
 	//ŽžŠÔƒJƒEƒ“ƒg
 	float m_time = 0.0f;

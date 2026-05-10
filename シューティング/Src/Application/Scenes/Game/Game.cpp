@@ -10,6 +10,7 @@
 #include"../../Skill/Shot/Shot.h"
 #include"../../Enemy/Boss/Boss/Boss.h"
 #include"../../Input/Input.h"
+#include"../../Info.h"
 std::shared_ptr<C_Boss> C_Game::GetBoss()
 {
 	return m_enemymanager->GetBoss();
@@ -100,51 +101,115 @@ void C_Game::Init()
 	//”»’è‰½‰ñ–Ú‚©ƒJƒEƒ“ƒg
 	m_JudgmenCount = 0;
 
+	m_gamestartdirectiontime = GameStartDirectionTime;
 
+	m_gamestartpattern = GameStartPattern::GameStartDirection;
+
+	m_startflg = false;
+	m_startscale = { 5,5 };
+	m_starttex.Load("Texture/Ui/Font/START.png");
 
 }
 
 void C_Game::Update()
 {
-	//ŽžŠÔ
-	m_time += 1.0f / 60.0f;
 
-	//’e
-	for (auto& s : m_shot)
+	switch (m_gamemode)
 	{
-		s->Update();
-	}
-
-	//ƒvƒŒƒCƒ„[
-	m_player->Update();
-
-	//“G
-	m_enemymanager->Update();
-
-	//ƒXƒLƒ‹ŠÇ—
-	m_skillmanager->Update();
-
-	//Ui
-	m_gameui->Update();
-
-	//“–‚½‚è”»’èŠÇ—
-	m_hitmanager->Update();
-
-	EFFECTMANAGER.Update();
-	
-	if (m_JudgmentTime >= 0)
-	{
-		m_JudgmentTime--;
-		if (m_JudgmentTime < 0)
+	case GameMode::Start:
+		switch (m_gamestartpattern)
 		{
-			//5•b•ªƒZƒbƒg
-			m_JudgmentTime = m_JudgmentCoolTime;
+		case GameStartPattern::GameStartDirection:
+			m_gamestartdirectiontime--;
+			if (m_gamestartdirectiontime <= 0)
+			{
+				m_gamestartpattern = GameStartPattern::StartDirection;
+				m_startflg = true;
+			}
+			break;
+		case GameStartPattern::StartDirection:
+			m_startscale *= 0.85f;
+			if (m_startscale.x <= 1.0f)
+			{
+				m_startscale = { 1,1 };
+				m_startalpha -= 0.02f;
+				if (m_startalpha <= 0.3f)
+				{
+					m_startflg = false;
+					m_gamestartpattern = GameStartPattern::GameStart;
+				}
+			}
+			
+			break;
+		case GameStartPattern::GameStart:
+			m_gamemode = GameMode::Loop;
+			break;
+		default:
+			break;
 		}
+
+		m_player->StartUpdate();
+		//“G
+		m_enemymanager->StartUpdate();
+		//ƒXƒLƒ‹ŠÇ—
+		m_skillmanager->Update();
+		EFFECTMANAGER.Update();
+
+		//Ui
+		m_gameui->Update();
+
+		//“–‚½‚è”»’èŠÇ—
+		m_hitmanager->Update();
+
+		break;
+	case GameMode::Loop:
+		//ŽžŠÔ
+		m_time += 1.0f / 60.0f;
+
+		//’e
+		for (auto& s : m_shot)
+		{
+			s->Update();
+		}
+
+		//ƒvƒŒƒCƒ„[
+		m_player->Update();
+
+		//“G
+		m_enemymanager->Update();
+
+		//ƒXƒLƒ‹ŠÇ—
+		m_skillmanager->Update();
+
+		//Ui
+		m_gameui->Update();
+
+		//“–‚½‚è”»’èŠÇ—
+		m_hitmanager->Update();
+
+		EFFECTMANAGER.Update();
+
+		//if (m_JudgmentTime >= 0)
+		//{
+		//	m_JudgmentTime--;
+		//	if (m_JudgmentTime < 0)
+		//	{
+		//		//5•b•ªƒZƒbƒg
+		//		m_JudgmentTime = m_JudgmentCoolTime;
+		//	}
+		//}
+
+		break;
+	default:
+		break;
 	}
+	
+
 
 	if (Input.GetUserKey(UserKeyType::ESCAPE) && !Input.GetUserKeyFlg(UserKeyType::ESCAPE))
 	{
-		SCENEMANAGER.NoFeedpush(SceneType::GamePause,false);
+		m_gamemode = GameMode::Loop;
+		//SCENEMANAGER.NoFeedpush(SceneType::GamePause,false);
 		return;
 	}
 
@@ -190,11 +255,13 @@ void C_Game::Draw()
 	//ƒXƒLƒ‹•`‰æ
 	m_skillmanager->Draw();
 
-	//“G•`‰æ
-	m_enemymanager->Draw();
-
 	//ƒvƒŒƒCƒ„[•`‰æ
 	m_player->Draw();
+
+	m_skillmanager->MidDraw();
+
+	//“G•`‰æ
+	m_enemymanager->Draw();
 
 	
 	//ƒXƒLƒ‹•`‰æiƒvƒŒƒCƒ„[‚â“G‚Ìã‚É•`‰æ‚³‚ê‚é‚à‚Ìj
@@ -211,6 +278,17 @@ void C_Game::Draw()
 	m_gameui->Draw();
 
 	EFFECTMANAGER.IsTopDraw();
+
+	if (m_startflg)
+	{
+		Math::Matrix s = Math::Matrix::CreateScale(m_startscale.x, m_startscale.y, 1);
+		Math::Matrix t = Math::Matrix::CreateTranslation(0,-INFO.HUDAreaHeight / 2, 0);
+		Math::Matrix mat = s * t;
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		Math::Rectangle rect = { 0,0,480,100 };
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_starttex, rect, m_startalpha);
+	}
 }
 
 void C_Game::ImGui()

@@ -12,10 +12,10 @@ void C_Player::Init()
 {
 	ShotInit();
 
-	m_Hp = 3;
+	m_Hp = 4;
 
 	//座標
-	m_pos = { -300,0 - (float)INFO.HUDAreaHeight/2 };
+	m_pos = { -700,0 - (float)INFO.HUDAreaHeight/2 };
 	//移動量
 	m_move = { 0.0f,0.0f };
 	m_movespeed = { 8.0f,8.0f };
@@ -40,6 +40,31 @@ void C_Player::Init()
 
 	m_alive = true;
 
+}
+void C_Player::StartUpdate()
+{
+	//当たった時
+	HitUpdate();
+
+	m_move = { 1,0 };
+
+	m_pos += m_move * 3;
+
+	if (m_pos.x >= -500)
+	{
+		m_pos.x = -500;
+	}
+
+	//エンジンアニメーション用
+	m_engineanim += 0.1f;
+	if (m_engineanim >= m_enginetexs.size())
+	{
+		m_engineanim = 0;
+	}
+
+	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
+	m_transmat = Math::Matrix::CreateTranslation((int)(m_pos.x + 0.5f), (int)(m_pos.y + 0.5f), 0);//+0.5f四捨五入してる
+	m_mat = m_scalemat * m_transmat;
 }
 void C_Player::Update()
 {

@@ -27,6 +27,7 @@ public:
 	void Update();
 	void Draw();
 	void TopDraw();
+	void MidDraw();
 
 	void Release();
 
@@ -72,7 +73,7 @@ private:
 	//“GƒXƒLƒ‹‚Ü‚Æ‚ß
 	std::vector<std::shared_ptr<C_SkillBase>> m_enemyskills;
 	std::vector<std::shared_ptr<C_SkillBase>> m_addenemyskill;
-
+	
 	//“GŠÇ—æ“¾—p
 	std::weak_ptr<C_EnemyManager> m_enemymanager;
 

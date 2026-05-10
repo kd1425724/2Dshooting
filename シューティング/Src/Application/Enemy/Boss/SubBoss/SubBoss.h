@@ -19,6 +19,8 @@ public:
     void Update() override;
     void Draw() override;
 
+    void StartDirectionUpdate()override;
+
     void SetId(int id) { m_id = id; }
     int GetId() { return m_id; }
 

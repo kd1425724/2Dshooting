@@ -78,7 +78,7 @@ void C_SubBoss::Update()
 	switch (m_pattern)
 	{
 	case Pattern::Start:
-		StartUpdate();
+		
 		break;
 	case Pattern::Loop:
 		LoopUpdate();
@@ -174,6 +174,56 @@ void C_SubBoss::Draw()
 	}
 }
 
+void C_SubBoss::StartDirectionUpdate()
+{
+	StartUpdate();
+
+	//アニメーション用
+	m_anim.x += 0.1f;
+	//マックス以上になったら,4コマなら4
+	if (m_anim.x >= m_animmaxnum.x)
+	{
+		m_anim.x = 0;
+		if (m_animmaxnum.y != 0)
+		{
+			m_anim.y++;
+		}
+	}
+	if (m_animmaxnum.y != 0)
+	{
+		if (m_anim.y > m_animmaxnum.y)
+		{
+			m_anim = { 0,0 };
+		}
+	}
+
+
+	//エンジンアニメーション用
+	m_engineanim.x += 0.1f;
+	//マックス以上になったら,4コマなら4
+	if (m_engineanim.x >= m_engineanimmaxnum.x)
+	{
+		m_engineanim.x = 0;
+		if (m_engineanimmaxnum.y != 0)
+		{
+			m_engineanim.y++;
+		}
+	}
+	if (m_engineanimmaxnum.y != 0)
+	{
+		if (m_engineanim.y > m_engineanimmaxnum.y)
+		{
+			m_engineanim = { 0,0 };
+		}
+	}
+
+
+m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
+m_rotatemat = Math::Matrix::CreateRotationZ(m_texangle);
+m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
+m_mat = m_scalemat * m_rotatemat * m_transmat;
+}
+
 void C_SubBoss::Release()
 {
 	// 必要なら解放処理
@@ -185,7 +235,9 @@ void C_SubBoss::Release()
 //========================
 void C_SubBoss::StartUpdate()
 {
-	m_pos.x += m_move.x;
+	m_move = { -1,0 };
+
+	m_pos.x += m_move.x*3;
 
 	// 例：停止位置まで移動
 	if (m_pos.x <= m_stoppos.x)

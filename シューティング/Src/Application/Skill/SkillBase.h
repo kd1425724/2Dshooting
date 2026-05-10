@@ -11,6 +11,13 @@ enum class UseType
 	Enemy
 };
 
+enum class DrawType
+{
+	BottomDraw,
+	MidDraw,
+	TopDraw
+};
+
 class C_SkillBase
 {
 public:
@@ -60,7 +67,7 @@ public:
 	virtual void SetTexture(std::shared_ptr<KdTexture> tex) {}
 
 	//‰æ‘œ•`‰æ‡’²®
-	virtual bool IsTopDraw() = 0;
+	virtual DrawType IsDrawType() = 0;
 
 	bool GetAlive()
 	{

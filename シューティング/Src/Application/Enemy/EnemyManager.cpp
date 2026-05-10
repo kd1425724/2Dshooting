@@ -150,6 +150,31 @@ void C_EnemyManager::SpwornEnemyLoad()
 }
 
 
+void C_EnemyManager::StartUpdate()
+{
+	if (!m_enemys.empty())
+	{
+		for (int i = 0; i < m_enemys.size(); i++)
+		{
+			m_enemys[i]->StartDirectionUpdate();
+		}
+	}
+
+	for (auto& e : m_addenemylist)
+	{
+		m_enemys.push_back(e);
+	}
+
+	m_addenemylist.clear();
+
+	for (auto& e : m_addskillenemylist)
+	{
+		m_skillenemys.push_back(e);
+	}
+
+	m_addskillenemylist.clear();
+}
+
 void C_EnemyManager::Update()
 {
 	if (!m_enemys.empty())

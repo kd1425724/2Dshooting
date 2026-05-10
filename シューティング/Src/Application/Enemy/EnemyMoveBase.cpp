@@ -25,13 +25,20 @@ void C_EnemyMoveBase::HitUpdate()
 	{
 		m_hittimer--;
 
-		if ((m_hittimer / 2) % 2 == 0)
+		if (m_hittimer > 7)
 		{
-			m_color = { 1.5f, 1.5f, 1.5f, 1.0f }; // 明るく（白っぽく）
+			m_color = { 30.0f, 30.0f, 30.0f, 1.0f }; // 明るく（白っぽく）
 		}
 		else
 		{
-			m_color = { 1.0f, 1.0f, 1.0f, 1.0f }; // 通常
+			if ((m_hittimer / 2) % 2 == 0)
+			{
+				m_color = { 1.5f, 1.5f, 1.5f, 1.0f }; // 明るく（白っぽく）
+			}
+			else
+			{
+				m_color = { 1.0f, 1.0f, 1.0f, 1.0f }; // 通常
+			}
 		}
 	}
 	else

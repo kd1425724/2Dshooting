@@ -51,6 +51,8 @@ public:
 	void Update();
 	void Draw();
 
+	void StartUpdate();
+
 	void ImGui();
 
 	//ƒXƒLƒ‹ŠÇ—æ“¾—p

@@ -19,7 +19,7 @@ public:
     void EnemySkillActivate() override;
 
     // •`‰æ‡
-    bool IsTopDraw() override { return false; }
+    DrawType IsDrawType() override { return DrawType::BottomDraw; }
 
     void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) override
     {

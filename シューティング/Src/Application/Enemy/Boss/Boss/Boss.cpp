@@ -88,12 +88,60 @@ void C_Boss::Init()
 	}
 }
 
+void C_Boss::StartDirectionUpdate()
+{
+	StartUpdate();
+
+	//アニメーション用
+	m_anim.x += 0.1f;
+	//マックス以上になったら,4コマなら4
+	if (m_anim.x >= m_animmaxnum.x)
+	{
+		m_anim.x = 0;
+		if (m_animmaxnum.y != 0)
+		{
+			m_anim.y++;
+		}
+	}
+	if (m_animmaxnum.y != 0)
+	{
+		if (m_anim.y > m_animmaxnum.y)
+		{
+			m_anim = { 0,0 };
+		}
+	}
+
+
+	//エンジンアニメーション用
+	m_engineanim.x += 0.1f;
+	//マックス以上になったら,4コマなら4
+	if (m_engineanim.x >= m_engineanimmaxnum.x)
+	{
+		m_engineanim.x = 0;
+		if (m_engineanimmaxnum.y != 0)
+		{
+			m_engineanim.y++;
+		}
+	}
+	if (m_engineanimmaxnum.y != 0)
+	{
+		if (m_engineanim.y > m_engineanimmaxnum.y)
+		{
+			m_engineanim = { 0,0 };
+		}
+	}
+	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
+	m_rotatemat = Math::Matrix::CreateRotationZ(m_texangle + COMMONAPI.GetTextureAngleAdjustment(TextureAngle::Top));
+	m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
+	m_mat = m_scalemat * m_rotatemat * m_transmat;
+}
+
 void C_Boss::Update()
 {
 	switch (m_pattern)
 	{
 	case Pattern::Start:
-		StartUpdate();
+		
 		break;
 	case Pattern::Loop:
 		LoopUpdate();
@@ -197,16 +245,36 @@ void C_Boss::Release()
 
 void C_Boss::StartUpdate()
 {
-	m_pos += m_move;
-
-	if (m_pos.x <= m_stoppos.x)
+	switch (m_startpattern)
 	{
-		m_pos = m_stoppos;
-		m_move = { 0,0 };
+	case StartPattern::BossStartMove:
+		m_move = { -1,0 };
 
-		m_pattern = Pattern::Loop;
+		m_pos += m_move * 3;
 
-		m_actionpattern = BossActionPattern::p1_EnemyGenerate;
+		if (m_pos.x <= m_stoppos.x)
+		{
+			m_pos = m_stoppos;
+			m_move = { 0,0 };
+
+			m_pattern = Pattern::Loop;
+
+			m_actionpattern = BossActionPattern::p1_EnemyGenerate;
+
+			m_startpattern = StartPattern::BossStartLaser;
+		}
+		break;
+	case StartPattern::BossStartLaser:
+		if (auto sm = m_skillmanager.lock())
+		{
+			sm->SetEnemySkill(SkillType::Laser, shared_from_this());
+		}
+		m_startpattern = StartPattern::BossStartStop;
+		break;
+	case StartPattern::BossStartStop:
+		break;
+	default:
+		break;
 	}
 }
 

@@ -22,6 +22,8 @@ public:
 
 	virtual void Draw() override;
 
+	virtual void StartDirectionUpdate() override;
+
 private:
 
 	virtual void Release() override;

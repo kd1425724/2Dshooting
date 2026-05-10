@@ -100,7 +100,7 @@ void C_SkillManager::Draw()
 	if (m_playerskills)
 	{
 		//画像順番調整用
-		if (!m_playerskills->IsTopDraw())
+		if (m_playerskills->IsDrawType()== DrawType::BottomDraw)
 		{
 			m_playerskills->Draw();
 		}
@@ -111,7 +111,7 @@ void C_SkillManager::Draw()
 		if (m_enemyskills[i])
 		{
 			//画像順番調整用
-			if (!m_enemyskills[i]->IsTopDraw())
+			if (m_enemyskills[i]->IsDrawType()==DrawType::BottomDraw)
 			{
 				m_enemyskills[i]->Draw();
 			}
@@ -124,7 +124,7 @@ void C_SkillManager::TopDraw()
 	if (m_playerskills)
 	{
 		//画像順番調整用
-		if (m_playerskills->IsTopDraw())
+		if (m_playerskills->IsDrawType() == DrawType::TopDraw)
 		{
 			m_playerskills->Draw();
 		}
@@ -135,7 +135,31 @@ void C_SkillManager::TopDraw()
 		if (m_enemyskills[i])
 		{
 			//画像順番調整用
-			if (m_enemyskills[i]->IsTopDraw())
+			if (m_enemyskills[i]->IsDrawType()==DrawType::TopDraw)
+			{
+				m_enemyskills[i]->Draw();
+			}
+		}
+	}
+}
+
+void C_SkillManager::MidDraw()
+{
+	if (m_playerskills)
+	{
+		//画像順番調整用
+		if (m_playerskills->IsDrawType() == DrawType::MidDraw)
+		{
+			m_playerskills->Draw();
+		}
+	}
+
+	for (int i = 0; i < m_enemyskills.size(); i++)
+	{
+		if (m_enemyskills[i])
+		{
+			//画像順番調整用
+			if (m_enemyskills[i]->IsDrawType() == DrawType::MidDraw)
 			{
 				m_enemyskills[i]->Draw();
 			}

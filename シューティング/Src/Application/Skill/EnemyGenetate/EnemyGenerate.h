@@ -27,9 +27,9 @@ public:
 	//“G—p
 	void EnemySkillActivate() override;
 
-	bool IsTopDraw() override
+	DrawType IsDrawType() override
 	{
-		return false;
+		return DrawType::BottomDraw;
 	}
 
 private:

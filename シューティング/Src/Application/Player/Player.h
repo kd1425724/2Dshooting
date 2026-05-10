@@ -51,6 +51,8 @@ public:
 	void Update();
 	void Draw();
 
+	void StartUpdate();
+
 	void ResultInit();
 	void ResultUpdate();
 	void ResultDraw();
