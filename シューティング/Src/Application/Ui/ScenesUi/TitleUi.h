@@ -33,6 +33,9 @@ private:
     void Release() override;
 
     //îwåi
+    void MoveBackGroundInit();
+    void MoveBackGroundUpdate();
+    void MoveBackGroundDraw();
     KdTexture m_movebackgroundtex;
     Math::Vector2 m_movebackgroundpos = {};
     Math::Vector2 m_movebackgroundpos2 = {};

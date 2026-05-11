@@ -16,6 +16,8 @@ void C_TitleUi::Init()
 	//ÉvÉåÉCÉÑÅ[
 	PlayerInit();
 
+	MoveBackGroundInit();
+
 	//âÊëúçÏê¨
 	//CreateSpriteItemInit({ -300,0 }, { 0,0,1280,720 }, { 0.1,0.1 }, &CommonTex.GetWhiteBackTex(), {1,1,1,1});
 	//CreateSpriteItemInit({ 300,0 }, { 0,0,1280,720 }, { 0.1,0.1 }, &CommonTex.GetWhiteBackTex(), {1,1,1,1});
@@ -31,6 +33,8 @@ void C_TitleUi::Update()
 
 	//ÉvÉåÉCÉÑÅ[
 	PlayerUpdate();
+
+	MoveBackGroundUpdate();
 	
 	//É{É^ÉìçXêV
 	CreateSpriteItemUpdate();
@@ -41,6 +45,8 @@ void C_TitleUi::Draw()
 	//îwåiï`âÊ
 	BackGroundDraw();
 
+	MoveBackGroundDraw();
+
 	//É^ÉCÉgÉãï`âÊ
 	TitleLogoDraw();
 
@@ -49,6 +55,8 @@ void C_TitleUi::Draw()
 
 	//ÉvÉåÉCÉÑÅ[
 	PlayerDraw();
+
+	
 
 	//É{É^ÉìçXêV
 	CreateSpriteItemDraw();
@@ -60,13 +68,6 @@ void C_TitleUi::BackGroundInit()
 
 	//îwåi
 	m_backgroundtex.Load("Texture/Ui/BackGround/Title/TitleBackGround.png");
-
-	m_movebackgroundtex.Load("Texture/Ui/BackGround/Title/TitleMoveBackGround.png");
-	m_movebackgroundpos = { 0,0 };
-
-	m_movebackgroundrect = { 0,0,11520,720 };
-	m_movebackgroundpos2 = { m_movebackgroundpos.x + m_movebackgroundrect.width,0 };
-
 	//çïîwåi
 	BlackBackInit();
 
@@ -88,6 +89,39 @@ void C_TitleUi::BackGroundUpdate()
 	//çïîwåi
 	BlackBackUpdate();
 
+	m_backgroundscalemat = Math::Matrix::CreateScale(m_backgroundscale.x, m_backgroundscale.y, 1);
+	m_backgroundtransmat = Math::Matrix::CreateTranslation(m_backgroundpos.x, m_backgroundpos.y, 0);
+	m_backgroundmat = m_backgroundscalemat * m_backgroundtransmat;
+}
+void C_TitleUi::BackGroundDraw()
+{
+	//çïîwåi
+	BlackBackDraw();
+
+	//îwåi
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_backgroundmat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_backgroundtex, 0, 0, &Math::Rectangle(0,0, m_backgroundrect.width, m_backgroundrect.height), &m_backgroundcolor);
+}
+
+void C_TitleUi::Release()
+{
+	m_backgroundtex.Release();
+	m_titlelogotex.Release();
+	m_movebackgroundtex.Release();
+}
+
+void C_TitleUi::MoveBackGroundInit()
+{
+	m_movebackgroundtex.Load("Texture/Ui/BackGround/Title/TitleMoveBackGround.png");
+	m_movebackgroundpos = { 0,0 };
+
+	m_movebackgroundrect = { 0,0,11520,720 };
+	m_movebackgroundpos2 = { m_movebackgroundpos.x + m_movebackgroundrect.width,0 };
+
+}
+
+void C_TitleUi::MoveBackGroundUpdate()
+{
 	m_movebackgroundpos.x -= 3.0f;
 	m_movebackgroundpos2.x -= 3.0f;
 
@@ -100,36 +134,21 @@ void C_TitleUi::BackGroundUpdate()
 		m_movebackgroundpos2.x = m_movebackgroundpos.x + m_movebackgroundrect.width;
 	}
 
-	m_backgroundscalemat = Math::Matrix::CreateScale(m_backgroundscale.x, m_backgroundscale.y, 1);
-	m_backgroundtransmat = Math::Matrix::CreateTranslation(m_backgroundpos.x, m_backgroundpos.y, 0);
-	m_backgroundmat = m_backgroundscalemat * m_backgroundtransmat;
-
 	m_movebackgroundmat = Math::Matrix::CreateTranslation(m_movebackgroundpos.x, m_movebackgroundpos.y, 1);
 	m_movebackgroundmat2 = Math::Matrix::CreateTranslation(m_movebackgroundpos2.x, m_movebackgroundpos2.y, 1);
+
 }
-void C_TitleUi::BackGroundDraw()
+
+void C_TitleUi::MoveBackGroundDraw()
 {
-	//çïîwåi
-	BlackBackDraw();
-
-	//îwåi
-	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_backgroundmat);
-	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_backgroundtex, 0, 0, &Math::Rectangle(0,0, m_backgroundrect.width, m_backgroundrect.height), &m_backgroundcolor);
-
-	Math::Color color = { 10.0f,10.0f,10.0f,0.2f };
+	Math::Color color = { 10.0f,10.0f,10.0f,0.15f };
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_movebackgroundmat);
-	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_movebackgroundtex,0,0, &m_movebackgroundrect,&color);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_movebackgroundtex, 0, 0, &m_movebackgroundrect, &color);
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_movebackgroundmat2);
-	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_movebackgroundtex,0,0, &m_movebackgroundrect,&color);
-}
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_movebackgroundtex, 0, 0, &m_movebackgroundrect, &color);
 
-void C_TitleUi::Release()
-{
-	m_backgroundtex.Release();
-	m_titlelogotex.Release();
-	m_movebackgroundtex.Release();
 }
 
 
