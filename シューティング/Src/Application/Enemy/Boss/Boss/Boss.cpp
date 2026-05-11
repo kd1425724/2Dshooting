@@ -432,6 +432,14 @@ void C_Boss::p1_EnemyGenerateUpdate()
 {
 	m_enemygeneratetime--;
 
+	if (m_enemygeneratetime % 20 == 0)
+	{
+		if (auto sm = m_skillmanager.lock())
+		{
+			sm->SetEnemySkill(SkillType::EnemyGenerate, shared_from_this());
+		}
+	}
+
 	if (m_enemygeneratetime < 0)
 	{
 		NoneInit(BossActionPattern::p1_EnemyGenerate);
@@ -501,6 +509,15 @@ void C_Boss::p4_SpiralUpdate()
 	}
 	
 	m_spiraltime--;
+
+	if (m_spiraltime % 60 == 0)
+	{
+		if (auto sm = m_skillmanager.lock())
+		{
+			sm->SetEnemySkill(SkillType::EnemyGenerate, shared_from_this());
+		}
+	}
+
 	if (m_spiraltime <= 0)
 	{
 		NoneInit(BossActionPattern::p4_SpiralShot);

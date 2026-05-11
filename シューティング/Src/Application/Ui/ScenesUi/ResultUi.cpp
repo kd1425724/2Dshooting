@@ -158,7 +158,7 @@ void C_ResultUi::ScoreInit()
 	if (s->clear)
 	{
 		clear = ClearScoreUpNum;
-		time = std::max(0, 300 - s->time) * TimeScoreUpNum;
+		time = std::max(0, 180 - s->time) * TimeScoreUpNum;
 	}
 	int lifescore = s->playerlife * PlayerLifeUpNum;
 
@@ -303,7 +303,7 @@ void C_ResultUi::ScoreDraw()
 		if (s->clear)
 		{
 			clear = ClearScoreUpNum;
-			time = std::max(0, 300 - s->time) * TimeScoreUpNum;
+			time = std::max(0, 180 - s->time) * TimeScoreUpNum;
 		}
 		int lifescore = s->playerlife * PlayerLifeUpNum;
 

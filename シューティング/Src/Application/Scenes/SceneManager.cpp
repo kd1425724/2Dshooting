@@ -171,6 +171,9 @@ std::shared_ptr<C_SceneBase> C_SceneManager::CreateScene(SceneType type)
 
 void C_SceneManager::SetScore(int value)
 {
-    EFFECTMANAGER.ScoreEffect(value);
-    m_score += value; 
+    if (value > 0)
+    {
+        EFFECTMANAGER.ScoreEffect(value);
+    }
+    m_score += value;
 }
