@@ -58,11 +58,14 @@ private:
 	static const int TimeScoreUpNum = 100000;//１０万
 
 	//テキスト
+	KdTexture m_PlayTimeTextTex;
 	KdTexture m_CrearTextTex;
 	KdTexture m_ScoreTextTex;
 	KdTexture m_LifeTextTex;
 	KdTexture m_TimeTextTex;
 	KdTexture m_TotalTextTex;
+	KdTexture m_colontex;
+	KdTexture m_BonusTextTex;
 	//星
 	void StarInit();
 	void StarDraw();

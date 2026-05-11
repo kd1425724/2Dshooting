@@ -207,7 +207,7 @@ void C_Player::ResultDraw()
 	Math::Rectangle enginerect = { 0,0, 64,64 };
 
 	Math::Matrix enginscale = Math::Matrix::CreateScale(-0.8f, 0.8f, 0);
-	Math::Matrix engintrans = Math::Matrix::CreateTranslation((int)(m_pos.x + 60 + 0.5f), (int)(m_pos.y + 0.5f), 0);
+	Math::Matrix engintrans = Math::Matrix::CreateTranslation((int)(m_pos.x + 50 + 0.5f), (int)(m_pos.y + 0.5f), 0);
 
 	Math::Matrix mat = enginscale * engintrans;
 

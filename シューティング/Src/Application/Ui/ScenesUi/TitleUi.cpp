@@ -148,7 +148,6 @@ void C_TitleUi::MoveBackGroundDraw()
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_movebackgroundmat2);
 	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_movebackgroundtex, 0, 0, &m_movebackgroundrect, &color);
-
 }
 
 

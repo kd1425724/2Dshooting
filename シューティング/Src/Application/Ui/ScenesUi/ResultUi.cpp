@@ -135,12 +135,15 @@ void C_ResultUi::ENTERDraw()
 
 void C_ResultUi::ScoreInit()
 {
+	m_PlayTimeTextTex.Load("Texture/Ui/Font/PLAYTIME.png");
 	m_CrearTextTex.Load("Texture/Ui/Font/CLEAR.png");
 	m_ScoreTextTex.Load("Texture/Ui/Font/SCORE.png");
 	m_LifeTextTex.Load("Texture/Ui/Font/LIFE.png");
 	m_TimeTextTex.Load("Texture/Ui/Font/TIME.png");
 	m_TotalTextTex.Load("Texture/Ui/Font/TOTAL.png");
-	
+	m_colontex.Load("Texture/Ui/Font/colon.png");
+	m_BonusTextTex.Load("Texture/Ui/Font/BONUS.png");
+
 	//スコア代入
 	auto s = SCENEMANAGER.GetScoreData();
 
@@ -176,15 +179,31 @@ void C_ResultUi::ScoreInit()
 
 void C_ResultUi::ScoreDraw()
 {
+
 	Math::Rectangle rect = { 0,0,480,100 };
 
 	//テキスト
 	{
-		Math::Vector2 scale = { 0.4f,0.4f };	
+		Math::Vector2 scale = { 0.3f,0.35f };
 		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
-		//クリア
+
+		//PLAYTIME
 		{
 			Math::Vector2 pos = { -200,120 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+
+			Math::Matrix mat = s * t;
+
+			Math::Rectangle playtimerect = { 0,0,1000,100 };
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_PlayTimeTextTex, playtimerect, 1.0f);
+		}
+
+		//クリア
+		{
+			Math::Vector2 pos = { -200,60 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
@@ -196,7 +215,7 @@ void C_ResultUi::ScoreDraw()
 
 		//スコア
 		{
-			Math::Vector2 pos = { -200,40 };
+			Math::Vector2 pos = { -200,0 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
@@ -208,7 +227,7 @@ void C_ResultUi::ScoreDraw()
 
 		//ライフ
 		{
-			Math::Vector2 pos = { -200,-40 };
+			Math::Vector2 pos = { -270,-60 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
@@ -217,10 +236,21 @@ void C_ResultUi::ScoreDraw()
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_LifeTextTex, rect, 1.0f);
 		}
+		//BONUS
+		{
+			Math::Vector2 pos = { -150,-60 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_BonusTextTex, rect, 1.0f);
+		}
 
 		//タイム
 		{
-			Math::Vector2 pos = { -200,-120 };
+			Math::Vector2 pos = { -270,-120 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
@@ -228,6 +258,17 @@ void C_ResultUi::ScoreDraw()
 
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TimeTextTex, rect, 1.0f);
+		}
+		//BONUS
+		{
+			Math::Vector2 pos = { -150,-120 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_BonusTextTex, rect, 1.0f);
 		}
 	}
 
@@ -243,7 +284,7 @@ void C_ResultUi::ScoreDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Color color = { 1.0f,1.0f,0,1.0f };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TotalTextTex,0,0, &rect, &color);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TotalTextTex, 0, 0, &rect, &color);
 	}
 
 	//数字描画
@@ -265,16 +306,65 @@ void C_ResultUi::ScoreDraw()
 			time = std::max(0, 300 - s->time) * TimeScoreUpNum;
 		}
 		int lifescore = s->playerlife * PlayerLifeUpNum;
-		
+
 		int total = score + clear + lifescore + time;
 
 		//描画
-		Math::Vector2 numscale = { 0.3f,0.4f };
-		COMMONAPI.NumDraw(clear, { 200,120 }, numscale);
-		COMMONAPI.NumDraw(score, { 200,40 }, numscale);
-		COMMONAPI.NumDraw(lifescore, { 200,-40 }, numscale);
+		Math::Vector2 numscale = { 0.3f,0.35f };
+		COMMONAPI.NumDraw(clear, { 200,60 }, numscale);
+		COMMONAPI.NumDraw(score, { 200,0 }, numscale);
+		COMMONAPI.NumDraw(lifescore, { 200,-60 }, numscale);
 		COMMONAPI.NumDraw(time, { 200,-120 }, numscale);
 		COMMONAPI.NumDraw(total, { 250,-200 }, { 0.35f,0.60f }, { 1.0f,1.0f,0.0f,1.0f });
+	}
+
+	{
+		//スコア代入
+		auto s = SCENEMANAGER.GetScoreData();
+
+		if (!s)
+		{
+			return;
+		}
+
+		int time = s->time;
+
+		int minute = static_cast<int>(time / 60.0f);
+		int second = static_cast<int>(time) % 60;
+		int millisecond = static_cast<int>(time * 100.0f) % 100;
+
+
+		Math::Vector2 scale = { 0.3f,0.35f };
+		Math::Color color = { 1,1,1,1 };
+
+		Math::Vector2 pos1 = { 20,120 };
+		COMMONAPI.NumDraw(minute, pos1, scale, color, true, 2);
+
+		Math::Vector2 pos2 = { 110,120 };
+		COMMONAPI.NumDraw(second, pos2, scale, color, true, 2);
+
+		Math::Vector2 pos3 = { 200,120 };
+		COMMONAPI.NumDraw(millisecond, pos3, scale, color, true, 2);
+	}
+
+	//コロン：
+	{
+		Math::Rectangle colonrect = { 0,0,100,100 };
+
+		Math::Vector2 scale = { 0.3f,0.35f };
+
+		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);;
+
+		for (int i = 0; i < 2; i++)
+		{
+			Math::Vector2 pos = { 50.0f + (i * 90),120 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_colontex, colonrect, 1.0f);
+		}
 	}
 }
 

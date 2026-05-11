@@ -71,6 +71,11 @@ void C_SubBoss::Init(Math::Vector2 pos)
 	{
 		hm->SetEnemy(shared_from_this());
 	}
+
+	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
+	m_rotatemat = Math::Matrix::CreateRotationZ(m_texangle);
+	m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
+	m_mat = m_scalemat * m_rotatemat * m_transmat;
 }
 
 void C_SubBoss::Update()
