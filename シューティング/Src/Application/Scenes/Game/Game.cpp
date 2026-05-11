@@ -208,13 +208,36 @@ void C_Game::Update()
 
 	if (Input.GetUserKey(UserKeyType::ESCAPE) && !Input.GetUserKeyFlg(UserKeyType::ESCAPE))
 	{
-		m_gamemode = GameMode::Loop;
-		//SCENEMANAGER.NoFeedpush(SceneType::GamePause,false);
+		SCENEMANAGER.NoFeedpush(SceneType::GamePause,false);
 		return;
 	}
 
 	if (!m_player->GetAlive() ||
 		!m_enemymanager->GetBoss())
+	{
+		auto s = std::make_shared<Score>();
+		if (s)
+		{
+			if (!m_enemymanager->GetBoss())
+			{
+				s->clear = true;
+			}
+			else
+			{
+				s->clear = false;
+			}
+			s->playerlife = m_player->GetHp();
+			s->score = SCENEMANAGER.GetScore();
+			s->time = (int)m_time;
+
+			SCENEMANAGER.SetScoreData(s);
+		}
+
+		SCENEMANAGER.push(SceneType::Result, true);
+		return;
+	}
+
+	if (Input.GetDebugKey(DebugKeyType::Ukey) && !Input.GetDebugKeyFlg(DebugKeyType::Ukey))
 	{
 		auto s = std::make_shared<Score>();
 		if (s)
@@ -255,14 +278,13 @@ void C_Game::Draw()
 	//ƒXƒLƒ‹•`‰æ
 	m_skillmanager->Draw();
 
-	//ƒvƒŒƒCƒ„[•`‰æ
-	m_player->Draw();
-
 	m_skillmanager->MidDraw();
 
 	//“G•`‰æ
 	m_enemymanager->Draw();
 
+	//ƒvƒŒƒCƒ„[•`‰æ
+	m_player->Draw();
 	
 	//ƒXƒLƒ‹•`‰æiƒvƒŒƒCƒ„[‚â“G‚Ìã‚É•`‰æ‚³‚ê‚é‚à‚Ìj
 	m_skillmanager->TopDraw();

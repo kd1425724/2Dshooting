@@ -5,6 +5,7 @@
 #include"../../../Hit/HitManager.h"
 #include"../../../Info.h"
 #include"../../../Scenes/Game/Game.h"
+#include"../../../Input/Input.h"
 
 void C_Boss::Init()
 {
@@ -151,6 +152,11 @@ void C_Boss::Update()
 		break;
 	default:
 		break;
+	}
+
+	if (Input.GetDebugKey(DebugKeyType::ZEROKey) && !Input.GetDebugKeyFlg(DebugKeyType::ZEROKey))
+	{
+		m_hp = 0;
 	}
 
 	//ƒ{ƒX‚ªŽ€‚ñ‚¾‚çHp‚ª‚È‚­‚È‚Á‚½‚ç

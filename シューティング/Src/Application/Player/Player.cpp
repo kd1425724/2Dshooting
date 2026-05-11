@@ -126,6 +126,12 @@ void C_Player::Update()
 	m_transmat = Math::Matrix::CreateTranslation((int)(m_pos.x+0.5f), (int)(m_pos.y+0.5f), 0);//+0.5fŽlŽÌŒÜ“ü‚µ‚Ä‚é
 	m_mat = m_scalemat * m_transmat;
 
+	if (Input.GetDebugKey(DebugKeyType::NINEKey) && !Input.GetDebugKeyFlg(DebugKeyType::NINEKey))
+	{
+		m_Hp = 0;
+		m_alive = false;
+	}
+
 	if (m_Hp <= 1)
 	{
 		m_Hp = 1;

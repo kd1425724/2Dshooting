@@ -41,6 +41,26 @@ enum class UserKeyDefaultType
     ESCAPE=VK_ESCAPE,
 };
 
+enum class DebugKeyType
+{
+    Pkey,   //レーザーに変更
+    Okey,   //バリアーに変更
+    Ikey,   //敵生成に変更
+    Ukey,   //リザルトへ
+    ZEROKey,  //ボスを倒す
+    NINEKey,  //プレイヤーの死亡フラグをONOFF
+    DebugKeyNum,
+};
+enum class DebugKeyDefaultType
+{
+    Pkey='P',   //レーザーに変更
+    Okey='O',   //バリアーに変更
+    Ikey='I',   //敵生成に変更
+    Ukey='U',   //次のシーンへ
+    ZEROKey = '0',  //ボスを倒す
+    NINEKey = '9',  //プレイヤーの死亡フラグをONOFF
+};
+
 class C_Input
 {
 public:
@@ -81,8 +101,19 @@ public:
         return m_userkeyflg[(int)userkeytype];
     }
 
+    SHORT GetDebugKey(DebugKeyType debugkeytype)
+    {
+        return GetAsyncKeyState(m_debugkey[(int)debugkeytype]) & 0x8000;
+    }
+
+    bool GetDebugKeyFlg(DebugKeyType debugkeytype)
+    {
+        return m_debugkeyflg[(int)debugkeytype];
+    }
+
     void PlayerDefaultKeySet();
     void UserDefaultKeySet();
+    void DebugDefaultKeySet();
 
 private:
     // ===== マウス =====
@@ -95,7 +126,12 @@ private:
 
     //ユーザーキー
     int m_userkey[(int)UserKeyType::UserKeyNum] = { 0 };
-    bool m_userkeyflg[(int)UserKeyType::UserKeyNum] = { 0 };
+    bool m_userkeyflg[(int)UserKeyType::UserKeyNum] = { false };
+
+
+    //デバッグキー
+    int m_debugkey[(int)DebugKeyType::DebugKeyNum] = { 0 };
+    bool m_debugkeyflg[(int)DebugKeyType::DebugKeyNum] = { false };
 
 private:
     C_Input() {}

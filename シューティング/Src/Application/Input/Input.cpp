@@ -24,10 +24,17 @@ void C_Input::Init()
 		m_userkeyflg[i] = false;
 	}
 
+	for (int i = 0; i < (int)DebugKeyType::DebugKeyNum; i++)
+	{
+		m_debugkeyflg[i] = false;
+	}
+
 	//プレイヤーキーロード
 	PlayerKeyLoad();
 
 	UserDefaultKeySet();
+
+	DebugDefaultKeySet();
 }
 void C_Input::Update(HWND hwnd)
 {
@@ -65,6 +72,18 @@ void C_Input::Update(HWND hwnd)
 		else
 		{
 			m_userkeyflg[i] = false;
+		}
+	}
+
+	for (int i = 0; i < (int)DebugKeyType::DebugKeyNum; i++)
+	{
+		if (GetAsyncKeyState(m_debugkey[i])&0x8000)
+		{
+			m_debugkeyflg[i] = true;
+		}
+		else
+		{
+			m_debugkeyflg[i] = false;
 		}
 	}
 }
@@ -165,6 +184,23 @@ void C_Input::UserDefaultKeySet()
 	for (int i = 0; i < num; i++)
 	{
 		m_userkey[i] = defaultkey[i];
+	}
+}
+
+void C_Input::DebugDefaultKeySet()
+{
+	static const int num = (int)DebugKeyType::DebugKeyNum;
+
+	int defaultkey[num] = { (int)DebugKeyDefaultType::Pkey,
+						(int)DebugKeyDefaultType::Okey,
+						(int)DebugKeyDefaultType::Ikey,
+						(int)DebugKeyDefaultType::Ukey,
+						(int)DebugKeyDefaultType::ZEROKey,
+						(int)DebugKeyDefaultType::NINEKey};
+
+	for (int i = 0; i < num; i++)
+	{
+		m_debugkey[i] = defaultkey[i];
 	}
 }
 

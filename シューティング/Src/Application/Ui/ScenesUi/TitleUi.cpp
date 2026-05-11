@@ -61,6 +61,12 @@ void C_TitleUi::BackGroundInit()
 	//îwåi
 	m_backgroundtex.Load("Texture/Ui/BackGround/Title/TitleBackGround.png");
 
+	m_movebackgroundtex.Load("Texture/Ui/BackGround/Title/TitleMoveBackGround.png");
+	m_movebackgroundpos = { 0,0 };
+
+	m_movebackgroundrect = { 0,0,11520,720 };
+	m_movebackgroundpos2 = { m_movebackgroundpos.x + m_movebackgroundrect.width,0 };
+
 	//çïîwåi
 	BlackBackInit();
 
@@ -82,9 +88,24 @@ void C_TitleUi::BackGroundUpdate()
 	//çïîwåi
 	BlackBackUpdate();
 
+	m_movebackgroundpos.x -= 3.0f;
+	m_movebackgroundpos2.x -= 3.0f;
+
+	if (m_movebackgroundpos.x <= -m_movebackgroundrect.width)
+	{
+		m_movebackgroundpos.x = m_movebackgroundpos2.x + m_movebackgroundrect.width;
+	}
+	if (m_movebackgroundpos2.x <= -m_movebackgroundrect.width)
+	{
+		m_movebackgroundpos2.x = m_movebackgroundpos.x + m_movebackgroundrect.width;
+	}
+
 	m_backgroundscalemat = Math::Matrix::CreateScale(m_backgroundscale.x, m_backgroundscale.y, 1);
 	m_backgroundtransmat = Math::Matrix::CreateTranslation(m_backgroundpos.x, m_backgroundpos.y, 0);
 	m_backgroundmat = m_backgroundscalemat * m_backgroundtransmat;
+
+	m_movebackgroundmat = Math::Matrix::CreateTranslation(m_movebackgroundpos.x, m_movebackgroundpos.y, 1);
+	m_movebackgroundmat2 = Math::Matrix::CreateTranslation(m_movebackgroundpos2.x, m_movebackgroundpos2.y, 1);
 }
 void C_TitleUi::BackGroundDraw()
 {
@@ -92,14 +113,23 @@ void C_TitleUi::BackGroundDraw()
 	BlackBackDraw();
 
 	//îwåi
-	SHADER.m_spriteShader.SetMatrix(m_backgroundmat);
-	SHADER.m_spriteShader.DrawTex(&m_backgroundtex, 0, 0, &Math::Rectangle(0,0, m_backgroundrect.width, m_backgroundrect.height), &m_backgroundcolor);
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_backgroundmat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_backgroundtex, 0, 0, &Math::Rectangle(0,0, m_backgroundrect.width, m_backgroundrect.height), &m_backgroundcolor);
+
+	Math::Color color = { 10.0f,10.0f,10.0f,0.2f };
+
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_movebackgroundmat);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_movebackgroundtex,0,0, &m_movebackgroundrect,&color);
+
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_movebackgroundmat2);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_movebackgroundtex,0,0, &m_movebackgroundrect,&color);
 }
 
 void C_TitleUi::Release()
 {
 	m_backgroundtex.Release();
 	m_titlelogotex.Release();
+	m_movebackgroundtex.Release();
 }
 
 
@@ -147,20 +177,20 @@ void C_TitleUi::StartDraw()
 
 void C_TitleUi::TitleLogoInit()
 {
-	m_titlelogotex.Load("Texture/Ui/Font/COPYDRIVE.png");
+	m_titlelogotex.Load("Texture/Ui/Font/COPYSYSTEM.png");
 }
 
 void C_TitleUi::TitleLogoDraw()
 {
-	Math::Vector2 pos = { 0,240 };
-	Math::Vector2 scale = { 1,1 };
+	Math::Vector2 pos = { 0,200 };
+	Math::Vector2 scale = { 0.9f,1 };
 
 	Math::Matrix s = Math::Matrix::CreateScale(scale.x,scale.y,1);
 	Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 	Math::Matrix mat = s * t;
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-	Math::Rectangle rect = { 0,0,926,132 };
+	Math::Rectangle rect = { 0,0,1107,132 };
 	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_titlelogotex, rect, 1.0f);
 }
 

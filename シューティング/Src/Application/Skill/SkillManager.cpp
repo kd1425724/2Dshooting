@@ -43,9 +43,21 @@ void C_SkillManager::Init()
 }
 void C_SkillManager::Update()
 {
-	if (GetAsyncKeyState('P') & 0x8000)
+	if (Input.GetDebugKey(DebugKeyType::Pkey) &&
+		!Input.GetDebugKeyFlg(DebugKeyType::Pkey))
 	{
 		SetPlayerSkill(SkillType::Laser);
+	}
+
+	if (Input.GetDebugKey(DebugKeyType::Okey) &&
+		!Input.GetDebugKeyFlg(DebugKeyType::Okey))
+	{
+		SetPlayerSkill(SkillType::Barrier);
+	}
+	if (Input.GetDebugKey(DebugKeyType::Ikey) &&
+		!Input.GetDebugKeyFlg(DebugKeyType::Ikey))
+	{
+		SetPlayerSkill(SkillType::EnemyGenerate);
 	}
 
 	if (m_playerskills)

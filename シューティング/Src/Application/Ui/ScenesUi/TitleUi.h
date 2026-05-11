@@ -32,6 +32,16 @@ public:
 private:
     void Release() override;
 
+    //îwåi
+    KdTexture m_movebackgroundtex;
+    Math::Vector2 m_movebackgroundpos = {};
+    Math::Vector2 m_movebackgroundpos2 = {};
+
+    Math::Rectangle m_movebackgroundrect = {};
+
+    Math::Matrix m_movebackgroundmat = {};
+    Math::Matrix m_movebackgroundmat2 = {};
+
     // ===== ÉXÉ^Å[Ég =====
     void StartInit();
     void StartUpdate();

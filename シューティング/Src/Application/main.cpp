@@ -33,7 +33,7 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// ウィンドウ作成
 	//===================================================================
-	if (m_window.Create(w, h, "COPY DRIVE FPS :", "Window") == false) {
+	if (m_window.Create(w, h, "COPY SYSTEM FPS :", "Window") == false) {
 		MessageBoxA(nullptr, "ウィンドウ作成に失敗", "エラー", MB_OK);
 		return false;
 	}
@@ -247,7 +247,7 @@ void Application::Execute()
 			count = 0;
 
 			char title[256];
-			sprintf_s(title, "COPY DRIVE FPS : %d", m_fps);
+			sprintf_s(title, "COPY SYSTEM FPS : %d", m_fps);
 			SetWindowTextA(m_window.GetWndHandle(),title);
 		}
 
