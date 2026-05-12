@@ -17,6 +17,7 @@ void C_Input::Init()
 	for (int i = 0; i < (int)PlayerKeyType::PlayerKeyNum; i++)
 	{
 		m_playerkeyflg[i] = false;
+		m_oldplayerkeyflg[i] = false;
 	}
 
 	for (int i = 0; i < (int)UserKeyType::UserKeyNum; i++)
@@ -38,6 +39,12 @@ void C_Input::Init()
 }
 void C_Input::Update(HWND hwnd)
 {
+	for (int i = 0; i < (int)PlayerKeyType::PlayerKeyNum; i++)
+	{
+		m_oldplayerkeyflg[i] = m_playerkeyflg[i];
+		m_playerkeyflg[i] =(GetAsyncKeyState(m_playerkey[i]) & 0x8000);
+	}
+
 	//アドレス渡しでマウス座標取得
 	GetMousePos(&mouse, hwnd);
 
@@ -51,21 +58,9 @@ void C_Input::Update(HWND hwnd)
 		m_mouseclickflg = false;
 	}
 
-	for (int i = 0; i < (int)PlayerKeyType::PlayerKeyNum; i++)
-	{
-		if (GetAsyncKeyState(m_playerkey[i])&0x8000)
-		{
-			m_playerkeyflg[i] = true;
-		}
-		else
-		{
-			m_playerkeyflg[i] = false;
-		}
-	}
-
 	for (int i = 0; i < (int)UserKeyType::UserKeyNum; i++)
 	{
-		if (GetAsyncKeyState(m_userkey[i])&0x8000)
+		if (GetAsyncKeyState(m_userkey[i]) & 0x8000)
 		{
 			m_userkeyflg[i] = true;
 		}

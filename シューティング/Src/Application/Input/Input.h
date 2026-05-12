@@ -81,14 +81,26 @@ public:
 
     bool GetClickFlg() { return m_mouseclickflg; }
 
-    SHORT GetPlayerKey(PlayerKeyType playerkeytype)
+   /* SHORT GetPlayerKey(PlayerKeyType playerkeytype)
     {
         return GetAsyncKeyState(m_playerkey[(int)playerkeytype]) & 0x8000;
-    }
+    }*/
 
-    bool GetPlayerKeyFlg(PlayerKeyType playerkeytype)
+    bool GetPlayerKey(PlayerKeyType playerkeytype)
     {
         return m_playerkeyflg[(int)playerkeytype];
+    }
+
+    bool GetPlayerKeyDown(PlayerKeyType type)
+    {
+        return m_playerkeyflg[(int)type] &&
+            !m_oldplayerkeyflg[(int)type];
+    }
+
+    bool GetPlayerKeyUp(PlayerKeyType type)
+    {
+        return !m_playerkeyflg[(int)type] &&
+            m_oldplayerkeyflg[(int)type];
     }
 
     SHORT GetUserKey(UserKeyType userkeytype)
@@ -123,6 +135,7 @@ private:
     // ===== キー =====
     int m_playerkey[(int)PlayerKeyType::PlayerKeyNum] = { 0 };
     bool m_playerkeyflg[(int)PlayerKeyType::PlayerKeyNum] = { false };
+    bool m_oldplayerkeyflg[(int)PlayerKeyType::PlayerKeyNum] = { false };
 
     //ユーザーキー
     int m_userkey[(int)UserKeyType::UserKeyNum] = { 0 };

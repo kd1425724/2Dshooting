@@ -16,6 +16,7 @@ class C_Player;
 class C_EnemyMoveBase;
 class C_HitManager;
 class C_GameUi;
+class C_Game;
 
 class C_SkillManager
 {
@@ -65,7 +66,13 @@ public:
 
 	bool GetPlayerSkillFlg();
 
+	//オーナー
+	void SetOwner(std::shared_ptr<C_Game> owner) { m_owner = owner; }
+
 private:
+
+	//オーナー
+	std::weak_ptr <C_Game> m_owner;
 
 	//プレイヤースキルまとめ
 	std::shared_ptr<C_SkillBase> m_playerskills = nullptr;

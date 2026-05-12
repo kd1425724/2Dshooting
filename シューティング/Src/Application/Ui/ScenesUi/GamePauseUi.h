@@ -50,4 +50,14 @@ private:
 	//ÉQÅ[ÉÄÇ…ñﬂÇÈ
 	KdTexture m_BACKNOtex;
 	KdTexture m_BACKOKtex;
+
+	//ëÄçÏê‡ñæ
+	void KeyInit();
+	void KeyDraw();
+	KdTexture m_ArrowKeyTex;
+	KdTexture m_SpaceKeyTex;
+	KdTexture m_EKeyTex;
+	KdTexture m_ShotTextTex;
+	KdTexture m_SkillTextTex;
+	KdTexture m_MoveTextTex;
 };

@@ -277,10 +277,10 @@ void C_Boss::StartUpdate()
 		}
 		break;
 	case StartPattern::BossStartLaser:
-		if (auto sm = m_skillmanager.lock())
+		/*if (auto sm = m_skillmanager.lock())
 		{
 			sm->SetEnemySkill(SkillType::Laser, shared_from_this());
-		}
+		}*/
 		m_startpattern = StartPattern::BossStartStop;
 		break;
 	case StartPattern::BossStartStop:
@@ -424,7 +424,7 @@ void C_Boss::NoneUpdate()
 	if (m_nonetime < 0)
 	{
 		m_moveflg = true;
-		SetActionPattern(GetRandomPatternExclude(m_nextactionpattern));
+		SetActionPattern(GetPatternExclude(m_nextactionpattern));
 	}
 }
 
@@ -597,24 +597,27 @@ void C_Boss::SetActionPattern(BossActionPattern pattern)
 	}
 }
 
-BossActionPattern C_Boss::GetRandomPatternExclude(BossActionPattern exclude)
+BossActionPattern C_Boss::GetPatternExclude(BossActionPattern exclude)
 {
-	static std::random_device rd;
-	static std::mt19937 mt(rd());
-
-	int min = 1;
-	int max = static_cast<int>(BossActionPattern::BossActionPatternNum);
-
-	std::uniform_int_distribution<int> dist(min, max - 1);
-
-	BossActionPattern result;
-
-	do
+	switch (exclude)
 	{
-		result = static_cast<BossActionPattern>(dist(mt));
-	} while (result == exclude);
+	case BossActionPattern::None:
+	case BossActionPattern::p1_EnemyGenerate:
+		return BossActionPattern::p2_Laser;
+	case BossActionPattern::p2_Laser:
+		return BossActionPattern::p3_Barrier;
+	case BossActionPattern::p3_Barrier:
+		return BossActionPattern::p4_SpiralShot;
+	case BossActionPattern::p4_SpiralShot:
+		return BossActionPattern::p5_Shot2;
+	case BossActionPattern::p5_Shot2:
+		return BossActionPattern::p1_EnemyGenerate;
+	case BossActionPattern::BossActionPatternNum:
+	default:
+		break;
+	}
 
-	return result;
+	return BossActionPattern::p4_SpiralShot;
 }
 SkillType C_Boss::GetRandomSkillType()
 {

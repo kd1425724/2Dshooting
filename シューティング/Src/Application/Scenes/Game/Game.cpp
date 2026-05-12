@@ -21,6 +21,30 @@ std::vector<std::shared_ptr<C_SubBoss>> C_Game::GetSubBoss()
 	return m_enemymanager->GetSubBoss();
 }
 
+void C_Game::ResultPush()
+{
+	auto s = std::make_shared<Score>();
+	if (s)
+	{
+		if (!m_enemymanager->GetBoss())
+		{
+			s->clear = true;
+		}
+		else
+		{
+			s->clear = false;
+		}
+		s->playerlife = m_player->GetHp();
+		s->score = SCENEMANAGER.GetScore();
+		s->time = (int)m_time;
+
+		SCENEMANAGER.SetScoreData(s);
+	}
+
+	SCENEMANAGER.push(SceneType::Result, true);
+	return;
+}
+
 void C_Game::Init()
 {
 	//Ui
@@ -42,6 +66,7 @@ void C_Game::Init()
 	m_gameui->SetOwner(shared_from_this());
 	m_enemymanager->SetOwner(shared_from_this());
 	m_player->SetOwner(shared_from_this());
+	m_skillmanager->SetOwner(shared_from_this());
 
 	//ƒXƒLƒ‹ŠÇ—Žæ“¾
 	m_hitmanager->SetSkillManager(m_skillmanager);
@@ -212,52 +237,18 @@ void C_Game::Update()
 		return;
 	}
 
-	if (!m_player->GetAlive() ||
+	if (!m_player ||
+		!m_enemymanager ||
+		!m_player->GetAlive() ||
 		!m_enemymanager->GetBoss())
 	{
-		auto s = std::make_shared<Score>();
-		if (s)
-		{
-			if (!m_enemymanager->GetBoss())
-			{
-				s->clear = true;
-			}
-			else
-			{
-				s->clear = false;
-			}
-			s->playerlife = m_player->GetHp();
-			s->score = SCENEMANAGER.GetScore();
-			s->time = (int)m_time;
-
-			SCENEMANAGER.SetScoreData(s);
-		}
-
-		SCENEMANAGER.push(SceneType::Result, true);
+		ResultPush();
 		return;
 	}
 
 	if (Input.GetDebugKey(DebugKeyType::Ukey) && !Input.GetDebugKeyFlg(DebugKeyType::Ukey))
 	{
-		auto s = std::make_shared<Score>();
-		if (s)
-		{
-			if (!m_enemymanager->GetBoss())
-			{
-				s->clear = true;
-			}
-			else
-			{
-				s->clear = false;
-			}
-			s->playerlife = m_player->GetHp();
-			s->score = SCENEMANAGER.GetScore();
-			s->time = (int)m_time;
-
-			SCENEMANAGER.SetScoreData(s);
-		}
-
-		SCENEMANAGER.push(SceneType::Result, true);
+		ResultPush();
 		return;
 	}
 }
@@ -278,13 +269,14 @@ void C_Game::Draw()
 	//ƒXƒLƒ‹•`‰æ
 	m_skillmanager->Draw();
 
+	//ƒvƒŒƒCƒ„[•`‰æ
+	m_player->Draw();
+
 	m_skillmanager->MidDraw();
 
 	//“G•`‰æ
 	m_enemymanager->Draw();
 
-	//ƒvƒŒƒCƒ„[•`‰æ
-	m_player->Draw();
 	
 	//ƒXƒLƒ‹•`‰æiƒvƒŒƒCƒ„[‚â“G‚Ìã‚É•`‰æ‚³‚ê‚é‚à‚Ìj
 	m_skillmanager->TopDraw();

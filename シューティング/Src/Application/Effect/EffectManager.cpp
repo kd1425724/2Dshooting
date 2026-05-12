@@ -33,6 +33,10 @@ void C_EffectManager::Init()
 	//コピー
 	m_copyhiteffecttex = std::make_shared<KdTexture>();
 	m_copyhiteffecttex->Load("Texture/Effect/Game/Hit/CopyHit.png");
+
+	//プラス
+	m_scoreupeffecttex = std::make_shared<KdTexture>();
+	m_scoreupeffecttex->Load("Texture/Ui/Font/Plus.png");
 }
 void C_EffectManager::Update()
 {
@@ -181,6 +185,7 @@ void C_EffectManager::AddEffect(EffectType type, Math::Vector2 pos,Math::Vector2
 void C_EffectManager::ScoreEffect(int value)
 {
 	m_addeffects.push_back(std::make_shared<C_ScoreUp>());
+	m_addeffects.back()->SetTexture(m_scoreupeffecttex);
 	m_addeffects.back()->Init(m_scoreeffectpos, value);
 }
 
@@ -192,5 +197,4 @@ void C_EffectManager::Release()
 	m_addtopdraweffects.clear();
 	m_bottomdraweffects.clear();
 	m_addbottomdraweffects.clear();
-
 }

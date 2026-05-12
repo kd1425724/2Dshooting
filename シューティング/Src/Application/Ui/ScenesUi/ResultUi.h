@@ -40,13 +40,13 @@ private:
 	KdTexture m_frametex;
 
 	//ENTER
-	void ENTERInit();
-	void ENTERDraw();
-	KdTexture m_ENTERTex;
+	void EXITInit();
+	void EXITDraw();
+	KdTexture m_EXITTex;
 
-	Math::Vector2 m_ENTERpos = {};
-	Math::Vector2 m_ENTERscale = {};
-	Math::Rectangle m_ENTERrect = {};
+	Math::Vector2 m_EXITpos = {};
+	Math::Vector2 m_EXITscale = {};
+	Math::Rectangle m_EXITrect = {};
 
 	//スコア用
 	void ScoreInit();
@@ -58,7 +58,6 @@ private:
 	static const int TimeScoreUpNum = 100000;//１０万
 
 	//テキスト
-	KdTexture m_PlayTimeTextTex;
 	KdTexture m_CrearTextTex;
 	KdTexture m_ScoreTextTex;
 	KdTexture m_LifeTextTex;

@@ -60,10 +60,7 @@ void C_SceneManager::push(SceneType type, bool popflg, bool Allpopflg)
                 if (Allpopflg)
                 {
                     //全部削除
-                    while (!scenes.empty())
-                    {
-                        scenes.pop_back();
-                    }
+                    scenes.clear();
                 }
                 else
                 {
@@ -91,7 +88,7 @@ void C_SceneManager::push(SceneType type, bool popflg, bool Allpopflg)
                 //シーン初期化
                 scene->Init();
                 //scenesに作ったシーンを移動
-                scenes.push_back(move(scene));
+                scenes.push_back(scene);
 
                 FEED.FeedInInit(30);
             }
@@ -136,7 +133,7 @@ void C_SceneManager::NoFeedpush(SceneType type, bool popflg, bool Allpopflg)
         //シーン初期化
         scene->Init();
         //scenesに作ったシーンを移動
-        scenes.push_back(move(scene));
+        scenes.push_back(scene);
     }
 }
 
@@ -153,6 +150,7 @@ std::shared_ptr<C_SceneBase> C_SceneManager::CreateScene(SceneType type)
 {
     switch (type) {
     case SceneType::Title:
+        EFFECTMANAGER.Release();
         return make_shared<C_Title>();
 
     case SceneType::Game:

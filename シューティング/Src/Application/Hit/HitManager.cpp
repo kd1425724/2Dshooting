@@ -137,6 +137,84 @@ void C_HitManager::PlayerHit()
 
 void C_HitManager::PlayerShotHit()
 {
+	//プレイヤーのレーザーの当たり判定
+	for (auto plit = m_playerlaser.begin(); plit != m_playerlaser.end();)
+	{
+		std::shared_ptr<C_Laser> pl = plit->lock();
+
+		if (pl)
+		{
+			Math::Vector2 pl_start = pl->GetStart();
+			Math::Vector2 pl_end = pl->GetEnd();
+			float pl_thick = pl->GetThick();
+
+			//存在しなければ消去
+			if (!pl->GetAlive())
+			{
+				plit = m_playerlaser.erase(plit);
+				continue;
+			}
+
+			//敵との当たり判定
+			for (auto it = m_enemys.begin(); it != m_enemys.end(); )
+			{
+				std::shared_ptr<C_EnemyMoveBase> e = it->lock();
+				if (e)
+				{
+					if (!e->GetAlive())
+					{
+						it = m_enemys.erase(it);
+						continue;
+					}
+					if (IsHitLaser(pl_start, pl_end, pl_thick, e->GetPos(), e->GetRadius()))
+					{
+						//敵のダメージ
+						e->Damage(PlayerLaserAtk);
+					}
+					++it;
+				}
+				else
+				{
+					it = m_enemys.erase(it);
+				}
+			}
+
+			//敵の弾との当たり判定
+			for (auto it = m_enemyshot.begin(); it != m_enemyshot.end(); )
+			{
+				std::shared_ptr<Shot> es = it->lock();
+				if (es)
+				{
+					if (!es->GetAlive())
+					{
+						it = m_enemyshot.erase(it);
+						continue;
+					}
+
+					if (IsHitLaser(pl_start, pl_end, pl_thick, es->GetPos(), es->GetRadius()))
+					{
+						EFFECTMANAGER.AddEffect(EffectType::BoltHitBlue, es->GetPos());
+						SCENEMANAGER.SetScore(ShotDeleteScoreNum);
+						es->SetAlive(false);
+					}
+					++it;
+				}
+				else
+				{
+					it = m_enemyshot.erase(it);
+				}
+			}
+
+
+			++plit;
+		}
+		else
+		{
+			plit = m_playerlaser.erase(plit);
+			continue;
+		}
+	}
+
 	//プレイヤーの弾の当たり判定
 	for (auto psit = m_playershot.begin(); psit != m_playershot.end(); )
 	{
@@ -238,84 +316,7 @@ void C_HitManager::PlayerShotHit()
 			continue;
 		}
 	}
-	//プレイヤーのレーザーの当たり判定
-	for (auto plit = m_playerlaser.begin(); plit != m_playerlaser.end();)
-	{
-		std::shared_ptr<C_Laser> pl = plit->lock();
-
-		if (pl)
-		{
-			Math::Vector2 pl_start = pl->GetStart();
-			Math::Vector2 pl_end = pl->GetEnd();
-			float pl_thick = pl->GetThick();
-
-			//存在しなければ消去
-			if (!pl->GetAlive())
-			{
-				plit = m_playerlaser.erase(plit);
-				continue;
-			}
-
-			//敵との当たり判定
-			for (auto it = m_enemys.begin(); it != m_enemys.end(); )
-			{
-				std::shared_ptr<C_EnemyMoveBase> e = it->lock();
-				if (e)
-				{
-					if (!e->GetAlive())
-					{
-						it = m_enemys.erase(it);
-						continue;
-					}
-					if (IsHitLaser(pl_start, pl_end, pl_thick, e->GetPos(), e->GetRadius()))
-					{
-						//敵のダメージ
-						e->Damage(PlayerLaserAtk);
-					}
-					++it;
-				}
-				else
-				{
-					it = m_enemys.erase(it);
-				}
-			}
-
-			//敵の弾との当たり判定
-			for (auto it = m_enemyshot.begin(); it != m_enemyshot.end(); )
-			{
-				std::shared_ptr<Shot> es = it->lock();
-				if (es)
-				{
-					if (!es->GetAlive())
-					{
-						it = m_enemyshot.erase(it);
-						continue;
-					}
-
-					if (IsHitLaser(pl_start, pl_end, pl_thick, es->GetPos(), es->GetRadius()))
-					{
-						EFFECTMANAGER.AddEffect(EffectType::BoltHitBlue, es->GetPos());
-						SCENEMANAGER.SetScore(ShotDeleteScoreNum);
-						es->SetAlive(false);
-					}
-					++it;
-				}
-				else
-				{
-					it = m_enemyshot.erase(it);
-				}
-			}
-
-
-			++plit;
-		}
-		else
-		{
-			plit = m_playerlaser.erase(plit);
-			continue;
-		}
-	}
-
+	
 	//プレイヤーの生成敵の当たり判定
 	for (auto peit = m_playerenemys.begin(); peit != m_playerenemys.end();)
 	{

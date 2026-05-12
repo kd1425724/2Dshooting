@@ -45,10 +45,10 @@ private:
 
 	//何もしない時間
 	static const int NoneTime = 60;
-	int m_nonetime;
+	int m_nonetime = 0;
 
 	//ボスパターン
-	Pattern m_pattern;
+	Pattern m_pattern = Pattern::Start;
 
 	//ボス行動パターン
 	BossActionPattern m_actionpattern;
@@ -117,7 +117,7 @@ private:
 	void SetActionPattern(BossActionPattern pattern);
 
 	//指定したもの以外の値を返す
-	BossActionPattern GetRandomPatternExclude(BossActionPattern exclude);
+	BossActionPattern GetPatternExclude(BossActionPattern exclude);
 
 	SkillType C_Boss::GetRandomSkillType();
 };

@@ -60,11 +60,15 @@ public:
 	//éûä‘ÉQÉbÉ^Å[
 	float GetTime() { return m_time; }
 
+	GameMode GetGameMode() { return m_gamemode; }
+
 private:
+
+	void ResultPush();
 
 	GameMode m_gamemode=GameMode::Start;
 
-	static const int GameStartDirectionTime = 300;
+	static const int GameStartDirectionTime = 60;
 	int m_gamestartdirectiontime = GameStartDirectionTime;
 
 	GameStartPattern m_gamestartpattern = GameStartPattern::GameStartDirection;

@@ -64,7 +64,7 @@ void C_Laser::P_Active()
     m_scale = { 2,2 };
     m_alive = true;
     m_length = 0.0f;
-    m_color = { 0,0.8,0,1 };
+    m_color = { 0,1.8,0,1 };
 
     //‘¾‚³
     m_thick = m_rect.x * m_scale.x/2;

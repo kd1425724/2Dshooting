@@ -58,6 +58,8 @@ private:
     std::shared_ptr<KdTexture> m_boltgreenhiteffecttex = nullptr;
     std::shared_ptr<KdTexture> m_copyhiteffecttex = nullptr;
 
+    std::shared_ptr<KdTexture> m_scoreupeffecttex = nullptr;
+
     Math::Vector2 m_scoreeffectpos = {};
 
 private:

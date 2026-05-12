@@ -77,5 +77,5 @@ private:
 
     // ===== ÉpÉ^Å[Éìêßå‰ =====
     void SetActionPattern(SubBossActionPattern pattern);
-    SubBossActionPattern GetRandomPatternExclude(SubBossActionPattern exclude);
+    SubBossActionPattern GetPatternExclude(SubBossActionPattern exclude);
 };

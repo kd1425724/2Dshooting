@@ -7,7 +7,7 @@
 #include"../Input/Input.h"
 #include"../Enemy/EnemyMoveBase.h"
 #include"../Ui/ScenesUi/GameUi.h"
-
+#include"../Scenes/Game/Game.h"
 void C_SkillManager::Release()
 {
 	m_lasertex->Release();
@@ -59,22 +59,29 @@ void C_SkillManager::Update()
 	{
 		SetPlayerSkill(SkillType::EnemyGenerate);
 	}
-
-	if (m_playerskills)
+	if (auto o = m_owner.lock())
 	{
-		m_playerskills->Update();
-
-		//スキル発動
-		if (Input.GetPlayerKey(PlayerKeyType::Skill) &&
-			!Input.GetPlayerKeyFlg(PlayerKeyType::Skill)&&
-			!m_playerskills->GetAlive())
+		if (o->GetGameMode() != GameMode::Start)
 		{
-			m_playerskills->SkillActivate();
-		}
+			if (m_playerskills)
+			{
+				//スキル発動
+				if (Input.GetPlayerKeyDown(PlayerKeyType::Skill) &&
+					!m_playerskills->GetAlive())
+				{
+					m_playerskills->SkillActivate();
+				}
 
-		if (m_playerskills->GetFinishedFlg())
-		{
-			SetPlayerSkill(SkillType::CopyShot);
+				m_playerskills->Update();
+
+				bool finished = m_playerskills->GetFinishedFlg();
+
+				if (finished)
+				{
+					SetPlayerSkill(SkillType::CopyShot);
+					return;
+				}
+			}
 		}
 	}
 
@@ -109,6 +116,15 @@ void C_SkillManager::Update()
 }
 void C_SkillManager::Draw()
 {
+
+	if (m_playerskills)
+	{
+		//画像順番調整用
+		if (m_playerskills->IsDrawType() == DrawType::MidDraw)
+		{
+			m_playerskills->Draw();
+		}
+	}
 	if (m_playerskills)
 	{
 		//画像順番調整用
@@ -153,19 +169,12 @@ void C_SkillManager::TopDraw()
 			}
 		}
 	}
+
+
 }
 
 void C_SkillManager::MidDraw()
 {
-	if (m_playerskills)
-	{
-		//画像順番調整用
-		if (m_playerskills->IsDrawType() == DrawType::MidDraw)
-		{
-			m_playerskills->Draw();
-		}
-	}
-
 	for (int i = 0; i < m_enemyskills.size(); i++)
 	{
 		if (m_enemyskills[i])
@@ -177,6 +186,7 @@ void C_SkillManager::MidDraw()
 			}
 		}
 	}
+
 }
 
 
@@ -313,4 +323,6 @@ bool C_SkillManager::GetPlayerSkillFlg()
 	{
 		 return m_playerskills->GetAlive();
 	}
+
+	return false;
 }

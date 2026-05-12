@@ -12,7 +12,7 @@ void C_Player::Init()
 {
 	ShotInit();
 
-	m_Hp = 4;
+	m_Hp = 3;
 
 	//ç¿ïW
 	m_pos = { -700,0 - (float)INFO.HUDAreaHeight/2 };
@@ -81,7 +81,7 @@ void C_Player::Update()
 	{
 		m_move.y = 1.0f;
 	}
-	else if (Input.GetPlayerKey(PlayerKeyType::Bottom))
+	if (Input.GetPlayerKey(PlayerKeyType::Bottom))
 	{
 		m_move.y = -1.0f; 
 	}
@@ -89,7 +89,7 @@ void C_Player::Update()
 	{
 		m_move.x = -1.0f;
 	}
-	else if (Input.GetPlayerKey(PlayerKeyType::Right))
+	if (Input.GetPlayerKey(PlayerKeyType::Right))
 	{
 		m_move.x = 1.0f;
 	}

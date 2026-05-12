@@ -17,7 +17,7 @@ void C_ResultUi::Init()
 
 	PlayerInit();
 
-	ENTERInit();
+	EXITInit();
 }
 
 void C_ResultUi::Update()
@@ -37,7 +37,7 @@ void C_ResultUi::Draw()
 
 	ScoreDraw();
 
-	ENTERDraw();
+	EXITDraw();
 }
 
 //îwåi
@@ -104,7 +104,7 @@ void C_ResultUi::Release()
 {
 	m_backgroundtex.Release();
 	m_frametex.Release();
-	m_ENTERTex.Release();
+	m_EXITTex.Release();
 	m_CrearTextTex.Release();
 	m_ScoreTextTex.Release();
 	m_LifeTextTex.Release();
@@ -114,28 +114,27 @@ void C_ResultUi::Release()
 	m_startex.Release();
 }
 
-void C_ResultUi::ENTERInit()
+void C_ResultUi::EXITInit()
 {
-	m_ENTERTex.Load("Texture/Ui/HUD/Result/ENTER.png");
+	m_EXITTex.Load("Texture/Ui/HUD/Pause/EXITOK.png");
 
-	m_ENTERpos = { 500,-300 };
-	m_ENTERrect = { 0,0,480,100 };
-	m_ENTERscale = { 0.5f,0.5f };
+	m_EXITpos = { 520,-320 };
+	m_EXITrect = { 0,0,700,210 };
+	m_EXITscale = { 0.25f,0.25f };
 }
 
-void C_ResultUi::ENTERDraw()
+void C_ResultUi::EXITDraw()
 {
-	Math::Matrix s = Math::Matrix::CreateScale(m_ENTERscale.x, m_ENTERscale.y, 1);
-	Math::Matrix t = Math::Matrix::CreateTranslation(m_ENTERpos.x, m_ENTERpos.y, 0);
+	Math::Matrix s = Math::Matrix::CreateScale(m_EXITscale.x, m_EXITscale.y, 1);
+	Math::Matrix t = Math::Matrix::CreateTranslation(m_EXITpos.x, m_EXITpos.y, 0);
 	Math::Matrix mat = s * t;
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_ENTERTex, m_ENTERrect, 1.0f);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_EXITTex, m_EXITrect, 1.0f);
 }
 
 void C_ResultUi::ScoreInit()
 {
-	m_PlayTimeTextTex.Load("Texture/Ui/Font/PLAYTIME.png");
 	m_CrearTextTex.Load("Texture/Ui/Font/CLEAR.png");
 	m_ScoreTextTex.Load("Texture/Ui/Font/SCORE.png");
 	m_LifeTextTex.Load("Texture/Ui/Font/LIFE.png");
@@ -187,7 +186,7 @@ void C_ResultUi::ScoreDraw()
 		Math::Vector2 scale = { 0.3f,0.35f };
 		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 
-		//PLAYTIME
+		//TIME
 		{
 			Math::Vector2 pos = { -200,120 };
 
@@ -195,10 +194,8 @@ void C_ResultUi::ScoreDraw()
 
 			Math::Matrix mat = s * t;
 
-			Math::Rectangle playtimerect = { 0,0,1000,100 };
-
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_PlayTimeTextTex, playtimerect, 1.0f);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TimeTextTex, rect, 1.0f);
 		}
 
 		//ÉNÉäÉA

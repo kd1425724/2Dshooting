@@ -369,7 +369,7 @@ void C_SubBoss::NoneUpdate()
 	m_nonetime--;
 	if (m_nonetime < 0)
 	{
-		SetActionPattern(GetRandomPatternExclude(m_nextactionpattern));
+		SetActionPattern(GetPatternExclude(m_nextactionpattern));
 	}
 }
 
@@ -478,7 +478,7 @@ void C_SubBoss::SetActionPattern(SubBossActionPattern pattern)
 //========================
 // ランダム取得（除外あり）
 //========================
-SubBossActionPattern C_SubBoss::GetRandomPatternExclude(SubBossActionPattern exclude)
+SubBossActionPattern C_SubBoss::GetPatternExclude(SubBossActionPattern exclude)
 {
 	static std::random_device rd;
 	static std::mt19937 mt(rd());

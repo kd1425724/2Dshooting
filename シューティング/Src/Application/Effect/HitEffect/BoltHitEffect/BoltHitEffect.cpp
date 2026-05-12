@@ -42,7 +42,6 @@ void C_BoltHitEffect::Draw()
 		Math::Rectangle rect = { (int)m_anim * (long)m_rect.x,0,(long)m_rect.x,(long)m_rect.y };
 		Math::Color color = { 1,1,1,m_alpha };
 
-		// ÀÛ‚Í‚¨‘O‚ÌŠÂ‹«‚Ì•`‰æAPI‚É‡‚í‚¹‚Ä‘‚­
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(tex.get(), 0, 0, &rect, &color);
 	}
