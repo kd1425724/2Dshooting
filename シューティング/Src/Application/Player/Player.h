@@ -117,6 +117,11 @@ public:
 		m_owner = owner;
 	}
 
+	void SetInvincible(bool invincible)
+	{
+		m_invincible = invincible;
+	}
+
 private:
 
 	//オーナー
@@ -175,4 +180,7 @@ private:
 
 	//デバッグ死亡フラグ
 	bool m_playerdebugdeathflg = false;
+
+	//無敵用
+	bool m_invincible = false;
 };

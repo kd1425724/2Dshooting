@@ -116,6 +116,8 @@ public:
 		m_owner = owner;
 	}
 
+	bool GetDeathFlg() { return m_deathflg; }
+
 protected:
 
 	//オーナー
@@ -208,6 +210,9 @@ protected:
 	SkillType m_skilltype = (SkillType)0;
 
 	UseType m_usetype = (UseType)0;
+
+	//死んだかどうか
+	bool m_deathflg = false;
 
 private:
 

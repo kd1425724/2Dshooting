@@ -10,8 +10,10 @@
 #include"../../../Scenes/Game/Game.h"
 #include"../../../Scenes/SceneManager.h"
 #include"../../../Effect/EffectManager.h"
+#include"../../../Sound/Sound.h"
 void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player, int i)
 {
+	m_deathflg = false;	
 	//ステータス
 	m_hp = 1;
 	m_score = 30000;
@@ -224,9 +226,11 @@ void C_EnemyMove2::Update()
 	}
 
 	//hpが０になったら
-	if (m_hp <= 0)
+	if (m_hp <= 0&&!m_deathflg)
 	{
+		SOUND.SetPlaySE(SEType::NormalExplosionSE);
 		m_alive = false;
+		m_deathflg = true;
 		EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
 		SCENEMANAGER.SetScore(m_score);
 	}

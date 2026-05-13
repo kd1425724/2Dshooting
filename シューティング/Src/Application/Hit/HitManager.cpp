@@ -7,7 +7,7 @@
 #include"../Effect/EffectManager.h"
 #include"../Skill/SkillManager.h"
 #include"../Scenes/SceneManager.h"
-
+#include"../Enemy/Boss/Boss/Boss.h"
 
 C_HitManager::C_HitManager()
 {
@@ -53,6 +53,17 @@ void C_HitManager::PlayerHit()
 	//存在してたら
 	if (p)
 	{
+		auto boss = m_boss.lock();
+
+		if (boss && boss->GetDeathFlg())
+		{
+			p->SetInvincible(true);
+		}
+		else
+		{
+			p->SetInvincible(false);
+		}
+
 		Math::Vector2 p_pos = p->GetPos();
 		Math::Vector2 p_size = p->GetSize();
 		float p_radius = p->GetRadius();
@@ -610,34 +621,19 @@ bool C_HitManager::IsHit(Math::Vector2 pos1, Math::Vector2 halfSize1, Math::Vect
 
 bool C_HitManager::IsHitLaser(Math::Vector2 start,Math::Vector2 end,float laserThick,Math::Vector2 pos,	float radius)
 {
-	// 線分ベクトル
-	Math::Vector2 ab = end - start;
+	Math::Vector2 center = (start + end) * 0.5f;
 
-	// 始点→対象
-	Math::Vector2 ac = pos - start;
+	//マイナスをプラスに変換
+	float halfWidth = fabs(end.x - start.x) * 0.5f;
+	float halfHeight = laserThick * 0.5f;
 
-	float abLenSq = ab.x * ab.x + ab.y * ab.y;
-	if (abLenSq == 0.0f) return false;
+	Math::Vector2 d = pos - center;
 
-	// 最近点係数
-	float t = (ac.x * ab.x + ac.y * ab.y) / abLenSq;
-	t = std::max(0.0f, std::min(1.0f, t));
+	float r = radius;
 
-	// 最近点
-	Math::Vector2 closest;
-	closest.x = start.x + ab.x * t;
-	closest.y = start.y + ab.y * t;
-
-	// 距離
-	float dx = pos.x - closest.x;
-	float dy = pos.y - closest.y;
-
-	float distSq = dx * dx + dy * dy;
-
-	// ★ここが太さ
-	float r = radius + laserThick;
-
-	return distSq <= (r * r);
+	return
+		fabs(d.x) <= halfWidth + r &&
+		fabs(d.y) <= halfHeight + r;
 }
 
 //当たり判定描画

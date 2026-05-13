@@ -142,6 +142,9 @@
     <Filter Include="Src\Application\Effect\ScoreUp">
       <UniqueIdentifier>{8c7d1eec-1acc-4fc2-88ba-7a4264824beb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Sound">
+      <UniqueIdentifier>{68c5b4fc-9b4d-464a-bd88-c285f609883a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="Src\Application\Effect\ScoreUp\ScoreUp.h">
       <Filter>Src\Application\Effect\ScoreUp</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Sound\Sound.h">
+      <Filter>Src\Application\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -547,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Effect\ScoreUp\ScoreUp.cpp">
       <Filter>Src\Application\Effect\ScoreUp</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Sound\Sound.cpp">
+      <Filter>Src\Application\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

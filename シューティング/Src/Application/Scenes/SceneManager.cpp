@@ -5,7 +5,7 @@
 #include"Application/Scenes/Result/Result.h"
 #include"Application/Ui/Feed.h"
 #include"../Effect/EffectManager.h"
-
+#include"../Sound/Sound.h"
 C_SceneManager::~C_SceneManager()
 {
 }
@@ -150,16 +150,22 @@ std::shared_ptr<C_SceneBase> C_SceneManager::CreateScene(SceneType type)
 {
     switch (type) {
     case SceneType::Title:
-        EFFECTMANAGER.Release();
+         EFFECTMANAGER.Release();
+         SOUND.StopSE();
+         SOUND.SetPlayBGM(BGMType::TitleBGM);
         return make_shared<C_Title>();
 
     case SceneType::Game:
+        SOUND.StopSE();
+        SOUND.SetPlayBGM(BGMType::GameBGM);
         return make_shared<C_Game>();
 
     case SceneType::GamePause:
         return make_shared<C_GamePause>();
 
     case SceneType::Result:
+        SOUND.StopSE();
+        SOUND.SetPlayBGM(BGMType::ResultBGM);
         return make_shared<C_Result>();
 
     default:

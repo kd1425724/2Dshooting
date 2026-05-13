@@ -196,6 +196,7 @@
     <ClInclude Include="Src\Application\Skill\Shot\Shot.h" />
     <ClInclude Include="Src\Application\Skill\SkillBase.h" />
     <ClInclude Include="Src\Application\Skill\SkillManager.h" />
+    <ClInclude Include="Src\Application\Sound\Sound.h" />
     <ClInclude Include="Src\Application\Ui\Feed.h" />
     <ClInclude Include="Src\Application\Ui\ScenesUi\GamePauseUi.h" />
     <ClInclude Include="Src\Application\Ui\ScenesUi\GameUi.h" />
@@ -262,6 +263,7 @@
     <ClCompile Include="Src\Application\Skill\Shot\Shot.cpp" />
     <ClCompile Include="Src\Application\Skill\SkillBase.cpp" />
     <ClCompile Include="Src\Application\Skill\SkillManager.cpp" />
+    <ClCompile Include="Src\Application\Sound\Sound.cpp" />
     <ClCompile Include="Src\Application\Ui\Feed.cpp" />
     <ClCompile Include="Src\Application\Ui\ScenesUi\GamePauseUi.cpp" />
     <ClCompile Include="Src\Application\Ui\ScenesUi\GameUi.cpp" />

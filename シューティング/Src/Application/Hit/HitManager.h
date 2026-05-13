@@ -8,6 +8,7 @@ class C_SkillBase;
 class C_Laser;
 class C_Barrier;
 class C_SkillManager;
+class C_Boss;
 
 enum class HitType
 {
@@ -67,10 +68,16 @@ public:
 	//コピー
 	void SetCopyShot(std::shared_ptr<Shot> copyshot) { m_copyshot.push_back(copyshot); }
 
+	//ボス用
+	void SetBoss(std::shared_ptr<C_Boss> boss) { m_boss = boss; }
+
 	//デバッグ用
 	void DrawCircle(Math::Vector2 pos, float radius, Math::Color col);
 
 private:
+
+	//ボス用
+	std::weak_ptr<C_Boss> m_boss;
 
 	//攻撃力
 	static const int PlayerShotAtk = 30;

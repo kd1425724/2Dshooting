@@ -1,6 +1,7 @@
 #include "ScenesUiBase.h"
 #include"Application/Common/CommonTexture.h"
 #include"Application/Input/Input.h"
+#include"../../Sound/Sound.h"
 
 void C_ScenesUiBase::Init()
 {
@@ -108,6 +109,8 @@ void C_ScenesUiBase::ButtonUpdate(int index)
 	{
 		return;
 	}
+
+	SOUND.SetPlaySE(SEType::DecisionSE);
 
 	m_SpriteItem[index].action();
 }

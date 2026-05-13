@@ -3,9 +3,10 @@
 #include"../../../Skill/SkillManager.h"
 #include"../../../Hit/HitManager.h"
 #include"../../../Scenes/SceneManager.h"
-
+#include"../../../Sound/Sound.h"
 void C_SubBoss::Init(Math::Vector2 pos)
 {
+	m_deathflg = false;
 	m_enemytype = EnemySType::SubBoss;
 
 	m_nonetime = 0;
@@ -96,8 +97,10 @@ void C_SubBoss::Update()
 	}
 
 	//ƒ{ƒX‚ªŽ€‚ñ‚¾‚çHp‚ª‚È‚­‚È‚Á‚½‚ç
-	if (m_hp<=0)
+	if (m_hp<=0 && !m_deathflg)
 	{
+		SOUND.SetPlaySE(SEType::NormalExplosionSE);
+		m_deathflg = true;
 		m_pattern = Pattern::Death;
 	}
 

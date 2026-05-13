@@ -6,9 +6,11 @@
 #include"../../../Info.h"
 #include"../../../Scenes/Game/Game.h"
 #include"../../../Input/Input.h"
-
+#include"../../../Player/Player.h"
+#include"../../../Sound/Sound.h"
 void C_Boss::Init()
 {
+	m_deathflg = false;
 	m_enemytype = EnemySType::Boss;
 
 	//ステータス
@@ -86,6 +88,7 @@ void C_Boss::Init()
 	if (auto hm = m_hitmanager.lock())
 	{
 		hm->SetEnemy(shared_from_this());
+		hm->SetBoss(shared_from_this());
 	}
 
 	m_scalemat = Math::Matrix::CreateScale(m_scale.x, m_scale.y, 1);
@@ -166,8 +169,11 @@ void C_Boss::Update()
 	}
 
 	//ボスが死んだらHpがなくなったら
-	if (m_hp<=0)
+	if (m_hp <= 0 && !m_deathflg)
 	{
+		m_deathflg = true;
+		SOUND.SetPlaySE(SEType::BOSSExplosionSE);
+		
 		m_pattern = Pattern::Death;
 	}
 
@@ -410,11 +416,13 @@ void C_Boss::p3_BarrierInit()
 
 void C_Boss::p4_SpiralInit()
 {
+	SOUND.SetPlaySE(SEType::BOSSShotSE);
 	m_spiraltime = SpiralTime;
 }
 
 void C_Boss::p5_Shot2Init()
 {
+	SOUND.SetPlaySE(SEType::BOSSShotSE);
 	m_shot2time = Shot2Time;
 }
 
@@ -490,19 +498,22 @@ void C_Boss::p4_SpiralUpdate()
 			auto s = std::make_shared<C_Shot>();
 			auto hm = m_hitmanager.lock();
 			auto o = m_owner.lock();
-			
-			s->SetHitManager(hm);
-			s->ShotManager(
-				ShotType::EnemyNormalShot,
-				ShotTextureType::Bolt,
-				{ 4,0 },
-				{ 48,32 },
-				m_pos,
-				angle,
-				7
-			);
 
-			o->SetShot(s);
+			if (s && hm && o)
+			{
+				s->SetHitManager(hm);
+				s->ShotManager(
+					ShotType::EnemyNormalShot,
+					ShotTextureType::Bolt,
+					{ 4,0 },
+					{ 48,32 },
+					m_pos,
+					angle,
+					7
+				);
+
+				o->SetShot(s);
+			}
 		}
 	
 		m_spiralshotinterval = SpiralShotInterval;
@@ -528,32 +539,111 @@ void C_Boss::p5_Shot2Update()
 {
 	m_shot2interval--;
 
-	if (m_shot2interval < 0)
+	if (m_shot2interval <= 0)
 	{
-
-		auto s = std::make_shared<C_Shot>();
 		auto hm = m_hitmanager.lock();
 		auto o = m_owner.lock();
+		if (hm && o)
+		{
+			auto p = o->GetPlayer();
 
-		s->SetHitManager(hm);
-		s->ShotManager(ShotType::EnemyNormalShot,ShotTextureType::Pulse,{ 4,0 },{ 63,32 },
-			{ m_pos.x-100,m_pos.y+50 },
-			{m_pos.x-200,m_pos.y+40},
-			10);
-		s->ShotManager(ShotType::EnemyNormalShot,ShotTextureType::Pulse,{ 4,0 },{ 63,32 },
-			{ m_pos.x - 100,m_pos.y - 50 },
-			{ m_pos.x - 200,m_pos.y-40 },
-					10);
+			if (p)
+			{
 
-		o->SetShot(s);
-		
+				float startangle = 360.0f / 20.0f;
 
+				for (int i = 0; i < 20; i++)
+				{
+					float angle = startangle * i;
+
+					auto s = std::make_shared<C_Shot>();
+
+					if (s)
+					{
+						if (i % 2 == 0)
+						{
+							s->SetHitManager(hm);
+							s->ShotManager(
+								ShotType::EnemyNormalShot,
+								ShotTextureType::Bolt,
+								{ 4,0 },
+								{ 48,32 },
+								m_pos,
+								DirectX::XMConvertToRadians(angle),
+								7
+							);
+
+							o->SetShot(s);
+						}
+						else
+						{
+							s->SetHitManager(hm);
+							s->ShotManager(
+								ShotType::EnemyNormalShot,
+								ShotTextureType::Bolt,
+								{ 4,0 },
+								{ 48,32 },
+								m_pos,
+								DirectX::XMConvertToRadians(angle),
+								5.0f
+							);
+
+							o->SetShot(s);
+						}
+
+					}
+				}
+			}
+		}
 		m_shot2interval = Shot2Interval;
 	}
 
 	m_shot2time--;
 	if (m_shot2time <= 0)
 	{
+		auto hm = m_hitmanager.lock();
+		auto o = m_owner.lock();
+		if (hm && o)
+		{
+			auto p = o->GetPlayer();
+
+			if (p)
+			{
+
+				float startangle = 36;
+
+				for (int i = 0; i < 10; i++)
+				{
+					float angle = startangle * i;
+
+					auto s = std::make_shared<C_Shot>();
+
+					if (s)
+					{
+						float a = cosf(DirectX::XMConvertToRadians(angle)) * 70;
+						float b = sinf(DirectX::XMConvertToRadians(angle)) * 70;
+
+						float posX = m_pos.x + a;
+						float posY = m_pos.y + b;
+
+						s->SetHitManager(hm);
+						s->ShotManager(
+							ShotType::EnemyNormalShot,
+							ShotTextureType::Bolt,
+							{ 4,0 },
+							{ 48,32 },
+							{ posX,posY },
+							p->GetPos(),
+							9
+						);
+
+						o->SetShot(s);
+
+					}
+				}
+			}
+		}
+
 		NoneInit(BossActionPattern::p5_Shot2);
 	}
 }

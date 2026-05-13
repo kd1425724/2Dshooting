@@ -51,41 +51,38 @@ private:
 	Pattern m_pattern = Pattern::Start;
 
 	//ボス行動パターン
-	BossActionPattern m_actionpattern;
-	BossActionPattern m_nextactionpattern;
+	BossActionPattern m_actionpattern = BossActionPattern::None;
+	BossActionPattern m_nextactionpattern = BossActionPattern::None;
 
 	//止まる座標
-	Math::Vector2 m_stoppos;
+	Math::Vector2 m_stoppos = {};
 
-	float m_texangle;
+	float m_texangle = 0;
 
 	//螺旋状に放つ弾用
-	float m_spiralshotangle;
+	float m_spiralshotangle = 0;
 	static const int SpiralShotInterval = 3;
-	int m_spiralshotinterval;
+	int m_spiralshotinterval = 0;
 
 	//一行動の時間
 	//敵生成
 	static const int EnemyGenerateTime = 60;
-	int m_enemygeneratetime=0;
+	int m_enemygeneratetime = 0;
 	//レーザー
 	static const int LaserTime = 300;
-	int m_lasertime=0;
+	int m_lasertime = 0;
 	//バリア
 	static const int BarrierTime = 300;
-	int m_barriertime=0;
+	int m_barriertime = 0;
 	//螺旋
 	static const int SpiralTime = 300;
-	int m_spiraltime=0;
-
+	int m_spiraltime = 0;
 	//弾
 	static const int Shot2Time = 120;
-	int m_shot2time=0;
+	int m_shot2time = 0;
 
 	static const int Shot2Interval = 20;
-	int m_shot2interval;
-
-
+	int m_shot2interval = 0;
 
 	//スタート
 	void StartUpdate();

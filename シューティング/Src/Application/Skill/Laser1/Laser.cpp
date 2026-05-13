@@ -4,6 +4,8 @@
 #include"../../Common/CommonAPI.h"
 #include"../../Hit/HitManager.h"
 #include"../../Effect/EffectManager.h"
+#include"../../Sound/Sound.h"
+
 C_Laser::C_Laser()
 {
     m_length = 0.0f;
@@ -58,6 +60,7 @@ void C_Laser::EnemySkillActivate()
 
 void C_Laser::P_Active()
 {
+    SOUND.SetPlaySE(SEType::LaserSE);
     // プレイヤー用レーザー発動
 
     m_launchtime = LaunshTime;
@@ -87,6 +90,8 @@ void C_Laser::P_Active()
 
 void C_Laser::E_Active()
 {
+	SOUND.SetPlaySE(SEType::LaserSE);
+
     // 敵用レーザー発動
 
     m_launchtime = LaunshTime;

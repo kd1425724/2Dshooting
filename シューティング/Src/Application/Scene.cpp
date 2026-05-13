@@ -4,9 +4,14 @@
 #include"Application/Ui/Feed.h"
 #include"Application/Input/Input.h"
 #include"Effect/EffectManager.h"
+#include"Sound/Sound.h"
 
 void Scene::Init()
 {
+	//AUDIO.Init();
+
+	SOUND.Init();
+
 	//É}ÉEÉXè¡ãé
 	ShowCursor(false);
 
@@ -32,6 +37,8 @@ void Scene::Update()
 	SCENEMANAGER.Update();
 
 	Input.Update(APP.m_window.GetWndHandle());
+
+	SOUND.Update();
 }
 
 void Scene::Draw2D()

@@ -3,7 +3,7 @@
 #include "../../Enemy/EnemyMoveBase.h"
 #include"../../Common/CommonAPI.h"
 #include"../../Hit/HitManager.h"
-
+#include"../../Sound/Sound.h"
 C_Barrier::C_Barrier()
 {
     m_rect = { 128,128 };
@@ -31,6 +31,7 @@ void C_Barrier::SetTexture(std::shared_ptr<KdTexture> tex)
 
 void C_Barrier::SkillActivate()
 {
+	SOUND.SetPlaySE(SEType::BarrierSE);
     m_finished = false;
     m_alive = true;
     m_scale = { 1.0f,1.0f };
@@ -56,6 +57,7 @@ void C_Barrier::SkillActivate()
 
 void C_Barrier::EnemySkillActivate(Math::Vector2 scale)
 {
+    SOUND.SetPlaySE(SEType::BarrierSE);
     m_finished = false;
     m_alive = true;
     m_scale = scale;

@@ -10,8 +10,10 @@
 #include"../../../Scenes/Game/Game.h"
 #include"../../../Effect/EffectManager.h"
 #include"../../../Scenes/SceneManager.h"
+#include"../../../Sound/Sound.h"
 void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 {
+	m_deathflg = false;
 
 	m_pos = pos;
 
@@ -107,11 +109,13 @@ void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 void C_EnemyMove3::Update()
 {
 	//hp‚ª‚O‚É‚È‚Á‚½‚ç
-	if (m_hp <= 0)
+	if (m_hp <= 0 && !m_deathflg)
 	{
 		EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
 		SCENEMANAGER.SetScore(m_score);
-		m_alive = false;;
+		m_alive = false;
+		m_deathflg = true;
+		SOUND.SetPlaySE(SEType::NormalExplosionSE);	
 	}
 
 	switch (m_inherentmove)

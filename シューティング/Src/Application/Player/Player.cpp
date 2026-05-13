@@ -7,6 +7,7 @@
 #include"../Effect/EffectManager.h"
 #include"../Common/CommonAPI.h"
 #include"../Scenes/Game/Game.h"
+#include"../Sound/Sound.h"
 
 void C_Player::Init()	
 {
@@ -170,10 +171,10 @@ void C_Player::Draw()
 void C_Player::ResultInit()
 {
 	//座標
-	m_pos = { 700,0 - (float)INFO.HUDAreaHeight / 2 };
+	m_pos = { 500,0 - (float)INFO.HUDAreaHeight / 2 };
 	//移動量
 	m_move = { 0.0f,0.0f };
-	m_movespeed = { 4.0f,4.0f };
+	m_movespeed = { 0.0f,0.0f };
 	//サイズ
 	m_scale = { 1.0f,1.0f };
 	//カラー
@@ -190,7 +191,7 @@ void C_Player::ResultInit()
 
 void C_Player::ResultUpdate()
 {
-	m_move = { -1,0 };
+//	m_move = { -1,0 };
 
 	//エンジンアニメーション用
 	m_engineanim += 0.1f;
@@ -201,11 +202,11 @@ void C_Player::ResultUpdate()
 
 
 
-	if (COMMONAPI.OutOfScreen(m_pos, { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height / 2 }))
+	/*if (COMMONAPI.OutOfScreen(m_pos, { (float)CommonTex.GetPlayerRect().width,(float)CommonTex.GetPlayerRect().height / 2 }))
 	{
 		m_pos.x = (float)INFO.ScrWidth / 2 + (float)CommonTex.GetPlayerRect().width;
-	}
-	m_pos += m_move * m_movespeed;
+	}*/
+	//m_pos += m_move * m_movespeed;
 	
 	m_scalemat = Math::Matrix::CreateScale(-m_scale.x, m_scale.y, 1);
 	m_transmat = Math::Matrix::CreateTranslation((int)(m_pos.x + 0.5f), (int)(m_pos.y + 0.5f), 0);//+0.5f四捨五入してる
@@ -312,6 +313,8 @@ void C_Player::ShotUpdate()
 	{
 		if (Input.GetPlayerKey(PlayerKeyType::NormalShot))
 		{
+			SOUND.SetPlaySE(SEType::ShotSE);
+
 			auto s = std::make_shared<C_Shot>();
 			auto o = m_owner.lock();
 
@@ -349,17 +352,19 @@ void C_Player::ShotUpdate()
 
 void C_Player::Damage()
 {
-	if (m_hittimer <= 0)
+	if (!m_invincible)
 	{
-		m_Hp--;
+		if (m_hittimer <= 0)
+		{
+			m_Hp--;
+			m_hittimer = HitTime;
 
-		m_hittimer = HitTime;
+			float w = CommonTex.GetPlayerRect().width;
 
-		float w = CommonTex.GetPlayerRect().width;
+			EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
 
-		EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
-		
-		EFFECTMANAGER.AddEffect(EffectType::ExplosionTopDraw, { -420 + (m_Hp * w * 0.7f),235 });
+			EFFECTMANAGER.AddEffect(EffectType::ExplosionTopDraw, { -420 + (m_Hp * w * 0.7f),235 });
+		}
 	}
 }
 
