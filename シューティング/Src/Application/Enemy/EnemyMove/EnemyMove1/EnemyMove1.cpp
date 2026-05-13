@@ -38,9 +38,11 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	{
 	case PosPattern::Pattern1:
 		m_pos = { (float)(i * 70) + 700, (float)200-INFO.HUDAreaHeight };
+		m_angle = 180;
 		break;
 	case PosPattern::Pattern2:
 		m_pos = { (float)(i * 70) + 700, (float)-200  };
+		m_angle = 0;
 		break;
 	case PosPattern::Pattern3:
 		m_pos = { 0,(float)(i * 70) + 640 - INFO.HUDAreaHeight };
@@ -58,7 +60,6 @@ void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::share
 	case MovePattern::Pattern1:
 		m_movespeed = { -4,0 };
 		m_move = m_movespeed;
-		m_angle = 0;
 		break;
 	case MovePattern::Pattern2:
 		m_movespeed = { -4,-1 };
@@ -210,8 +211,8 @@ void C_EnemyMove1::Draw()
 			&m_color);
 
 		//ƒGƒ“ƒWƒ“
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetex, 0, 0,
-			&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y), &m_color);
+		//KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetex, 0, 0,
+			//&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y), &m_color);
 	}
 }
 

@@ -1,0 +1,22 @@
+#pragma once
+#include"Application/Enemy/EnemyMoveBase.h"
+
+class C_EnemyMove1:public C_EnemyMoveBase, public std::enable_shared_from_this<C_EnemyMove1>
+
+{
+public:
+	C_EnemyMove1(){}
+	~C_EnemyMove1()override { Release(); }
+
+	void Init(PosPattern pospattern, MovePattern movepattern, std::shared_ptr<C_Player> player,int i)override;
+	void Update()override;
+	void Draw()override;
+
+	//ボス用なので使わない
+	void Init()override {}
+
+private:
+
+	//解放処理
+	void Release()override;
+};

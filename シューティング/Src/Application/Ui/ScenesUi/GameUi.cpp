@@ -103,17 +103,12 @@ void C_GameUi::SetSkill(SkillType type)
 void C_GameUi::Release()
 {
 	m_backgroundtex.Release();
-	m_HUDareatex.Release();
-	m_colontex.Release();
-	m_TimeTextTex.Release();
-	m_PauseIcontex.Release();
-	m_ESCtex.Release();
+	
 }
 
 void C_GameUi::HUDInit()
 {
-	//HUDエリア
-	m_HUDareatex.Load("Texture/Ui/HUD/GameHUDArea.png");
+	
 
 	//共通
 	m_HUDarearect = { 0,0,INFO.HUDAreaWidth ,INFO.HUDAreaHeight };
@@ -155,7 +150,7 @@ void C_GameUi::HUDDraw()
 {
 	
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_HUDareamat);
-	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_HUDareatex, 0, 0, &m_HUDarearect, &m_HUDareacolor);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetGameHUDAreatex(), 0, 0, &m_HUDarearect, &m_HUDareacolor);
 
 	//スコア表示用
 	ScoreHUDDraw();
@@ -191,7 +186,7 @@ void C_GameUi::ScoreHUDDraw()
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 	Math::Rectangle rect = { 0,0,480,100 };
-	KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_scoretex.get(), rect, 1.0f);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSCORETEXTtex(), rect, 1.0f);
 }
 
 void C_GameUi::SkillHUDInit()
@@ -202,10 +197,7 @@ void C_GameUi::SkillHUDInit()
 	m_skillpos = { -160,330 };
 	m_skillscale = { 0.4f,0.4f };
 
-	m_OKicontex.Load("Texture/Ui/HUD/OKIcon.png");
-	m_NOicontex.Load("Texture/Ui/HUD/NOIcon.png");
-	m_Readytex.Load("Texture/Ui/HUD/READY.png");
-	m_Locktex.Load("Texture/Ui/HUD/LOCK.png");
+	
 }
 
 void C_GameUi::SkillHUDDraw()
@@ -249,7 +241,7 @@ void C_GameUi::SkillHUDDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,480,100 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_SKILLtex.get(), rect, 1.0f);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSKILLTEXTtex(), rect, 1.0f);
 
 	}
 
@@ -272,12 +264,12 @@ void C_GameUi::SkillHUDDraw()
 				if (sm->GetPlayerSkillFlg())
 				{
 					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_Locktex, rect, 1.0f);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetLocktex(), rect, 1.0f);
 				}
 				else
 				{
 					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_Readytex, rect, 1.0f);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetReadytex(), rect, 1.0f);
 				}
 			}
 		}
@@ -302,12 +294,12 @@ void C_GameUi::SkillHUDDraw()
 				if (sm->GetPlayerSkillFlg())
 				{
 					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_NOicontex, rect, 1.0f);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNOIcontex(), rect, 1.0f);
 				}
 				else
 				{
 					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_OKicontex, rect, 1.0f);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetOKIcontex(), rect, 1.0f);
 				}
 			}
 		}
@@ -334,7 +326,7 @@ void C_GameUi::LifeDraw()
 		Math::Matrix mat = s * t;
 		
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_LIFETexttex.get(), m_LIFETextrect, 1.0f);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetLIFETEXTtex(), m_LIFETextrect, 1.0f);
 	}
 
 	{
@@ -363,8 +355,7 @@ void C_GameUi::LifeDraw()
 
 void C_GameUi::TimeInit()
 {
-	m_TimeTextTex.Load("Texture/Ui/Font/TIME.png");
-	m_colontex.Load("Texture/Ui/Font/colon.png");
+	
 }
 
 void C_GameUi::TimeDraw()
@@ -380,7 +371,7 @@ void C_GameUi::TimeDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,480,100 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TimeTextTex, rect, 1.0f);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetTIMETEXTtex(), rect, 1.0f);
 	}
 
 	//時間表示
@@ -426,15 +417,14 @@ void C_GameUi::TimeDraw()
 			Math::Matrix mat = s * t;
 
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_colontex, rect, 1.0f);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetColontex(), rect, 1.0f);
 		}
 	}
 }
 
 void C_GameUi::PauseIconInit()
 {
-	m_ESCtex.Load("Texture/Ui/HUD/ESC.png");
-	m_PauseIcontex.Load("Texture/Ui/HUD/PauseIcon.png");
+	
 }
 
 void C_GameUi::PauseIconDraw()
@@ -452,7 +442,7 @@ void C_GameUi::PauseIconDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,700,210 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_ESCtex, rect, 1.0f);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetESCtex(), rect, 1.0f);
 	}
 
 	//一時停止アイコン
@@ -466,7 +456,7 @@ void C_GameUi::PauseIconDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,210,210 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_PauseIcontex, rect, 1.0f);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPauseicontex(), rect, 1.0f);
 	}
 }
 

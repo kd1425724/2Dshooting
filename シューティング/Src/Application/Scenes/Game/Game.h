@@ -27,7 +27,7 @@ class C_Game : public C_SceneBase, public std::enable_shared_from_this<C_Game>
 {
 public:
 	C_Game() {}
-	~C_Game() override {}
+	~C_Game() override { Release(); }
 
 	void Init() override;
 	void Update() override;
@@ -73,8 +73,6 @@ private:
 
 	GameStartPattern m_gamestartpattern = GameStartPattern::GameStartDirection;
 
-	KdTexture m_starttex;
-
 	Math::Vector2 m_startscale = {};
 	float m_startalpha = 1;
 	bool m_startflg = false;
@@ -95,7 +93,7 @@ private:
 	//判定何回目かカウント
 	int m_JudgmenCount = 0;
 
-	void SpwornMnager();
+	//void SpwornMnager();
 
 	//解放処理
 	void Release() override;
@@ -122,6 +120,4 @@ private:
 	//テクスチャ
 	////////
 
-	//プレイヤーエンジン
-	std::vector<std::shared_ptr<KdTexture>> m_playerenginetexs;
 };

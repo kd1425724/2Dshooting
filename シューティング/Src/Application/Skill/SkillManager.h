@@ -98,9 +98,5 @@ private:
 
 	//画像読み込み用（本体）
 
-	//レーザー
-	std::shared_ptr<KdTexture> m_lasertex = nullptr;
-
-	//スキル
-	std::shared_ptr<KdTexture> m_barriertex = nullptr;
+	
 };

@@ -31,6 +31,7 @@ void C_Barrier::SetTexture(std::shared_ptr<KdTexture> tex)
 
 void C_Barrier::SkillActivate()
 {
+    m_finished = false;
     m_alive = true;
     m_scale = { 1.0f,1.0f };
     m_dir = { 1.0f,0.0f };
@@ -55,6 +56,7 @@ void C_Barrier::SkillActivate()
 
 void C_Barrier::EnemySkillActivate(Math::Vector2 scale)
 {
+    m_finished = false;
     m_alive = true;
     m_scale = scale;
     m_dir = { -1.0f,0.0f };
@@ -84,13 +86,41 @@ void C_Barrier::Update()
     auto p = m_player.lock();
     auto e = m_enemy.lock();
 
-    if (m_usetype == UseType::Player && p)
+    if (m_usetype == UseType::Player)
     {
-        m_pos = p->GetPos();
+        if (p)
+        {
+            if (!p->GetAlive())
+            {
+                m_alive = false;
+                return;
+            }
+
+            m_pos = p->GetPos();
+        }
+        else
+        {
+            m_alive = false;
+            return;
+        }
     }
-    else if (m_usetype == UseType::Enemy && e)
+    else if (m_usetype == UseType::Enemy)
     {
-        m_pos = { e->GetPos().x , e->GetPos().y };
+        if (e)
+        {
+            if (!e->GetAlive())
+            {
+                m_alive = false;
+                return;
+            }
+
+            m_pos = { e->GetPos().x , e->GetPos().y };
+        }
+        else
+        {
+            m_alive = false;
+            return;
+        }
     }
     //アニメーション用
     m_anim += 0.1f;

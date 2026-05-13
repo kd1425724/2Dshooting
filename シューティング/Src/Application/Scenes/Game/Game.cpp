@@ -11,6 +11,8 @@
 #include"../../Enemy/Boss/Boss/Boss.h"
 #include"../../Input/Input.h"
 #include"../../Info.h"
+#include"../../Common/CommonTexture.h"
+
 std::shared_ptr<C_Boss> C_Game::GetBoss()
 {
 	return m_enemymanager->GetBoss();
@@ -81,32 +83,7 @@ void C_Game::Init()
 	m_skillmanager->SetGameUi(m_gameui);
 
 	//プレイヤーエンジン
-	std::shared_ptr<KdTexture> playerenginetex = std::make_shared<KdTexture>();
-	playerenginetex->Load("Texture/Player/PlayerEngine_01.png");
-	m_playerenginetexs.push_back(playerenginetex);
-	playerenginetex = std::make_shared<KdTexture>();
-	playerenginetex->Load("Texture/Player/PlayerEngine_02.png");
-	m_playerenginetexs.push_back(playerenginetex);
-	playerenginetex = std::make_shared<KdTexture>();
-	playerenginetex->Load("Texture/Player/PlayerEngine_03.png");
-	m_playerenginetexs.push_back(playerenginetex);
-
-	m_player->SetEngineTex(m_playerenginetexs);
-
-	//スコア表示
-	std::shared_ptr<KdTexture> scoretex = std::make_shared<KdTexture>();
-	scoretex->Load("Texture/Ui/Font/SCORE.png");
-	m_gameui->SetScoreTex(scoretex);
-
-	//スキル
-	std::shared_ptr<KdTexture> skilltex = std::make_shared<KdTexture>();
-	skilltex->Load("Texture/Ui/Font/SKILL.png");
-	m_gameui->SetSkillTex(skilltex);
-
-	//LIFE
-	std::shared_ptr<KdTexture> lifetex = std::make_shared<KdTexture>();
-	lifetex->Load("Texture/Ui/Font/LIFE.png");
-	m_gameui->SetLifeTex(lifetex);
+	m_player->SetEngineTex(CommonTex.GetPlayerEnginetex());
 
 	//ボス生成用（仮）
 	m_enemymanager->BossSpworn();
@@ -132,8 +109,6 @@ void C_Game::Init()
 
 	m_startflg = false;
 	m_startscale = { 5,5 };
-	m_starttex.Load("Texture/Ui/Font/START.png");
-
 }
 
 void C_Game::Update()
@@ -255,6 +230,7 @@ void C_Game::Update()
 
 void C_Game::Draw()
 {
+
 	//背景「最初」
 	m_gameui->BackGroundDraw();
 
@@ -301,7 +277,7 @@ void C_Game::Draw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,480,100 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_starttex, rect, m_startalpha);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSTARTTEXTtex(), rect, m_startalpha);
 	}
 }
 
@@ -316,16 +292,16 @@ void C_Game::ImGui()
 	
 }
 
-void C_Game::SpwornMnager()
-{
-	//一度に10回敵生成を行う
-	for (int i = 0; i < OnecountNum; i++)
-	{
-		m_enemymanager->EnemySpworn(m_JudgmenCount);
-		//呼び出されるたびに＋１
-		m_JudgmenCount++;
-	}
-}
+//void C_Game::SpwornMnager()
+//{
+//	//一度に10回敵生成を行う
+//	for (int i = 0; i < OnecountNum; i++)
+//	{
+//		m_enemymanager->EnemySpworn(m_JudgmenCount);
+//		//呼び出されるたびに＋１
+//		m_JudgmenCount++;
+//	}
+//}
 
 
 void C_Game::Release()

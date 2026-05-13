@@ -62,8 +62,8 @@ void C_SubBoss::Init(Math::Vector2 pos)
 	m_nonetime = NoneTime;
 
 	//”¼Œa
-	m_halfsize = m_rect * m_scale / 2;
-	m_radius = m_rect.x * m_scale.x / 2;
+	m_halfsize = m_rect * m_scale / 3;
+	m_radius = m_rect.x * m_scale.x / 3;
 
 	//“–‚½‚è”»’è
 	//“–‚½‚è”»’èŠÇ—‚É“n‚·

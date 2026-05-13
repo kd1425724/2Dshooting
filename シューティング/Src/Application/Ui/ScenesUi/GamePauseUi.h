@@ -58,6 +58,5 @@ private:
 	KdTexture m_SpaceKeyTex;
 	KdTexture m_EKeyTex;
 	KdTexture m_ShotTextTex;
-	KdTexture m_SkillTextTex;
 	KdTexture m_MoveTextTex;
 };

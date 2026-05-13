@@ -84,7 +84,7 @@ private:
 	static const int ShotDeleteScoreNum = 25000;
 
 	//デバッグ用
-	bool m_DrawHitdebugflg;
+	bool m_DrawHitdebugflg = false;
 
 	//プレイヤー
 	std::weak_ptr<C_Player> m_player;

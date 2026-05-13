@@ -62,7 +62,7 @@ public:
 	}
 
 	//敵生成
-	void EnemySpworn(int judgmentcount);
+//	void EnemySpworn(int judgmentcount);
 
 	//ボス生成
 	void BossSpworn();
@@ -135,31 +135,4 @@ private:
 
 	//敵画像セット
 	KdTexture& GetEnemyTexture(EnemyType type);
-
-	//画像セット用
-	KdTexture m_enemytex = {};
-
-	//敵１用
-	KdTexture m_enemy1tex = {};
-	KdTexture m_enemy1enginetex = {};
-
-	//敵２用
-	KdTexture m_enemy2tex = {};
-	KdTexture m_enemy2enginetex = {};
-
-	//敵３用
-	KdTexture m_enemy3tex = {};
-	KdTexture m_enemy3enginetex = {};
-
-	//サブボス用
-	KdTexture m_subbosstex = {};
-	KdTexture m_subbossmovetex = {};
-	KdTexture m_subbossenginetex = {};
-	KdTexture m_subbossdeathtex = {};
-
-	//ボス用
-	KdTexture m_bosstex = {};
-	KdTexture m_bossmovetex = {};
-	KdTexture m_bossenginetex = {};
-	KdTexture m_bossdeathtex = {};
 };

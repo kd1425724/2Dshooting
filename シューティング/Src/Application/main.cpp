@@ -240,7 +240,7 @@ void Application::Execute()
 
 		// FPSŒv‘ª
 		count++;
-		if (st - baseTime >= 1000)
+		if (et - baseTime >= 1000)
 		{
 			m_fps = (count * 1000) / (st - baseTime);
 			baseTime = st;

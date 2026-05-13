@@ -8,35 +8,18 @@
 #include"../Enemy/EnemyMoveBase.h"
 #include"../Ui/ScenesUi/GameUi.h"
 #include"../Scenes/Game/Game.h"
+#include"../Common/CommonTexture.h"
 void C_SkillManager::Release()
 {
-	m_lasertex->Release();
-	m_barriertex->Release();
+	
 }
 
 void C_SkillManager::Init() 
 {
-	//レーザー
-	m_lasertex = std::make_shared<KdTexture>();
-	m_lasertex->Load("Texture/Skill/Attack/Laser.png");
-	//バリア
-	m_barriertex = std::make_shared<KdTexture>();
-	m_barriertex->Load("Texture/Skill/Barrier/Barrier.png");
-
-	std::vector<std::shared_ptr<KdTexture>> tex;
-	tex.push_back(std::make_shared<KdTexture>());
-	tex.back()->Load("Texture/Ui/HUD/Copy.png");
-	tex.push_back(std::make_shared<KdTexture>());
-	tex.back()->Load("Texture/Ui/HUD/EnemyGenerate.png");
-	tex.push_back(std::make_shared<KdTexture>());
-	tex.back()->Load("Texture/Ui/HUD/Barrier.png");
-	tex.push_back(std::make_shared<KdTexture>());
-	tex.back()->Load("Texture/Ui/HUD/Laser.png");
-
 	auto gu = m_gameui.lock();
 	if (gu)
 	{
-		gu->SetSkillIconTex(tex);
+		gu->SetSkillIconTex(CommonTex.GetSkillIcontex());
 	}
 
 	SetPlayerSkill(SkillType::CopyShot);
@@ -228,7 +211,7 @@ void C_SkillManager::SetPlayerSkill(SkillType skilltype)
 			m_playerskills->SetPlayer(p);
 			m_playerskills->SetHitManager(hm);
 		}
-		m_playerskills->SetTexture(m_barriertex);
+		m_playerskills->SetTexture(CommonTex.GetBarriertex());
 		m_playerskills->Init();
 		break;
 	case SkillType::Laser:
@@ -239,7 +222,7 @@ void C_SkillManager::SetPlayerSkill(SkillType skilltype)
 			m_playerskills->SetPlayer(p);
 			m_playerskills->SetHitManager(hm);
 		}
-		m_playerskills->SetTexture(m_lasertex);
+		m_playerskills->SetTexture(CommonTex.GetLasertex());
 		m_playerskills->Init();
 		break;
 	default:
@@ -289,7 +272,7 @@ void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyM
 			m_addenemyskill.back()->SetHitManager(hm);
 		}
 		m_addenemyskill.back()->SetEnemy(enemybase);
-		m_addenemyskill.back()->SetTexture(m_barriertex);
+		m_addenemyskill.back()->SetTexture(CommonTex.GetBarriertex());
 		m_addenemyskill.back()->Init();
 		if (enemybase->GetEnemyType() != EnemySType::SubBoss)
 		{
@@ -308,7 +291,7 @@ void C_SkillManager::SetEnemySkill(SkillType skilltype, std::shared_ptr<C_EnemyM
 			m_addenemyskill.back()->SetHitManager(hm);
 		}
 		m_addenemyskill.back()->SetEnemy(enemybase);
-		m_addenemyskill.back()->SetTexture(m_lasertex);
+		m_addenemyskill.back()->SetTexture(CommonTex.GetLasertex());
 		m_addenemyskill.back()->Init();
 		m_addenemyskill.back()->EnemySkillActivate();
 		break;

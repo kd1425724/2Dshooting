@@ -139,15 +139,44 @@ void C_Laser::Update()
         break;
     case Upd:
          // 発射位置を追従させる
-        if (m_usetype == UseType::Player && p)
+        if (m_usetype == UseType::Player)
         {
-            m_start = { p->GetPos().x + p->GetSize().x + 80,p->GetPos().y };
+            if (p)
+            {
+                m_start = { p->GetPos().x + p->GetSize().x + 80,p->GetPos().y };
+
+                if (!p->GetAlive())
+                {
+                    m_alive = false;
+                    return;
+                }
+            }
+            else
+            {
+                m_alive = false;
+                return;
+            }
         }
-        else if (m_usetype == UseType::Enemy && e)
+        else if (m_usetype == UseType::Enemy)
         {
-            m_start.x = e->GetPos().x - 100;
-            m_start.y = e->GetPos().y;
+            if (e)
+            {
+                m_start.x = e->GetPos().x - 100;
+                m_start.y = e->GetPos().y;
+
+                if (!e->GetAlive())
+                {
+                    m_alive = false;
+                    return;
+                }
+            }
+            else
+            {
+                m_alive = false;
+                return;
+            }
         }
+       
 
         // レーザーを伸ばす
         if (m_length < m_maxLength)
@@ -204,7 +233,7 @@ void C_Laser::Update()
 void C_Laser::Draw()
 {
     if (!m_alive) return;
-    if (!m_pattern == Upd)return;
+    if (m_pattern != Upd)return;
 
     for (int i = 0; i < m_drawCount; i++)
     {

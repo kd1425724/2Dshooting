@@ -78,8 +78,8 @@ void C_Boss::Init()
 	m_spiralshotinterval = 0;
 
 	//”¼Œa
-	m_halfsize = m_rect * m_scale / 3.0;
-	m_radius = m_rect.x * m_scale.x / 3.0;
+	m_halfsize = m_rect * m_scale / 3.5f;
+	m_radius = m_rect.x * m_scale.x / 3.5f;
 
 	//“–‚½‚è”»’è
 	//“–‚½‚è”»’èŠÇ—‚É“n‚·

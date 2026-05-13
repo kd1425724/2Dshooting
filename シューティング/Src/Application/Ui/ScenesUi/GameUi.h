@@ -25,11 +25,6 @@ public:
 		m_owner = owner;
 	}
 
-	void SetScoreTex(std::shared_ptr<KdTexture> tex)
-	{
-		m_scoretex = tex;
-	}
-
 	//スキル用
 	void SetSkillIconTex(std::vector<std::shared_ptr<KdTexture>> tex)
 	{
@@ -37,17 +32,6 @@ public:
 	}
 
 	void SetSkill(SkillType type);
-
-	void SetSkillTex(std::shared_ptr<KdTexture> tex)
-	{
-		m_SKILLtex = tex;
-	}
-
-	//LIFE
-	void SetLifeTex(std::shared_ptr<KdTexture> tex)
-	{
-		m_LIFETexttex = tex;
-	}
 
 private:
 
@@ -66,9 +50,6 @@ private:
 	void HUDInit();
 	void HUDUpdate();
 	void HUDDraw();
-
-	//画像
-	KdTexture m_HUDareatex = {};
 
 	//切り取り範囲
 	Math::Rectangle m_HUDarearect = { 0,0,0,0 };
@@ -96,8 +77,6 @@ private:
 	Math::Vector2 m_scorepos = { 0,0 };
 	Math::Vector2 m_scorescale = { 1,1 };
 
-	std::shared_ptr<KdTexture> m_scoretex = nullptr;
-
 	//スキル
 	void SkillHUDInit();
 	void SkillHUDDraw();
@@ -112,13 +91,6 @@ private:
 	Math::Vector2 m_skillpos = { 0,0 };
 	Math::Vector2 m_skillscale = { 1,1 };
 
-	std::shared_ptr<KdTexture> m_SKILLtex = nullptr;
-
-	KdTexture m_OKicontex = {};
-	KdTexture m_NOicontex = {};
-	KdTexture m_Readytex = {};
-	KdTexture m_Locktex = {};
-
 	//残機HUD
 	void LifeHUDInit();
 	void LifeDraw();
@@ -126,8 +98,6 @@ private:
 	Math::Vector2 m_lifestartpos = { 0,0 };
 
 	Math::Vector2 m_lifescale = { 1,1 };
-
-	std::shared_ptr<KdTexture> m_LIFETexttex = nullptr;
 
 	Math::Vector2 m_LIFETextpos = { 0,0 };
 	Math::Vector2 m_LIFETextscale = { 1,1 };
@@ -138,16 +108,8 @@ private:
 	void TimeInit();
 	void TimeDraw();
 
-	KdTexture m_TimeTextTex;
-
-	//コロン:
-	KdTexture m_colontex;
-
 	//一時停止
 	void PauseIconInit();
 	void PauseIconDraw();
-
-	KdTexture m_PauseIcontex;
-	KdTexture m_ESCtex;
 	
 };

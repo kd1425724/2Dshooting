@@ -8,35 +8,13 @@
 #include"../Skill/SkillBase.h"
 #include"../Hit/HitManager.h"
 #include"../Effect/EffectManager.h"
+#include"../Common/CommonTexture.h"
 
 void C_EnemyManager::Init(std::shared_ptr<C_Player> player)
 {
-	m_player = move(player);
+	m_player = player;
 
-	SpwornEnemyLoad();
-
-	//m_enemytex.Load("Texture/Enemy/Fighter.png");
-
-	//“G‚P
-	m_enemy1tex.Load("Texture/Enemy/Enemy1/Enemy1Base.png");
-	m_enemy1enginetex.Load("Texture/Enemy/Enemy1/Enemy1Engine.png");
-	//“G‚Q
-	m_enemy2tex.Load("Texture/Enemy/Enemy2/Enemy2Base.png");
-	m_enemy2enginetex.Load("Texture/Enemy/Enemy2/Enemy2Engine.png");
-	//“G‚R
-	m_enemy3tex.Load("Texture/Enemy/Enemy3/Enemy3Base.png");
-	m_enemy3enginetex.Load("Texture/Enemy/Enemy3/Enemy3Engine.png");
-
-
-	m_subbosstex.Load("Texture/Enemy/SubBoss/SubBossBase.png");
-	m_subbossmovetex.Load("Texture/Enemy/SubBoss/SubBossMove.png");
-	m_subbossenginetex.Load("Texture/Enemy/SubBoss/SubBossEngine.png");
-	m_subbossdeathtex.Load("Texture/Enemy/SubBoss/SubBossDeath.png");
-
-	m_bosstex.Load("Texture/Enemy/Boss/BossBase.png");
-	m_bossmovetex.Load("Texture/Enemy/Boss/BossMove.png");
-	m_bossenginetex.Load("Texture/Enemy/Boss/BossEngine.png");
-	m_bossdeathtex.Load("Texture/Enemy/Boss/BossDeath.png");
+	//SpwornEnemyLoad();;
 }
 void C_EnemyManager::Release()
 {
@@ -44,16 +22,7 @@ void C_EnemyManager::Release()
 	m_player = nullptr;
 	
 
-	m_enemytex.Release();
-	m_subbosstex.Release();
-	m_subbossmovetex.Release();
-	m_subbossenginetex.Release();
-	m_subbossdeathtex.Release();
 
-	m_bosstex.Release();
-	m_bossmovetex.Release();
-	m_bossenginetex.Release();
-	m_bossdeathtex.Release();
 }
 
 void C_EnemyManager::SpwornEnemyLoad()
@@ -297,47 +266,47 @@ void C_EnemyManager::ImGui()
 }
 
 
-void C_EnemyManager::EnemySpworn(int judgmentcount)
-{
-	switch (m_spworntype[judgmentcount].movetype)
-	{
-	case EnemyMoveType::Type1:
-		for (int i = 0; i < 3; i++)
-		{
-			m_addenemylist.emplace_back(std::make_shared<C_EnemyMove1>());
-			m_addenemylist.back()->SetOwner(m_owner);
-			m_addenemylist.back()->SetHitManager(m_hitmanager);
-			m_addenemylist.back()->SetSkillManager(m_skillmanager);
-
-			m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(m_spworntype[judgmentcount].type),
-				{ 64,64 }, { 0,0 });
-			m_addenemylist.back()->SetEngineTex(&m_enemy1enginetex);
-			m_addenemylist.back()->Init(m_spworntype[judgmentcount].pospattern, m_spworntype[judgmentcount].movepattern,
-				m_player,i);
-
-		
-		}
-		break;
-	case EnemyMoveType::Type2:
-		m_addenemylist.emplace_back(std::make_shared<C_EnemyMove2>());
-		m_addenemylist.back()->SetOwner(m_owner);
-		m_addenemylist.back()->SetHitManager(m_hitmanager);
-		m_addenemylist.back()->SetSkillManager(m_skillmanager);
-		
-		m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(m_spworntype[judgmentcount].type),{ 64,64 }, { 0,0 });
-		m_addenemylist.back()->SetEngineTex(&m_enemy2enginetex);
-		
-		m_addenemylist.back()->Init(m_spworntype[judgmentcount].pospattern, m_spworntype[judgmentcount].movepattern,
-			m_player, NULL);
-		
-		break;
-	case EnemyMoveType::Type3:
-		break;
-	default:
-		break;
-	}
-}
-
+//void C_EnemyManager::EnemySpworn(int judgmentcount)
+//{
+//	switch (m_spworntype[judgmentcount].movetype)
+//	{
+//	case EnemyMoveType::Type1:
+//		for (int i = 0; i < 3; i++)
+//		{
+//			m_addenemylist.emplace_back(std::make_shared<C_EnemyMove1>());
+//			m_addenemylist.back()->SetOwner(m_owner);
+//			m_addenemylist.back()->SetHitManager(m_hitmanager);
+//			m_addenemylist.back()->SetSkillManager(m_skillmanager);
+//
+//			m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(m_spworntype[judgmentcount].type),
+//				{ 64,64 }, { 0,0 });
+//			m_addenemylist.back()->SetEngineTex(&CommonTex);
+//			m_addenemylist.back()->Init(m_spworntype[judgmentcount].pospattern, m_spworntype[judgmentcount].movepattern,
+//				m_player,i);
+//
+//		
+//		}
+//		break;
+//	case EnemyMoveType::Type2:
+//		m_addenemylist.emplace_back(std::make_shared<C_EnemyMove2>());
+//		m_addenemylist.back()->SetOwner(m_owner);
+//		m_addenemylist.back()->SetHitManager(m_hitmanager);
+//		m_addenemylist.back()->SetSkillManager(m_skillmanager);
+//		
+//		m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(m_spworntype[judgmentcount].type),{ 64,64 }, { 0,0 });
+//		m_addenemylist.back()->SetEngineTex(&m_enemy2enginetex);
+//		
+//		m_addenemylist.back()->Init(m_spworntype[judgmentcount].pospattern, m_spworntype[judgmentcount].movepattern,
+//			m_player, NULL);
+//		
+//		break;
+//	case EnemyMoveType::Type3:
+//		break;
+//	default:
+//		break;
+//	}
+//}
+//
 void C_EnemyManager::BossSpworn()
 {
 	//ƒTƒuƒ{ƒX
@@ -348,9 +317,9 @@ void C_EnemyManager::BossSpworn()
 		sb->SetHitManager(m_hitmanager);
 		sb->SetSkillManager(m_skillmanager);
 		sb->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::SubBoss), { 128,128 }, { NULL,NULL });
-		sb->SetMoveTex(&m_subbossmovetex);
-		sb->SetEngineTex(&m_subbossenginetex);
-		sb->SetDeathTex(&m_subbossdeathtex);
+		sb->SetMoveTex(&CommonTex.GetSubBossMovetex());
+		sb->SetEngineTex(&CommonTex.GetSubBossEnginetex());
+		sb->SetDeathTex(&CommonTex.GetSubBossDeathtex());
 		sb->SetId(i);
 		sb->Init({ 700,(float)0 - 80 + 200 - (i * 400) });
 
@@ -364,9 +333,9 @@ void C_EnemyManager::BossSpworn()
 	m_boss->SetHitManager(m_hitmanager);
 	m_boss->SetSkillManager(m_skillmanager);
 	m_boss->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss),{ 128,128 }, { NULL,NULL });
-	m_boss->SetMoveTex(&m_bossmovetex);
-	m_boss->SetEngineTex(&m_bossenginetex);
-	m_boss->SetDeathTex(&m_bossdeathtex);
+	m_boss->SetMoveTex(&CommonTex.GetBossMovetex());
+	m_boss->SetEngineTex(&CommonTex.GetBossEnginetex());
+	m_boss->SetDeathTex(&CommonTex.GetBossDeathtex());
 	m_boss->Init();
 
 	m_addenemylist.push_back(m_boss);
@@ -384,7 +353,7 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 			e->SetHitManager(m_hitmanager);
 			e->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
 				{ 64,64 }, { 0,0 });
-			e->SetEngineTex(&m_enemy3enginetex);
+			e->SetEngineTex(&CommonTex.GetEnemy3Enginetex());
 
 			e->Init(pos, type, i);
 
@@ -409,7 +378,7 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 						m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy1),
 							{ 64,64 }, { 0,0 });
-						m_addenemylist.back()->SetEngineTex(&m_enemy1enginetex);
+						m_addenemylist.back()->SetEngineTex(&CommonTex.GetEnemy1Enginetex());
 
 						m_addenemylist.back()->Init(PosPattern::Pattern1, MovePattern::Pattern1,
 							m_player, i);
@@ -422,7 +391,7 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 						m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy1),
 							{ 64,64 }, { 0,0 });
-						m_addenemylist.back()->SetEngineTex(&m_enemy1enginetex);
+						m_addenemylist.back()->SetEngineTex(&CommonTex.GetEnemy1Enginetex());
 
 
 						m_addenemylist.back()->Init(PosPattern::Pattern2, MovePattern::Pattern1,
@@ -441,7 +410,7 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 						m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy1),
 							{ 64,64 }, { 0,0 });
-						m_addenemylist.back()->SetEngineTex(&m_enemy1enginetex);
+						m_addenemylist.back()->SetEngineTex(&CommonTex.GetEnemy1Enginetex());
 
 
 						m_addenemylist.back()->Init(PosPattern::Pattern3, MovePattern::Pattern4,
@@ -455,7 +424,7 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 						m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy1),
 							{ 64,64 }, { 0,0 });
-						m_addenemylist.back()->SetEngineTex(&m_enemy1enginetex);
+						m_addenemylist.back()->SetEngineTex(&CommonTex.GetEnemy1Enginetex());
 
 						m_addenemylist.back()->Init(PosPattern::Pattern4, MovePattern::Pattern5,
 							m_player, i);
@@ -471,7 +440,7 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 			m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy2),
 				{ 64,64 }, { 0,0 });
-			m_addenemylist.back()->SetEngineTex(&m_enemy2enginetex);
+			m_addenemylist.back()->SetEngineTex(&CommonTex.GetEnemy2Enginetex());
 
 			m_addenemylist.back()->Init(PosPattern::Pattern1,MovePattern::Pattern1,
 				m_player, NULL);
@@ -483,7 +452,7 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 			m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy2),
 				{ 64,64 }, { 0,0 });
-				m_addenemylist.back()->SetEngineTex(&m_enemy2enginetex);
+				m_addenemylist.back()->SetEngineTex(&CommonTex.GetEnemy2Enginetex());
 
 			m_addenemylist.back()->Init(PosPattern::Pattern2,MovePattern::Pattern2,
 				m_player, NULL);
@@ -499,7 +468,7 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 				m_addenemylist.back()->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
 					{ 64,64 }, { 0,0 });
-				m_addenemylist.back()->SetEngineTex(&m_enemy3enginetex);
+				m_addenemylist.back()->SetEngineTex(&CommonTex.GetEnemy3Enginetex());
 
 				m_addenemylist.back()->Init(pos, type, i);
 
@@ -520,17 +489,17 @@ KdTexture& C_EnemyManager::GetEnemyTexture(EnemyType type)
 	switch (type)
 	{
 	case EnemyType::enemy1:
-		return m_enemy1tex;
+		return CommonTex.GetEnemy1tex();
 	case EnemyType::enemy2:
-		return m_enemy2tex;
+		return CommonTex.GetEnemy2tex();
 	case EnemyType::enemy3:
-		return m_enemy3tex;
+		return CommonTex.GetEnemy3tex();
 	case EnemyType::SubBoss:
-		return m_subbosstex;
+		return CommonTex.GetSubBosstex();
 	case EnemyType::Boss:
-		return m_bosstex;
+		return CommonTex.GetBosstex();
 	default:
-		return m_enemytex;
+		return CommonTex.GetEnemy1tex();
 		break;
 	}
 }

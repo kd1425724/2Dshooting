@@ -127,7 +127,6 @@ void C_GamePauseUi::Release()
 	m_SpaceKeyTex.Release();
 	m_EKeyTex.Release();
 	m_ShotTextTex.Release();
-	m_SkillTextTex.Release();
 }
 
 void C_GamePauseUi::PAUSEDraw()
@@ -150,7 +149,6 @@ void C_GamePauseUi::KeyInit()
 	m_SpaceKeyTex.Load("Texture/Ui/Button/SPACEKey.png");
 	m_EKeyTex.Load("Texture/Ui/Button/EKey.png");
 	m_ShotTextTex.Load("Texture/Ui/Font/SHOT.png");
-	m_SkillTextTex.Load("Texture/Ui/Font/SKILL.png");
 	m_MoveTextTex.Load("Texture/Ui/Font/MOVE.png");
 }
 
@@ -235,6 +233,6 @@ void C_GamePauseUi::KeyDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,480,100 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_SkillTextTex, 0, 0, &rect, &color);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSKILLTEXTtex(), 0, 0, &rect, &color);
 	}
 }

@@ -141,7 +141,7 @@ void C_TitleUi::MoveBackGroundUpdate()
 
 void C_TitleUi::MoveBackGroundDraw()
 {
-	Math::Color color = { 10.0f,10.0f,10.0f,0.15f };
+	Math::Color color = { 10.0f,10.0f,10.0f,0.25f };
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_movebackgroundmat);
 	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_movebackgroundtex, 0, 0, &m_movebackgroundrect, &color);
