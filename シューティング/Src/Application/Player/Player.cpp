@@ -40,6 +40,8 @@ void C_Player::Init()
 
 	m_alive = true;
 
+	m_playerdebugdeathflg = false;
+
 }
 void C_Player::StartUpdate()
 {
@@ -128,19 +130,28 @@ void C_Player::Update()
 
 	if (Input.GetDebugKey(DebugKeyType::NINEKey) && !Input.GetDebugKeyFlg(DebugKeyType::NINEKey))
 	{
-		m_Hp = 0;
-		m_alive = false;
+		m_playerdebugdeathflg = true;
 	}
 
-	if (m_Hp <= 1)
+	if (m_playerdebugdeathflg)
 	{
-		m_Hp = 1;
-		//m_alive = false;
+		if (m_Hp <= 0)
+		{
+			m_Hp = 0;
+			m_alive = false;
+		}
+	}
+	else
+	{
+		if (m_Hp <= 1)
+		{
+			m_Hp = 1;
+		}
 	}
 }
 void C_Player::Draw()
 {
-	
+	if (!m_alive)return;
 	Math::Color color = { 1,1,1,1 };
 	Math::Rectangle enginerect = { 0,0, 64,64 };
 
@@ -346,10 +357,7 @@ void C_Player::Damage()
 
 		float w = CommonTex.GetPlayerRect().width;
 
-		if (m_Hp > 0)
-		{
-			EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
-		}
+		EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
 		
 		EFFECTMANAGER.AddEffect(EffectType::ExplosionTopDraw, { -420 + (m_Hp * w * 0.7f),235 });
 	}

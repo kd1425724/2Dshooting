@@ -5,7 +5,7 @@ void C_Explosion::Init(Math::Vector2 pos)
 	//ç¿ïW
 	m_pos = pos;
 	
-	m_scale = 1.5f;   // ç≈èâè¨Ç≥Ç≠
+	m_scale = 2.0f;   // ç≈èâè¨Ç≥Ç≠
 	m_anim = 0;
 	m_rect = { 48,48 };
 	m_alive = true;

@@ -129,7 +129,7 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		move.y = sinf(angle) * speed;
 		color = { 1,1,1,1 };
 		alive = true;
-		scale = { 1,1 };
+		scale = { 2,2 };
 
 		//アニメーション用
 		anim = { 0,0 };
