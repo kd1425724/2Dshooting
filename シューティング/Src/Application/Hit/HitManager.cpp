@@ -86,7 +86,7 @@ void C_HitManager::PlayerHit()
 			std::shared_ptr<C_EnemyMoveBase> e = it->lock();
 			if (e)
 			{
-				if (!e->GetAlive())
+				if (!e->GetAlive() || e->GetDeathFlg())
 				{
 					it = m_enemys.erase(it);
 					continue;
