@@ -307,4 +307,24 @@ void C_Game::ImGui()
 void C_Game::Release()
 {
 	EFFECTMANAGER.Release();
+
+	EFFECTMANAGER.Release();
+
+	if (m_skillmanager)
+	{
+		m_skillmanager->Release();
+	}
+
+	if (m_player)
+	{
+		m_player->Release();
+	}
+
+	m_shot.clear();
+
+	m_gameui.reset();
+	m_player.reset();
+	m_enemymanager.reset();
+	m_skillmanager.reset();
+	m_hitmanager.reset();
 }

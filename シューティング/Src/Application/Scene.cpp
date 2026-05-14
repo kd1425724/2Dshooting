@@ -51,9 +51,7 @@ void Scene::Draw2D()
 
 void Scene::Release()
 {
-
 }
-
 void Scene::ImGuiUpdate()
 {
 	return;

@@ -22,7 +22,7 @@ class C_SkillManager
 {
 public:
 	C_SkillManager() {}
-	~C_SkillManager() {}
+	~C_SkillManager() { Release(); }
 
 	void Init();
 	void Update();

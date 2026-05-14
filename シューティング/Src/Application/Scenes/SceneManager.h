@@ -26,7 +26,7 @@ struct Score
 class C_SceneManager
 {
 public:
-	~C_SceneManager();
+	~C_SceneManager() { Release(); }
 
 	void Init();
 	void Update();
@@ -56,6 +56,8 @@ public:
 	void ResetScoreData() { m_scoredata = std::make_shared<Score>(); m_score = 0; }
 
 private:
+
+	void Release();
 
 	std::vector<std::shared_ptr<C_SceneBase>> scenes;
 

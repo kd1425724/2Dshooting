@@ -1,6 +1,10 @@
 #include "Feed.h"
 #include"Application/Common/CommonTexture.h"
 
+void C_Feed::Release()
+{
+}
+
 void C_Feed::FeedInInit(float time)
 {
 	m_alpha = 1.0f;

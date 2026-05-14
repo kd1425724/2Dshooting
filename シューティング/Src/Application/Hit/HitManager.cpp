@@ -14,10 +14,22 @@ C_HitManager::C_HitManager()
 	m_DrawHitdebugflg = false;
 }
 
-C_HitManager::~C_HitManager()
+void C_HitManager::Release()
 {
-}
+	m_player.reset();
+	m_boss.reset();
+	m_skillmanager.reset();
 
+	m_enemys.clear();
+	m_playerenemys.clear();
+	m_playershot.clear();
+	m_enemyshot.clear();
+	m_playerlaser.clear();
+	m_enemylaser.clear();
+	m_playerbarrier.clear();
+	m_enemybarrier.clear();
+	m_copyshot.clear();
+}
 void C_HitManager::Init()
 {
 }

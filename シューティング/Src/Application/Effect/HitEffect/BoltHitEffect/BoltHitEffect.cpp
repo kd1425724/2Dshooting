@@ -46,3 +46,7 @@ void C_BoltHitEffect::Draw()
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(tex.get(), 0, 0, &rect, &color);
 	}
 }
+
+void C_BoltHitEffect::Release()
+{
+}

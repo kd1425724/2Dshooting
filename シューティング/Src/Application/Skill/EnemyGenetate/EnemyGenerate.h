@@ -5,7 +5,7 @@ class C_EnemyGenerate : public C_SkillBase
 {
 public:
 	C_EnemyGenerate();
-	~C_EnemyGenerate() override {}
+	~C_EnemyGenerate() override { Release(); }
 
 	void Init() override;
 	void Update() override;
@@ -33,6 +33,8 @@ public:
 	}
 
 private:
+
+	void Release() override;
 
 	std::weak_ptr<C_EnemyManager> m_enemymanager;
 

@@ -6,7 +6,8 @@
 
 void C_Title::Release()
 {
-	m_starttex->Release();
+	m_titleui.reset();
+	m_starttex.reset();
 }
 
 void C_Title::Init()

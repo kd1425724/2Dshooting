@@ -55,8 +55,7 @@ public:
     //w’è‚µ‚Ä‚¢‚éindex‚Ìaction‚ğÀs
     void ButtonUpdate(int index);
     void ButtonDraw(int index);
-    void IsOnTopDraw();
-
+  
     void CreateSpriteItemInit(
         Math::Vector2 pos,
         Math::Rectangle rect,

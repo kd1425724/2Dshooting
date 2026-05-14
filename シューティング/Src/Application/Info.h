@@ -26,8 +26,11 @@ public:
     int PlayerSpeedEnhancement = 2;
 
 private:
+
+    void Release();
+
     C_Info() {}
-    ~C_Info() {}
+    ~C_Info() { Release(); }
 
 public:
     static C_Info& GetInstans()

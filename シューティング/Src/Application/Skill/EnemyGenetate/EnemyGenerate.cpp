@@ -68,3 +68,10 @@ void C_EnemyGenerate::EnemySkillActivate()
 		);
 	}
 }
+
+void C_EnemyGenerate::Release()
+{
+	m_player.reset();
+	m_enemy.reset();
+	m_enemymanager.reset();
+}

@@ -35,7 +35,7 @@ public:
 		m_finished = false;
 	}
 
-	virtual ~C_SkillBase() {}
+	virtual ~C_SkillBase() { Release(); }
 
 	virtual void Init();
 	virtual void Update();
@@ -105,6 +105,8 @@ public:
 	virtual void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) {}
 
 protected:
+
+	virtual void Release() {}
 
 	UseType m_usetype = UseType::Player;
 

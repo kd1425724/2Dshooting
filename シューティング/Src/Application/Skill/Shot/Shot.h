@@ -90,7 +90,7 @@ class C_Shot
 {
 public:
 	C_Shot();
-	~C_Shot(){}
+	~C_Shot() { Release(); }
 
 	void Update();
 	void Draw();
@@ -109,6 +109,8 @@ public:
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
 private:
+
+	void Release();
 
 	//“–‚½‚èŠÇ——p
 	std::shared_ptr<C_HitManager> m_hitmanager;

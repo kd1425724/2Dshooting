@@ -259,6 +259,9 @@ void C_Boss::Draw()
 
 void C_Boss::Release()
 {
+	m_owner.reset();
+	m_hitmanager.reset();
+	m_skillmanager.reset();
 }
 
 void C_Boss::StartUpdate()

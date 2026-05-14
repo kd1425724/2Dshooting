@@ -28,5 +28,5 @@ void C_GamePause::Draw()
 
 void C_GamePause::Release()
 {
-	
+	m_gamepauseui.reset();
 }

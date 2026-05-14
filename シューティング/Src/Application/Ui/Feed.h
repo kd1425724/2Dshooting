@@ -13,7 +13,6 @@ enum FeedState
 class C_Feed
 {
 public:
-    ~C_Feed() {}
 
     // time...何フレームでフェード処理が終わるか
     void FeedInInit(float time);
@@ -30,6 +29,8 @@ public:
     FeedState GetFeedState() const { return m_state; }
 
 private:
+
+	void Release();
     // ===== コールバック =====
     function<void()> m_finishpattern = nullptr;
 
@@ -48,6 +49,7 @@ private:
 
 private:
     C_Feed() {}
+    ~C_Feed() { Release(); }
 
 public:
     static C_Feed& GetInstans()

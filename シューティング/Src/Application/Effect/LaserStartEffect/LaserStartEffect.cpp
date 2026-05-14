@@ -44,3 +44,8 @@ void C_LaserStartEffect::Draw()
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(tex.get(), 0, 0, &rect, &color);
 	}
 }
+
+void C_LaserStartEffect::Release()
+{
+	
+}

@@ -26,7 +26,7 @@ class C_HitManager
 {
 public:
 	C_HitManager();
-	~C_HitManager();
+	~C_HitManager() { Release(); }
 
 	void Init();
 	void Update();
@@ -75,6 +75,8 @@ public:
 	void DrawCircle(Math::Vector2 pos, float radius, Math::Color col);
 
 private:
+
+	void Release();
 
 	//É{ÉXóp
 	std::weak_ptr<C_Boss> m_boss;

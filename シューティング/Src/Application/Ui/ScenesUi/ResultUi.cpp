@@ -110,8 +110,13 @@ void C_ResultUi::Release()
 	m_LifeTextTex.Release();
 	m_TimeTextTex.Release();
 	m_TotalTextTex.Release();
+	m_BonusTextTex.Release();
 	m_starframetex.Release();
 	m_startex.Release();
+	for (auto& t : m_playerenginetexs)
+	{
+		t->Release();
+	}
 }
 
 void C_ResultUi::EXITInit()

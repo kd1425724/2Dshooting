@@ -45,7 +45,7 @@ public:
 		m_shotinterval = 0;
 	}
 
-	~C_Player() {}
+	~C_Player() {Release();}
 
 	void Init();
 	void Update();

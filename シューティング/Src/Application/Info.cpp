@@ -1,5 +1,10 @@
 #include "Info.h"
 
+void C_Info::Release()
+{
+
+}
+
 void C_Info::PlayerInfoLoad()
 {
 }

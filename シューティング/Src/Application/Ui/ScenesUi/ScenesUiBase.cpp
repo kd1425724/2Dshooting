@@ -129,18 +129,6 @@ void C_ScenesUiBase::ButtonDraw(int index)
 	SHADER.m_spriteShader.DrawTex(m_SpriteItem[index].frametex, 0, 0, &m_SpriteItem[index].rect, &m_SpriteItem[index].color);
 }
 
-void C_ScenesUiBase::IsOnTopDraw()
-{
-	/*for (int i = 0; i < m_SpriteItem.size(); i++)
-	{
-		if (m_SpriteItem[i].GetIsOnTop())
-		{
-			SHADER.m_spriteShader.SetMatrix(m_SpriteItem[i].framemat);
-			SHADER.m_spriteShader.DrawTex(&m_frametex, 0, 0, &m_framerect, &Math::Color(1, 1, 1, 1));
-		}
-	}*/
-}
-
 bool SpriteItem::GetIsOnTop()
 {
 	//ƒ}ƒEƒX‚ª”ÍˆÍ“à‚É“ü‚Á‚Ä‚¢‚é‚Æ‚«‚Í

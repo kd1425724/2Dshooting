@@ -247,6 +247,7 @@ void C_EnemyMove2::Draw()
 		&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y), &m_color);
 
 }
+
 void C_EnemyMove2::Release()
 {
 

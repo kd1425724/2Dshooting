@@ -108,6 +108,8 @@ void C_TitleUi::Release()
 	m_backgroundtex.Release();
 	m_titlelogotex.Release();
 	m_movebackgroundtex.Release();
+	m_player = nullptr;
+	m_playerenginetexs.clear();
 }
 
 void C_TitleUi::MoveBackGroundInit()

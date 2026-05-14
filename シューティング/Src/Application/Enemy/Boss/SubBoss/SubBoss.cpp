@@ -234,7 +234,7 @@ m_mat = m_scalemat * m_rotatemat * m_transmat;
 
 void C_SubBoss::Release()
 {
-	// •K—v‚È‚ç‰ğ•úˆ—
+	
 }
 
 

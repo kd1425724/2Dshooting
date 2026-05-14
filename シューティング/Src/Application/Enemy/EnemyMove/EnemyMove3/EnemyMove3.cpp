@@ -11,6 +11,16 @@
 #include"../../../Effect/EffectManager.h"
 #include"../../../Scenes/SceneManager.h"
 #include"../../../Sound/Sound.h"
+
+
+void C_EnemyMove3::Release()
+{
+	m_owner.reset();
+	m_player.reset();
+	m_hitmanager.reset();
+	m_skillmanager.reset();
+}
+
 void C_EnemyMove3::Init(Math::Vector2 pos, UseType type, int i)
 {
 	m_deathflg = false;
@@ -278,9 +288,3 @@ void C_EnemyMove3::Draw()
 
 	}
 }
-
-void C_EnemyMove3::Release()
-{
-
-}
-

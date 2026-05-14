@@ -11,7 +11,16 @@
 #include"../Common/CommonTexture.h"
 void C_SkillManager::Release()
 {
-	
+	m_playerskills.reset();
+
+	m_enemyskills.clear();
+	m_addenemyskill.clear();
+
+	m_player.reset();
+	m_owner.reset();
+	m_hitmanager.reset();
+	m_enemymanager.reset();
+	m_gameui.reset();
 }
 
 void C_SkillManager::Init() 

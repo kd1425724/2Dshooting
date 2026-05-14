@@ -1,5 +1,10 @@
 #include"CopyHitEffect.h"
 
+void C_CopyHitEffect::Release()
+{
+
+}
+
 void C_CopyHitEffect::Init(Math::Vector2 pos)
 {
 	//ç¿ïWë„ì¸

@@ -132,6 +132,9 @@ public:
     void DebugDefaultKeySet();
 
 private:
+
+	void Release();
+
     // ===== É}ÉEÉX =====
     POINT mouse = { 0, 0 };
     bool m_mouseclickflg = false;
@@ -155,7 +158,7 @@ private:
 
 private:
     C_Input() {}
-    ~C_Input();
+    ~C_Input(){ Release(); }
 
 public:
     static C_Input& GetInstans()

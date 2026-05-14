@@ -8,7 +8,11 @@ C_Shot::C_Shot()
 	m_pulsetex.Load("Texture/Skill/Attack/Pulse.png");
 	m_copyshottex.Load("Texture/Skill/Attack/CopyShot.png");
 }
-
+void C_Shot::Release()
+{
+	m_hitmanager.reset();
+	m_normalshot.clear();
+}
 
 void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum,Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed)
 {

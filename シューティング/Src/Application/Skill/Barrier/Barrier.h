@@ -13,7 +13,7 @@ class C_Barrier : public C_SkillBase, public std::enable_shared_from_this<C_Barr
 {
 public:
     C_Barrier();
-    ~C_Barrier() override {};
+    ~C_Barrier() override { Release(); }
 
     void Init() override;
     void Update() override;
@@ -36,6 +36,9 @@ public:
     }
 
 private:
+
+	void Release() override;
+
     // ===== Šî–{ó‘Ô =====
     static const int MaxTime = 300;
     int m_time = 0;

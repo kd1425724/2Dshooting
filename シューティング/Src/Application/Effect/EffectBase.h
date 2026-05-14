@@ -5,7 +5,7 @@ class C_EffectBase
 public:
     C_EffectBase() {}
 
-    virtual ~C_EffectBase() {}
+    virtual ~C_EffectBase() { Release(); }
 
     // äÓñ{èàóù
     virtual void Init(Math::Vector2 pos) {}
@@ -25,6 +25,9 @@ public:
     void SetTexture(std::shared_ptr<KdTexture> tex) { m_tex = tex; }
 
 protected:
+
+	virtual void Release() {}
+
     bool m_alive = false;
 
     Math::Vector2 m_pos = { 0, 0 };

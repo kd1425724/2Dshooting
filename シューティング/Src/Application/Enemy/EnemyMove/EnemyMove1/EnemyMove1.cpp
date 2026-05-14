@@ -11,6 +11,11 @@
 #include"../../../Effect/EffectManager.h"
 #include"../../../Sound/Sound.h"
 
+void C_EnemyMove1::Release()
+{
+
+}
+
 void C_EnemyMove1::Init(PosPattern pospattern,MovePattern movepattern,std::shared_ptr<C_Player> player,int i)
 {
 	m_deathflg = false;
@@ -219,10 +224,5 @@ void C_EnemyMove1::Draw()
 		//KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_enginetex, 0, 0,
 			//&Math::Rectangle((int)m_engineanim.x * m_rect.x, (int)m_engineanim.y * m_rect.y, m_rect.x, m_rect.y), &m_color);
 	}
-}
-
-void C_EnemyMove1::Release()
-{
-
 }
 

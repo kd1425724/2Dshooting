@@ -8,7 +8,7 @@ class C_Copy : public C_SkillBase
 {
 public:
     C_Copy() {}
-    ~C_Copy() override {}
+	~C_Copy() override { Release(); }
 
     void Init() override;
     void Update() override;
@@ -27,6 +27,9 @@ public:
     }
 
 private:
+
+	void Release() override;
+
     std::shared_ptr<C_Shot> m_shot = nullptr;
     std::weak_ptr<C_HitManager> m_hitmanager;
 

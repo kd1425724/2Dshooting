@@ -1,11 +1,10 @@
 #include "Input.h"
 #include"Application/Info.h"
 
-C_Input::~C_Input()
+void C_Input::Release()
 {
 	PlayerKeySave();
 }
-
 void C_Input::Init()
 {
 	//マウス座標

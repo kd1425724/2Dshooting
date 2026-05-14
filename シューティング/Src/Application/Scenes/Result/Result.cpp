@@ -39,4 +39,5 @@ void C_Result::Draw()
 
 void C_Result::Release()
 {
+	m_resultui.reset();
 }

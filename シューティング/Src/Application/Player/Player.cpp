@@ -9,6 +9,11 @@
 #include"../Scenes/Game/Game.h"
 #include"../Sound/Sound.h"
 
+void C_Player::Release()
+{
+	
+}
+
 void C_Player::Init()	
 {
 	ShotInit();
@@ -292,9 +297,7 @@ void C_Player::TitleDraw()
 
 }
 
-void C_Player::Release()
-{
-}
+
 void C_Player::ImGui()
 {
 	ImGui::Text("\nPlayerHP : %d",m_Hp);

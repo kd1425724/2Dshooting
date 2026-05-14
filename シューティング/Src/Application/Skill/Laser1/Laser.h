@@ -14,7 +14,7 @@ class C_Laser : public C_SkillBase, public std::enable_shared_from_this<C_Laser>
 {
 public:
     C_Laser();
-    ~C_Laser() override;
+	~C_Laser() override { Release(); }
 
     void Init() override;
     void Update() override;
@@ -45,6 +45,9 @@ public:
     }
 
 private:
+
+	void Release() override;
+
     // ===== Šî–{î•ñ =====
     Math::Vector2 m_start = { 0,0 };
     Math::Vector2 m_end = { 0,0 };

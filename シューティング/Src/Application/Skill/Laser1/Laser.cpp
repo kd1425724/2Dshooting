@@ -6,6 +6,11 @@
 #include"../../Effect/EffectManager.h"
 #include"../../Sound/Sound.h"
 
+void C_Laser::Release()
+{
+
+}
+
 C_Laser::C_Laser()
 {
     m_length = 0.0f;
@@ -29,10 +34,6 @@ C_Laser::C_Laser()
     {
         m_anim[i] = 0;
     }
-}
-
-C_Laser::~C_Laser()
-{
 }
 
 void C_Laser::Init()

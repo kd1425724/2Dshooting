@@ -4,6 +4,14 @@
 #include"../../Common/CommonAPI.h"
 #include"../../Hit/HitManager.h"
 #include"../../Sound/Sound.h"
+
+void C_Barrier::Release()
+{
+    m_tex.reset();
+    m_enemy.reset();
+    m_hitmanager.reset();
+}  
+
 C_Barrier::C_Barrier()
 {
     m_rect = { 128,128 };

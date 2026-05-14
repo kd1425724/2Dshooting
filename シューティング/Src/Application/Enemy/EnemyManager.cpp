@@ -18,11 +18,21 @@ void C_EnemyManager::Init(std::shared_ptr<C_Player> player)
 }
 void C_EnemyManager::Release()
 {
+	m_player.reset();
 
-	m_player = nullptr;
-	
+	m_boss.reset();
 
+	m_enemys.clear();
+	m_skillenemys.clear();
 
+	m_addenemylist.clear();
+	m_addskillenemylist.clear();
+
+	m_subbosss.clear();
+
+	m_owner.reset();
+	m_hitmanager.reset();
+	m_skillmanager.reset();
 }
 
 void C_EnemyManager::SpwornEnemyLoad()

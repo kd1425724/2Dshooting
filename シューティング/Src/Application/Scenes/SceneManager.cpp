@@ -6,8 +6,12 @@
 #include"Application/Ui/Feed.h"
 #include"../Effect/EffectManager.h"
 #include"../Sound/Sound.h"
-C_SceneManager::~C_SceneManager()
+
+void C_SceneManager::Release()
 {
+    scenes.clear();
+    m_scoredata.reset();
+    m_score = 0;
 }
 
 void C_SceneManager::Init()

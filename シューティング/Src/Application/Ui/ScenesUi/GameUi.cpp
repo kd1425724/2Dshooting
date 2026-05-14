@@ -103,6 +103,15 @@ void C_GameUi::SetSkill(SkillType type)
 void C_GameUi::Release()
 {
 	m_backgroundtex.Release();
+
+	m_backgroundtex.Release();
+
+	for (auto& t : m_skillicontexs)
+	{
+		t.reset();
+	}
+
+	m_owner.reset();
 	
 }
 

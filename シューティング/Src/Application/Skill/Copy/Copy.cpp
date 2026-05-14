@@ -56,3 +56,7 @@ void C_Copy::EnemySkillActivate()
 	return;
 }
 
+void C_Copy::Release()
+{
+	m_shot = nullptr;
+}
