@@ -108,8 +108,8 @@ private:
 	void TimeInit();
 	void TimeDraw();
 
-	//ˆêŽž’âŽ~
-	void PauseIconInit();
-	void PauseIconDraw();
-	
+	////ˆêŽž’âŽ~
+	//void PauseIconInit();
+	//void PauseIconDraw();
+	//
 };

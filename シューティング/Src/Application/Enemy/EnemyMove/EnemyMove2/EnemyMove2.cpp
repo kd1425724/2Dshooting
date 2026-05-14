@@ -55,14 +55,14 @@ void C_EnemyMove2::Init(PosPattern pospattern, MovePattern movepattern, std::sha
 	{
 	case MovePattern::Pattern1:
 		m_movespeed = { 7,7 };
-		m_shotpos = { 400,(float)0 - 80 + 200 };
+		m_shotpos = { 400,(float)0 - INFO.HUDAreaHeight/2.0f + 200 };
 		m_angle = atan2(m_shotpos.y - m_pos.y, m_shotpos.x - m_pos.x);
 		m_move.x = cosf(m_angle) * m_movespeed.x;
 		m_move.y = sinf(m_angle) * m_movespeed.y;
 		break;
 	case MovePattern::Pattern2:
 		m_movespeed = { 7,7 };
-		m_shotpos = { 400,(float)0 - 80 + 200 - (1 * 400) };
+		m_shotpos = { 400,(float)0 - INFO.HUDAreaHeight / 2.0f + 200 - (1 * 400) };
 		m_angle = atan2(m_shotpos.y - m_pos.y, m_shotpos.x - m_pos.x);
 		m_move.x = cosf(m_angle) * m_movespeed.x;
 		m_move.y = sinf(m_angle) * m_movespeed.y;

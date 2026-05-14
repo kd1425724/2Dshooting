@@ -3,7 +3,7 @@
 void C_Sound::Init()
 {
 	m_sevol = 1.0f;
-	m_bgmvol = 0.5f;
+	m_bgmvol = 0.1f;
 
 	m_ses.resize((int)SEType::SENUM);
 
@@ -79,7 +79,7 @@ void C_Sound::SetPlaySE(SEType type)
 	case SEType::NoneSE:
 		break;
 	case SEType::ShotSE:
-		multiplicationvol = 0.1f;
+		multiplicationvol = 0.15f;
 		break;
 	case SEType::BOSSShotSE:
 		multiplicationvol = 0.5f;
@@ -94,7 +94,7 @@ void C_Sound::SetPlaySE(SEType type)
 		multiplicationvol = 0.7f;
 		break;
 	case SEType::NormalExplosionSE:
-		multiplicationvol = 0.5f;
+		multiplicationvol = 0.4f;
 		break;
 	case SEType::BOSSExplosionSE:
 		multiplicationvol = 1.0f;

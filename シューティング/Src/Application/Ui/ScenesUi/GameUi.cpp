@@ -135,7 +135,7 @@ void C_GameUi::HUDInit()
 	TimeInit();
 
 	//一時停止
-	PauseIconInit();
+	//PauseIconInit();
 }
 
 void C_GameUi::HUDUpdate()
@@ -165,12 +165,12 @@ void C_GameUi::HUDDraw()
 	TimeDraw();
 
 	//一時停止
-	PauseIconDraw();
+	//PauseIconDraw();
 }
 
 void C_GameUi::ScoreHUDInit()
 {
-	m_scorepos = { -500,340 };
+	m_scorepos = { -530,340 };
 
 	m_scorescale = { 0.3f,0.3f };
 }
@@ -178,7 +178,7 @@ void C_GameUi::ScoreHUDInit()
 void C_GameUi::ScoreHUDDraw()
 {
 	//スコア表示
-	COMMONAPI.NumDraw(SCENEMANAGER.GetScore(), {-290,290}, {0.3f,0.5f});
+	COMMONAPI.NumDraw(SCENEMANAGER.GetScore(), {-270,340}, {0.2f,0.3f});
 
 	Math::Matrix s = Math::Matrix::CreateScale(m_scorescale.x, m_scorescale.y, 1);
 	Math::Matrix t = Math::Matrix::CreateTranslation(m_scorepos.x, m_scorepos.y, 0);
@@ -191,13 +191,11 @@ void C_GameUi::ScoreHUDDraw()
 
 void C_GameUi::SkillHUDInit()
 {
-	m_skilliconpos = { -70,255 };
-	m_skilliconscale = { 1,1 };
+	m_skilliconpos = { -80,302 };
+	m_skilliconscale = { 1.0f,1.0f };
 
-	m_skillpos = { -160,330 };
-	m_skillscale = { 0.4f,0.4f };
-
-	
+	m_skillpos = { -160,340 };
+	m_skillscale = { 0.3f,0.25f };
 }
 
 void C_GameUi::SkillHUDDraw()
@@ -212,7 +210,7 @@ void C_GameUi::SkillHUDDraw()
 		Math::Matrix mat = s * t;
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Rectangle rect = { 0,0,300,100 };
+		Math::Rectangle rect = { 0,0,250,40 };
 
 		auto sm = o->GetSkillManager();
 
@@ -254,8 +252,8 @@ void C_GameUi::SkillHUDDraw()
 			if (sm)
 			{
 				Math::Rectangle rect = { 0,0,700,210 };
-				Math::Vector2 pos = { 10,330 };
-				Math::Vector2 scale = { 0.22f,0.22f };
+				Math::Vector2 pos = { -10,340 };
+				Math::Vector2 scale = { 0.17f,0.17f };
 
 				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -284,8 +282,8 @@ void C_GameUi::SkillHUDDraw()
 			if (sm)
 			{
 				Math::Rectangle rect = { 0,0,210,210 };
-				Math::Vector2 pos = { -60,330 };
-				Math::Vector2 scale = { 0.22f,0.22f };
+				Math::Vector2 pos = { -70,340 };
+				Math::Vector2 scale = { 0.17f,0.17f };
 
 				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -309,12 +307,12 @@ void C_GameUi::SkillHUDDraw()
 
 void C_GameUi::LifeHUDInit()
 {
-	m_lifestartpos = { -420,235 };
+	m_lifestartpos = { -420,295 };
 
-	m_lifescale = { 0.7f,0.7f };
+	m_lifescale = { 0.5f,0.5f };
 
-	m_LIFETextpos = { -517,235 };
-	m_LIFETextscale = { 0.4f,0.4f };
+	m_LIFETextpos = { -517,295 };
+	m_LIFETextscale = { 0.3f,0.3f };
 	m_LIFETextrect = { 0,0,480,100 };
 }
 
@@ -332,7 +330,7 @@ void C_GameUi::LifeDraw()
 	{
 		auto o = m_owner.lock();
 
-		float w = CommonTex.GetPlayerRect().width;
+		float w = CommonTex.GetPlayerRect().width+20.0f;
 
 		Math::Matrix s = Math::Matrix::CreateScale(m_lifescale.x, m_lifescale.y, 1);
 
@@ -363,7 +361,7 @@ void C_GameUi::TimeDraw()
 	//TIMEテキスト
 	{
 		Math::Vector2 scale = { 0.5f,0.5f };
-		Math::Vector2 pos = { 200,235 };
+		Math::Vector2 pos = { 200,315 };
 
 		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -390,13 +388,13 @@ void C_GameUi::TimeDraw()
 			Math::Vector2 scale = { 0.3f,0.5f };
 			Math::Color color = { 1,1,1,1 };
 
-			Math::Vector2 pos1 = { 350,235 };
+			Math::Vector2 pos1 = { 350,315 };
 			COMMONAPI.NumDraw(minute, pos1, scale, color, true, 2);
 
-			Math::Vector2 pos2 = { 440,235 };
+			Math::Vector2 pos2 = { 440,315 };
 			COMMONAPI.NumDraw(second, pos2, scale,color, true, 2);
 
-			Math::Vector2 pos3 = { 530,235 };
+			Math::Vector2 pos3 = { 530,315 };
 			COMMONAPI.NumDraw(millisecond, pos3, scale,color, true, 2);
 		}
 	}
@@ -411,7 +409,7 @@ void C_GameUi::TimeDraw()
 
 		for (int i = 0; i < 2; i++)
 		{
-			Math::Vector2 pos = { 380.0f + (i * 90),235 };
+			Math::Vector2 pos = { 380.0f + (i * 90),315 };
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 			Math::Matrix mat = s * t;
@@ -421,42 +419,42 @@ void C_GameUi::TimeDraw()
 		}
 	}
 }
-
-void C_GameUi::PauseIconInit()
-{
-	
-}
-
-void C_GameUi::PauseIconDraw()
-{
-	Math::Vector2 scale = { 0.3f,0.3f };
-
-	//ESC
-	{
-	
-		Math::Vector2 pos = { 460,320 };
-
-		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
-		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
-		Math::Matrix mat = s * t;
-
-		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Rectangle rect = { 0,0,700,210 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetESCtex(), rect, 1.0f);
-	}
-
-	//一時停止アイコン
-	{
-		//Math::Vector2 scale = { 0.4f,0.4f };
-		Math::Vector2 pos = { 380,320 };
-
-		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
-		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
-		Math::Matrix mat = s * t;
-
-		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Rectangle rect = { 0,0,210,210 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPauseicontex(), rect, 1.0f);
-	}
-}
-
+//
+//void C_GameUi::PauseIconInit()
+//{
+//	
+//}
+//
+//void C_GameUi::PauseIconDraw()
+//{
+//	Math::Vector2 scale = { 0.3f,0.3f };
+//
+//	//ESC
+//	{
+//	
+//		Math::Vector2 pos = { 460,320 };
+//
+//		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+//		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+//		Math::Matrix mat = s * t;
+//
+//		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+//		Math::Rectangle rect = { 0,0,700,210 };
+//		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetESCtex(), rect, 1.0f);
+//	}
+//
+//	//一時停止アイコン
+//	{
+//		//Math::Vector2 scale = { 0.4f,0.4f };
+//		Math::Vector2 pos = { 380,320 };
+//
+//		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+//		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+//		Math::Matrix mat = s * t;
+//
+//		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+//		Math::Rectangle rect = { 0,0,210,210 };
+//		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPauseicontex(), rect, 1.0f);
+//	}
+//}
+//

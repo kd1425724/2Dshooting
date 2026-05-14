@@ -10,7 +10,7 @@ public:
 
     // HUDエリア
     static const int HUDAreaWidth = 1280;
-    static const int HUDAreaHeight = 160;
+    static const int HUDAreaHeight = 80;
 
     // プレイエリア
     static const int PlayAreaWidth = 1280;

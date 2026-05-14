@@ -9,7 +9,7 @@
 #include"../Hit/HitManager.h"
 #include"../Effect/EffectManager.h"
 #include"../Common/CommonTexture.h"
-
+#include"../Info.h"
 void C_EnemyManager::Init(std::shared_ptr<C_Player> player)
 {
 	m_player = player;
@@ -321,7 +321,7 @@ void C_EnemyManager::BossSpworn()
 		sb->SetEngineTex(&CommonTex.GetSubBossEnginetex());
 		sb->SetDeathTex(&CommonTex.GetSubBossDeathtex());
 		sb->SetId(i);
-		sb->Init({ 700,(float)0 - 80 + 200 - (i * 400) });
+		sb->Init({ 700,(float)0 - INFO.HUDAreaHeight/2.0f + 200 - (i * 400) });
 
 		m_subbosss.push_back(sb);
 		m_addenemylist.push_back(sb);

@@ -239,7 +239,7 @@ void C_Player::TitleInit()
 	m_move = { 1.0f,0.0f };
 	m_movespeed = { 0.5f,0.0f };
 	//サイズ
-	m_scale = { 0.4f,0.4f };
+	m_scale = { 1.0f,1.0f };
 	//カラー
 	m_color = { 1,1,1,1 };
 	//切り取り範囲
@@ -278,8 +278,8 @@ void C_Player::TitleDraw()
 	Math::Color color = { 1,1,1,1 };
 	Math::Rectangle enginerect = { 0,0, 64,64 };
 
-	Math::Matrix enginscale = Math::Matrix::CreateScale(0.5f, 0.4f, 0);
-	Math::Matrix engintrans = Math::Matrix::CreateTranslation(m_pos.x-20,m_pos.y, 0);
+	Math::Matrix enginscale = Math::Matrix::CreateScale(0.8f, 0.6f, 0);
+	Math::Matrix engintrans = Math::Matrix::CreateTranslation(m_pos.x-50,m_pos.y, 0);
 
 	Math::Matrix mat = enginscale * engintrans;
 
@@ -359,11 +359,11 @@ void C_Player::Damage()
 			m_Hp--;
 			m_hittimer = HitTime;
 
-			float w = CommonTex.GetPlayerRect().width;
+			float w = CommonTex.GetPlayerRect().width + 20.0f;
 
 			EFFECTMANAGER.AddEffect(EffectType::Explosion, m_pos);
 
-			EFFECTMANAGER.AddEffect(EffectType::ExplosionTopDraw, { -420 + (m_Hp * w * 0.7f),235 });
+			EFFECTMANAGER.AddEffect(EffectType::ExplosionTopDraw, { -420 + (m_Hp * w * 0.5f),295 });
 		}
 	}
 }
