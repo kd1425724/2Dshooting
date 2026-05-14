@@ -47,7 +47,7 @@ void C_Copy::SkillActivate()
 		Math::Vector2 p_pos = p->GetPos();
 
 		m_shot->ShotManager(ShotType::CopyShot, ShotTextureType::Copy, { 5,0 }, { 63,32 },
-			p_pos, { p_pos.x + 100,p_pos.y }, 15);
+			p_pos, { p_pos.x + 100,p_pos.y }, 30);
 	}
 }
 

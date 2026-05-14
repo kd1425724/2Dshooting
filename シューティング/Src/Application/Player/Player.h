@@ -178,9 +178,10 @@ private:
 	//発射間隔
 	int m_shotinterval = 0;
 
-	//デバッグ死亡フラグ
-	bool m_playerdebugdeathflg = false;
-
 	//無敵用
 	bool m_invincible = false;
+
+	//デバッグ死亡フラグ
+	bool m_playerdebugdeathflg = true;
+
 };

@@ -4,12 +4,11 @@ void C_CopyHitEffect::Init(Math::Vector2 pos)
 {
 	//ç¿ïWë„ì¸
 	m_pos = pos;
-	m_scale = 2.0f;
+	m_scale = 3.0f;
 	m_anim = 0;
 	m_rect = { 32,32 };
 	m_alive = true;
 	m_alpha = 1;
-
 }
 
 void C_CopyHitEffect::Update()

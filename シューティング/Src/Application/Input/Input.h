@@ -115,11 +115,15 @@ public:
 
     SHORT GetDebugKey(DebugKeyType debugkeytype)
     {
+        if (!m_olldebugkeyflg)return false;
+
         return GetAsyncKeyState(m_debugkey[(int)debugkeytype]) & 0x8000;
     }
 
     bool GetDebugKeyFlg(DebugKeyType debugkeytype)
     {
+		if (!m_olldebugkeyflg)return false;
+
         return m_debugkeyflg[(int)debugkeytype];
     }
 
@@ -145,6 +149,9 @@ private:
     //デバッグキー
     int m_debugkey[(int)DebugKeyType::DebugKeyNum] = { 0 };
     bool m_debugkeyflg[(int)DebugKeyType::DebugKeyNum] = { false };
+
+    //デバッグキーが使えるかどうかのフラグ
+	bool m_olldebugkeyflg = false;
 
 private:
     C_Input() {}

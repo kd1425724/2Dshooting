@@ -127,6 +127,7 @@ void C_GamePauseUi::Release()
 	m_SpaceKeyTex.Release();
 	m_EKeyTex.Release();
 	m_ShotTextTex.Release();
+	m_EscKeyTex.Release();
 }
 
 void C_GamePauseUi::PAUSEDraw()
@@ -150,6 +151,7 @@ void C_GamePauseUi::KeyInit()
 	m_EKeyTex.Load("Texture/Ui/Button/EKey.png");
 	m_ShotTextTex.Load("Texture/Ui/Font/SHOT.png");
 	m_MoveTextTex.Load("Texture/Ui/Font/MOVE.png");
+	m_EscKeyTex.Load("Texture/Ui/Button/ESCKey.png");
 }
 
 void C_GamePauseUi::KeyDraw()
@@ -160,7 +162,7 @@ void C_GamePauseUi::KeyDraw()
 	//Move
 	{
 		Math::Vector2 texscale = { 0.5f,0.5f };
-		Math::Vector2 pos = { -150,100 };
+		Math::Vector2 pos = { -150,180 };
 
 		Math::Matrix s = Math::Matrix::CreateScale(texscale.x, texscale.y, 1);
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -173,7 +175,7 @@ void C_GamePauseUi::KeyDraw()
 	//Arrow
 	{
 		
-		Math::Vector2 pos = { 150,100 };
+		Math::Vector2 pos = { 150,180 };
 
 		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -183,23 +185,10 @@ void C_GamePauseUi::KeyDraw()
 		Math::Rectangle rect = { 0,0,300,200 };
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_ArrowKeyTex,0,0, &rect, &color);
 	}
-	//SPACE
-	{
-		//Math::Vector2 scale = { 1,1 };
-		Math::Vector2 pos = { 150,0 };
-
-		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
-		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
-		Math::Matrix mat = s * t;
-
-		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Rectangle rect = { 0,0,373,80 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_SpaceKeyTex, 0, 0, &rect, &color);
-	}
 	//SHOT
 	{
 		Math::Vector2 texscale = { 0.5f,0.5f };
-		Math::Vector2 pos = { -150,0 };
+		Math::Vector2 pos = { -150,80 };
 
 		Math::Matrix s = Math::Matrix::CreateScale(texscale.x, texscale.y, 1);
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -209,10 +198,36 @@ void C_GamePauseUi::KeyDraw()
 		Math::Rectangle rect = { 0,0,480,100 };
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_ShotTextTex, 0, 0, &rect, &color);
 	}
-	//E
+	//SPACE
 	{
 		//Math::Vector2 scale = { 1,1 };
-		Math::Vector2 pos = { 150,-100 };
+		Math::Vector2 pos = { 150,80 };
+
+		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		Math::Matrix mat = s * t;
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		Math::Rectangle rect = { 0,0,373,80 };
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_SpaceKeyTex, 0, 0, &rect, &color);
+	}
+	//SKILL
+	{
+		Math::Vector2 texscale = { 0.5f,0.5f };
+		Math::Vector2 pos = { -150,-20 };
+
+		Math::Matrix s = Math::Matrix::CreateScale(texscale.x, texscale.y, 1);
+		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		Math::Matrix mat = s * t;
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		Math::Rectangle rect = { 0,0,480,100 };
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSKILLTEXTtex(), 0, 0, &rect, &color);
+	}
+	//Eキー
+	{
+		//Math::Vector2 scale = { 1,1 };
+		Math::Vector2 pos = { 150,-20 };
 
 		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -222,10 +237,10 @@ void C_GamePauseUi::KeyDraw()
 		Math::Rectangle rect = { 0,0,72,80 };
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_EKeyTex, 0, 0, &rect, &color);
 	}
-	//SKILL
+	//PAUSE
 	{
 		Math::Vector2 texscale = { 0.5f,0.5f };
-		Math::Vector2 pos = { -150,-100 };
+		Math::Vector2 pos = { -150,-120 };
 
 		Math::Matrix s = Math::Matrix::CreateScale(texscale.x, texscale.y, 1);
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -233,6 +248,19 @@ void C_GamePauseUi::KeyDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,480,100 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSKILLTEXTtex(), 0, 0, &rect, &color);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_PAUSEtex, 0, 0, &rect, &color);
+	}
+	//ESCキー
+	{
+		//Math::Vector2 scale = { 1,1 };
+		Math::Vector2 pos = { 150,-120 };
+		Math::Vector2 texscale = { 1.0f,1.0f };
+		Math::Matrix s = Math::Matrix::CreateScale(texscale.x, texscale.y, 1);
+		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+		Math::Matrix mat = s * t;
+
+		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+		Math::Rectangle rect = { 0,0,111,80 };
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_EscKeyTex, 0, 0, &rect, &color);
 	}
 }
