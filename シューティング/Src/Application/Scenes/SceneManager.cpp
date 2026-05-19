@@ -1,6 +1,8 @@
 #include "SceneManager.h"
 #include"Application/Scenes/Title/Title.h"
+#include"StageSelect/StageSelect.h"
 #include"Application/Scenes/Game/Game.h"
+#include"Application/Scenes/Game2/Game2.h"
 #include"GamePause/GamePause.h"
 #include"Application/Scenes/Result/Result.h"
 #include"Application/Ui/Feed.h"
@@ -16,7 +18,9 @@ void C_SceneManager::Release()
 
 void C_SceneManager::Init()
 {
-    scenes.push_back(CreateScene(SceneType::Title));
+	m_oldscenetype = SceneType::Title;
+	m_nowscenetype = SceneType::Title;
+    scenes.push_back(CreateScene(m_nowscenetype));
     scenes.back()->Init();
 }
 
@@ -56,8 +60,20 @@ void C_SceneManager::ImGui()
 
 void C_SceneManager::push(SceneType type, bool popflg, bool Allpopflg)
 {
+	//前のシーンのタイプを保存
+	m_oldscenetype = m_nowscenetype;
+
+	//今のシーンのタイプを保存
+	m_nowscenetype = type;
+
     FEED.FeedOutInit(30, [this, type, popflg,Allpopflg]()
         {
+            //前のシーンのタイプを保存
+            m_oldscenetype = m_nowscenetype;
+
+            //今のシーンのタイプを保存
+            m_nowscenetype = type;
+
             //popフラグがtrueなら今のシーンを消す
             if (popflg)
             {
@@ -77,13 +93,13 @@ void C_SceneManager::push(SceneType type, bool popflg, bool Allpopflg)
 
 
             //指定したシーンを作りそれを格納する
-            auto scene = CreateScene(type);
+            auto scene = CreateScene(m_nowscenetype);
 
             //存在するか
             if (scene != nullptr)
             {
                 //タイトルに戻る時
-                if (type == SceneType::Title)
+                if (m_nowscenetype == SceneType::Title)
                 {
                     //スコアリセット
                     ResetScoreData();
@@ -121,14 +137,20 @@ void C_SceneManager::NoFeedpush(SceneType type, bool popflg, bool Allpopflg)
         }
     }
 
+    //前のシーンのタイプを保存
+    m_oldscenetype = m_nowscenetype;
+
+    //今のシーンのタイプを保存
+    m_nowscenetype = type;
+
     //指定したシーンを作りそれを格納する
-    auto scene = CreateScene(type);
+    auto scene = CreateScene(m_nowscenetype);
 
     //存在するか
     if (scene != nullptr)
     {
         //タイトルに戻る時
-        if (type == SceneType::Title)
+        if (m_nowscenetype == SceneType::Title)
         {
             //スコアリセット
             ResetScoreData();
@@ -159,10 +181,19 @@ std::shared_ptr<C_SceneBase> C_SceneManager::CreateScene(SceneType type)
          SOUND.SetPlayBGM(BGMType::TitleBGM);
         return make_shared<C_Title>();
 
+    case SceneType::StageSelect:
+        EFFECTMANAGER.Release();
+        SOUND.StopSE();
+		return make_shared<C_StageSelect>();
+
     case SceneType::Game:
         SOUND.StopSE();
         SOUND.SetPlayBGM(BGMType::GameBGM);
         return make_shared<C_Game>();
+    case SceneType::Game2:
+        SOUND.StopSE();
+        SOUND.SetPlayBGM(BGMType::GameBGM);
+        return make_shared<C_Game2>();
 
     case SceneType::GamePause:
         return make_shared<C_GamePause>();

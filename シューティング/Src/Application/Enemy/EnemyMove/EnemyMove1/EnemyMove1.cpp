@@ -8,6 +8,7 @@
 #include"../../../Hit/HitManager.h"
 #include"../../../Scenes/SceneManager.h"
 #include"../../../Scenes/Game/Game.h"
+#include"../../../Scenes/Game2/Game2.h"
 #include"../../../Effect/EffectManager.h"
 #include"../../../Sound/Sound.h"
 
@@ -126,19 +127,37 @@ void C_EnemyMove1::Update()
 			auto hm = m_hitmanager.lock();
 			auto s = std::make_shared<C_Shot>();
 			auto o = m_owner.lock();
-			if (o && hm && s)
+			if (o)
 			{
-
-
-				if (auto p = m_player.lock())
+				if (hm && s)
 				{
-					s->SetHitManager(hm);
-					s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-						m_pos, p->GetPos(), 6);//{ m_pos.x,m_pos.y - 100 });
-					o->SetShot(s);
+					if (auto p = m_player.lock())
+					{
+						s->SetHitManager(hm);
+						s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+							m_pos, p->GetPos(), 6);
+						o->SetShot(s);
+					}
+				}
+				m_shotinterval = m_shotintervaltime;
+			}
+			else
+			{
+				if (auto o2 = m_owner2.lock())
+				{
+					if (hm && s)
+					{
+						if (auto p = m_player.lock())
+						{
+							s->SetHitManager(hm);
+							s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+								m_pos, p->GetPos(), 6);
+							o2->SetShot(s);
+						}
+					}
+					m_shotinterval = m_shotintervaltime;
 				}
 			}
-			m_shotinterval = m_shotintervaltime;
 		}
 	}
 

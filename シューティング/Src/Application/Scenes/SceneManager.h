@@ -4,7 +4,9 @@
 enum class SceneType
 {
 	Title,	//タイトル
+	StageSelect,
 	Game,	//ゲーム
+	Game2,	//ゲーム
 	GamePause,	//ゲーム一時停止
 	Result	//リザルト
 };
@@ -55,6 +57,13 @@ public:
 
 	void ResetScoreData() { m_scoredata = std::make_shared<Score>(); m_score = 0; }
 
+	//前のシーンが何か取得
+	SceneType GetOldSceneType(){return m_oldscenetype;}
+
+	//現在のシーンが何か取得
+	SceneType GetNowSceneType() { return m_nowscenetype; }
+
+
 private:
 
 	void Release();
@@ -65,6 +74,8 @@ private:
 
 	//スコア用
 	int m_score = 0;
+	SceneType m_nowscenetype = SceneType::Title;
+	SceneType m_oldscenetype = SceneType::Title;
 
 //シングルトン
 private:

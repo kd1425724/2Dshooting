@@ -182,6 +182,13 @@ void C_EffectManager::AddEffect(EffectType type, Math::Vector2 pos,Math::Vector2
 	}
 }
 
+void C_EffectManager::CopyScanEffect(Math::Vector2 pos, std::shared_ptr<C_SkillManager> skillmanager, std::shared_ptr<C_EnemyMoveBase> enemy)
+{
+	m_addeffects.push_back(std::make_shared<C_CopyHitEffect>());
+	m_addeffects.back()->SetTexture(m_copyhiteffecttex);
+	m_addeffects.back()->Init(pos, skillmanager, enemy);
+}
+
 void C_EffectManager::ScoreEffect(int value)
 {
 	m_addeffects.push_back(std::make_shared<C_ScoreUp>());

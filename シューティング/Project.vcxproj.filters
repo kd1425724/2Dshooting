@@ -145,6 +145,18 @@
     <Filter Include="Src\Application\Sound">
       <UniqueIdentifier>{68c5b4fc-9b4d-464a-bd88-c285f609883a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Scenes\StageSelect">
+      <UniqueIdentifier>{f5628a57-9b41-4164-a9e0-45f4eba9f494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Scenes\Game2">
+      <UniqueIdentifier>{ab668ee8-e972-47c9-a111-f8c407a4c808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Effect\CopyScan">
+      <UniqueIdentifier>{4de5de05-b041-44e8-9d6e-8d740924186c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Effect\ScanCompleteText">
+      <UniqueIdentifier>{173b502a-e042-4ad3-babb-765523de66ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -366,6 +378,21 @@
     <ClInclude Include="Src\Application\Sound\Sound.h">
       <Filter>Src\Application\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Scenes\StageSelect\StageSelect.h">
+      <Filter>Src\Application\Scenes\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Ui\ScenesUi\StageSelectUi.h">
+      <Filter>Src\Application\Ui\ScenesUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Scenes\Game2\Game2.h">
+      <Filter>Src\Application\Scenes\Game2</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Effect\CopyScan\CopyScan.h">
+      <Filter>Src\Application\Effect\CopyScan</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Effect\ScanCompleteText\ScanCompleteText.h">
+      <Filter>Src\Application\Effect\ScanCompleteText</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -556,6 +583,21 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Sound\Sound.cpp">
       <Filter>Src\Application\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Scenes\StageSelect\StageSelect.cpp">
+      <Filter>Src\Application\Scenes\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Ui\ScenesUi\StageSelectUi.cpp">
+      <Filter>Src\Application\Ui\ScenesUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Scenes\Game2\Game2.cpp">
+      <Filter>Src\Application\Scenes\Game2</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Effect\CopyScan\CopyScan.cpp">
+      <Filter>Src\Application\Effect\CopyScan</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Effect\ScanCompleteText\ScanCompleteText.cpp">
+      <Filter>Src\Application\Effect\ScanCompleteText</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

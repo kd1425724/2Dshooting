@@ -25,12 +25,24 @@ public:
     int PlayerPowerEnhancement = 5;
     int PlayerSpeedEnhancement = 2;
 
+	// ===== スコアアタック・タイムアタックユーザースター情報（セーブデータ） =====
+	void UserStarInfoLoad();
+	void UserStarInfoSave();
+
+	int ScoreAttackUserStarInfo = 0;
+	int TimeAttackUserStarInfo = 0;
+
+
 private:
+
+	void Init();
+
+	void Save();
 
     void Release();
 
-    C_Info() {}
-    ~C_Info() { Release(); }
+    C_Info() { Init(); }
+    ~C_Info() { Release(); Save(); }
 
 public:
     static C_Info& GetInstans()

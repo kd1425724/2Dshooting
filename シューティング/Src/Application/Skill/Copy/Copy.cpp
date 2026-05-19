@@ -30,9 +30,7 @@ void C_Copy::Update()
 
 void C_Copy::Draw()
 {
-	
-	m_shot->Draw();
-	
+	m_shot->Draw();	
 }
 
 void C_Copy::SkillActivate()

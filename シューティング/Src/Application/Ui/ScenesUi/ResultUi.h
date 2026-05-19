@@ -70,6 +70,11 @@ private:
 	void StarDraw();
 
 	static const int StarControlNum = 15000000;//‚P5‚O‚O–œ
+	//ŽžŠÔ
+	static const int TimeStarControlNum1 = 70;//1•ª‚P‚O•b
+	static const int TimeStarControlNum2 = 90;//1•ª‚R‚O•b
+	static const int TimeStarControlNum3 = 120;//2•ª00•b
+
 	static const int StarNum = 3;
 
 	int m_pickstarnum = 0;

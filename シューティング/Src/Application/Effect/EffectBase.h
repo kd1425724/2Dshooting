@@ -1,5 +1,8 @@
 #pragma once
 
+class C_SkillManager;
+class C_EnemyMoveBase;
+
 class C_EffectBase
 {
 public:
@@ -11,6 +14,7 @@ public:
     virtual void Init(Math::Vector2 pos) {}
     virtual void Init(Math::Vector2 pos, Math::Vector2 scale, int time) {}
     virtual void Init(Math::Vector2 pos,int value) {}
+    virtual void Init(Math::Vector2 pos, std::shared_ptr<C_SkillManager> skillmanager,std::shared_ptr<C_EnemyMoveBase> enemy){}
     virtual void Update() {}
     virtual void Draw() {}
 
@@ -25,6 +29,9 @@ public:
     void SetTexture(std::shared_ptr<KdTexture> tex) { m_tex = tex; }
 
 protected:
+
+    std::weak_ptr<C_SkillManager> m_skillmanager = {};
+    std::weak_ptr<C_EnemyMoveBase> m_enemy = {};
 
 	virtual void Release() {}
 

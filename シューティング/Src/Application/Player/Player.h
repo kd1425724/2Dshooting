@@ -2,6 +2,7 @@
 
 class C_HitManager;
 class C_Game;
+class C_Game2;
 
 enum class PlayerShotInterval
 {
@@ -116,6 +117,10 @@ public:
 	{
 		m_owner = owner;
 	}
+	void SetOwner(std::shared_ptr<C_Game2> owner)
+	{
+		m_owner2 = owner;
+	}
 
 	void SetInvincible(bool invincible)
 	{
@@ -126,6 +131,7 @@ private:
 
 	//オーナー
 	std::weak_ptr<C_Game> m_owner;
+	std::weak_ptr<C_Game2> m_owner2;
 
 	//エンジン
 	std::vector<std::shared_ptr<KdTexture>> m_enginetexs;

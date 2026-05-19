@@ -8,6 +8,7 @@
 #include"../../../Skill/SkillBase.h"
 #include"../../../Hit/HitManager.h"
 #include"../../../Scenes/Game/Game.h"
+#include"../../../Scenes/Game2/Game2.h"
 #include"../../../Effect/EffectManager.h"
 #include"../../../Scenes/SceneManager.h"
 #include"../../../Sound/Sound.h"
@@ -166,21 +167,53 @@ void C_EnemyMove3::Update()
 				{
 				case UseType::Player:
 
-					if (s&&hm&&o)
+					if (o)
 					{
-						s->SetHitManager(hm);
-						s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-							m_pos, { m_pos.x + 100,m_pos.y }, 6);
-						o->SetShot(s);
+						if (s && hm)
+						{
+							s->SetHitManager(hm);
+							s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+								m_pos, { m_pos.x + 100,m_pos.y }, 6);
+							o->SetShot(s);
+						}
+					}
+					else
+					{
+						if(auto o2=m_owner2.lock())
+						{
+							if (s && hm)
+							{
+								s->SetHitManager(hm);
+								s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+									m_pos, { m_pos.x + 100,m_pos.y }, 6);
+								o2->SetShot(s);
+							}
+						}
 					}
 					break;
 				case UseType::Enemy:
-					if (s && hm && o)
+					if (o)
 					{
-						s->SetHitManager(hm);
-						s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-							m_pos, { m_pos.x - 100,m_pos.y }, 6);
-						o->SetShot(s);
+						if (s && hm)
+						{
+							s->SetHitManager(hm);
+							s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+								m_pos, { m_pos.x - 100,m_pos.y }, 6);
+							o->SetShot(s);
+						}
+					}
+					else
+					{
+						if (auto o2 = m_owner2.lock())
+						{
+							if (s && hm)
+							{
+								s->SetHitManager(hm);
+								s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+									m_pos, { m_pos.x - 100,m_pos.y }, 6);
+								o2->SetShot(s);
+							}
+						}
 					}
 					break;
 				default:

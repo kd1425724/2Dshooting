@@ -80,6 +80,60 @@ public:
 	//スキルアイコン
 	const std::vector<std::shared_ptr<KdTexture>>& GetSkillIcontex()const { return m_skillicontexs; }
 
+
+	//ステージセレクト
+	const KdTexture& GetStage1tex()const { return m_stage1tex; }
+	const KdTexture& GetStage2tex()const { return m_stage2tex; }
+	const KdTexture& GetStage1FrameTex()const { return m_stage1frametex; }
+	const KdTexture& GetStage2FrameTex()const { return m_stage2frametex; }
+	//ステージセレクトの戻るボタン
+	const KdTexture& GetBackButtonTex()const { return m_backbuttontex; }
+	//ステージセレクトの戻るボタンのフレーム
+	const KdTexture& GetBackButtonFrameTex()const { return m_backbuttonframetex; }
+
+	const KdTexture& GetStageSelectHUDTex()const { return m_StageSelectHUDtex; }
+
+	//スコアアタックテキスト
+	const KdTexture& GetScoreAttackTextTex()const { return m_ScoreAttackTextTex; }
+	//タイムアタックテキスト
+	const KdTexture& GetTimeAttackTextTex()const { return m_TimeAttackTextTex; }
+	//「以内にクリア」テキスト
+	const KdTexture& GetClearWithinTextTex()const { return m_ClearWithinTextTex; }
+
+	//「以上達成」テキスト
+	const KdTexture& GetAchieveAboveTextTex()const { return m_AchieveAboveTextTex; }
+
+	//星獲得条件フレーム
+	const std::shared_ptr<KdTexture>& GetStarGetConditionFrameTex(int index)const 
+	{
+		if (index >= m_StarGetConditionFrameTex.size())return m_StarGetConditionFrameTex[0];
+		return m_StarGetConditionFrameTex[index]; 
+	}
+
+	//タイムアタック条件
+	const std::shared_ptr<KdTexture>& GetTimeAttackConditionTex(int index)const
+	{
+		if (index >= m_TimeAttackConditionTex.size())return m_TimeAttackConditionTex[0];
+		return m_TimeAttackConditionTex[index];
+	}
+
+	//スコアアタック条件
+	const std::shared_ptr<KdTexture>& GetScoreAttackConditionTex(int index)const
+	{
+		if (index >= m_ScoreAttackConditionTex.size())return m_ScoreAttackConditionTex[0];
+		return m_ScoreAttackConditionTex[index];
+	}
+
+	//星フレーム
+	const KdTexture& GetStarFrameTex()const { return m_starframetex; }
+	//星
+	const KdTexture& GetStarTex()const { return m_startex; }
+
+	//「スキャン中」テキスト
+	const KdTexture& GetScaningTextTex()const { return m_ScaningTextTex; }
+	//「スキャン完了」テキスト
+	const KdTexture& GetScanCompleteTextTex()const { return m_ScanCompleteTextTex; }
+
 private:
 
 	//フェード用
@@ -114,6 +168,15 @@ private:
 
 	//GameHUDArea
 	KdTexture m_GameHUDareatex = {};
+
+	//ステージ１&２
+	KdTexture m_stage1tex = {};
+	KdTexture m_stage2tex = {};
+	//ステージフレーム
+	KdTexture m_stage1frametex = {};
+	KdTexture m_stage2frametex = {};
+	KdTexture m_backbuttontex = {};
+	KdTexture m_backbuttonframetex = {};
 
 
 	//プレイヤーエンジン
@@ -160,6 +223,41 @@ private:
 
 	//START
 	KdTexture m_STARTTEXTtex;
+
+	//ステージセレクトHUD
+	KdTexture m_StageSelectHUDtex = {};
+
+	//スコアアタックテキスト
+	KdTexture m_ScoreAttackTextTex = {};
+
+	//タイムアタックテキスト
+	KdTexture m_TimeAttackTextTex = {};
+
+	//「以内にクリア」テキスト
+	KdTexture m_ClearWithinTextTex = {};
+
+	//「以上達成」テキスト
+	KdTexture m_AchieveAboveTextTex = {};
+
+	//星獲得条件フレーム
+	std::vector<std::shared_ptr<KdTexture>> m_StarGetConditionFrameTex = {};
+
+	//星フレーム
+	KdTexture m_starframetex = {};
+	//星
+	KdTexture m_startex = {};
+
+	//タイムアタック条件
+	std::vector<std::shared_ptr<KdTexture>> m_TimeAttackConditionTex = {};
+
+	//スコアアタック条件
+	std::vector<std::shared_ptr<KdTexture>> m_ScoreAttackConditionTex = {};
+
+
+	//「スキャン中」テキスト
+	KdTexture m_ScaningTextTex = {};
+	//「スキャン完了」テキスト
+	KdTexture m_ScanCompleteTextTex = {};
 
 //シングルトン
 private:

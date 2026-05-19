@@ -2,7 +2,9 @@
 #include"Application/Ui/ScenesUi/ScenesUiBase.h"
 
 enum class SkillType;
+class C_SceneBase;
 class C_Game;
+class C_Game2;
 
 class C_GameUi : public C_ScenesUiBase
 {
@@ -24,6 +26,11 @@ public:
 	{
 		m_owner = owner;
 	}
+	//オーナー
+	void SetOwner(std::shared_ptr<C_Game2> owner)
+	{
+		m_owner2 = owner;
+	}
 
 	//スキル用
 	void SetSkillIconTex(std::vector<std::shared_ptr<KdTexture>> tex)
@@ -39,6 +46,7 @@ private:
 
 	//オーナー
 	std::weak_ptr<C_Game> m_owner;
+	std::weak_ptr<C_Game2> m_owner2;
 
 	//背景用
 	Math::Matrix m_backgroundtransmat2 = Math::Matrix::Identity;

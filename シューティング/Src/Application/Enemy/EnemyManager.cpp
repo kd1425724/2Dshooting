@@ -31,6 +31,7 @@ void C_EnemyManager::Release()
 	m_subbosss.clear();
 
 	m_owner.reset();
+	m_owner2.reset();
 	m_hitmanager.reset();
 	m_skillmanager.reset();
 }
@@ -323,7 +324,14 @@ void C_EnemyManager::BossSpworn()
 	for (int i = 0; i < 2; i++)
 	{
 		auto sb = std::make_shared<C_SubBoss>();
-		sb->SetOwner(m_owner);
+		if (auto o=m_owner.lock())
+		{
+			sb->SetOwner(o);
+		}
+		else if(auto o2=m_owner2.lock())
+		{
+			sb->SetOwner(o2);
+		}
 		sb->SetHitManager(m_hitmanager);
 		sb->SetSkillManager(m_skillmanager);
 		sb->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::SubBoss), { 128,128 }, { NULL,NULL });
@@ -339,7 +347,14 @@ void C_EnemyManager::BossSpworn()
 
 	//É{ÉX
 	m_boss = std::make_shared<C_Boss>();
-	m_boss->SetOwner(m_owner);
+	if (auto o = m_owner.lock())
+	{
+		m_boss->SetOwner(o);
+	}
+	else if (auto o2 = m_owner2.lock())
+	{
+		m_boss->SetOwner(o2);
+	}
 	m_boss->SetHitManager(m_hitmanager);
 	m_boss->SetSkillManager(m_skillmanager);
 	m_boss->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::Boss),{ 128,128 }, { NULL,NULL });
@@ -359,7 +374,14 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 		for (int i = 0; i < 4; i++)
 		{
 			std::shared_ptr<C_EnemyMove3> e = std::make_shared<C_EnemyMove3>();
-			e->SetOwner(m_owner);
+			if (auto o = m_owner.lock())
+			{
+				e->SetOwner(o);
+			}
+			else if (auto o2 = m_owner2.lock())
+			{
+				e->SetOwner(o2);
+			}
 			e->SetHitManager(m_hitmanager);
 			e->SetTexandRectandAnimMax(&GetEnemyTexture(EnemyType::enemy3),
 				{ 64,64 }, { 0,0 });
@@ -382,7 +404,15 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 					{
 						//
 						m_addenemylist.emplace_back(std::make_shared<C_EnemyMove1>());
-						m_addenemylist.back()->SetOwner(m_owner);
+						if (auto o = m_owner.lock())
+						{
+							m_addenemylist.back()->SetOwner(o);
+						}
+						else if (auto o2 = m_owner2.lock())
+						{
+							m_addenemylist.back()->SetOwner(o2);
+						}
+						
 						m_addenemylist.back()->SetHitManager(m_hitmanager);
 						m_addenemylist.back()->SetSkillManager(m_skillmanager);
 
@@ -395,7 +425,14 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 						//
 						m_addenemylist.emplace_back(std::make_shared<C_EnemyMove1>());
-						m_addenemylist.back()->SetOwner(m_owner);
+						if (auto o = m_owner.lock())
+						{
+							m_addenemylist.back()->SetOwner(o);
+						}
+						else if (auto o2 = m_owner2.lock())
+						{
+							m_addenemylist.back()->SetOwner(o2);
+						}
 						m_addenemylist.back()->SetHitManager(m_hitmanager);
 						m_addenemylist.back()->SetSkillManager(m_skillmanager);
 
@@ -414,7 +451,14 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 					{
 						//
 						m_addenemylist.emplace_back(std::make_shared<C_EnemyMove1>());
-						m_addenemylist.back()->SetOwner(m_owner);
+						if (auto o = m_owner.lock())
+						{
+							m_addenemylist.back()->SetOwner(o);
+						}
+						else if (auto o2 = m_owner2.lock())
+						{
+							m_addenemylist.back()->SetOwner(o2);
+						}
 						m_addenemylist.back()->SetHitManager(m_hitmanager);
 						m_addenemylist.back()->SetSkillManager(m_skillmanager);
 
@@ -428,7 +472,14 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 
 						//
 						m_addenemylist.emplace_back(std::make_shared<C_EnemyMove1>());
-						m_addenemylist.back()->SetOwner(m_owner);
+						if (auto o = m_owner.lock())
+						{
+							m_addenemylist.back()->SetOwner(o);
+						}
+						else if (auto o2 = m_owner2.lock())
+						{
+							m_addenemylist.back()->SetOwner(o2);
+						}
 						m_addenemylist.back()->SetHitManager(m_hitmanager);
 						m_addenemylist.back()->SetSkillManager(m_skillmanager);
 
@@ -444,7 +495,14 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 			break;
 		case EnemyMoveType::Type2:
 			m_addenemylist.emplace_back(std::make_shared<C_EnemyMove2>());
-			m_addenemylist.back()->SetOwner(m_owner);
+			if (auto o = m_owner.lock())
+			{
+				m_addenemylist.back()->SetOwner(o);
+			}
+			else if (auto o2 = m_owner2.lock())
+			{
+				m_addenemylist.back()->SetOwner(o2);
+			}
 			m_addenemylist.back()->SetHitManager(m_hitmanager);
 			m_addenemylist.back()->SetSkillManager(m_skillmanager);
 
@@ -456,7 +514,14 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 				m_player, NULL);
 			//
 			m_addenemylist.emplace_back(std::make_shared<C_EnemyMove2>());
-			m_addenemylist.back()->SetOwner(m_owner);
+			if (auto o = m_owner.lock())
+			{
+				m_addenemylist.back()->SetOwner(o);
+			}
+			else if (auto o2 = m_owner2.lock())
+			{
+				m_addenemylist.back()->SetOwner(o2);
+			}
 			m_addenemylist.back()->SetHitManager(m_hitmanager);
 			m_addenemylist.back()->SetSkillManager(m_skillmanager);
 
@@ -472,7 +537,14 @@ void C_EnemyManager::SkillEnemySpworn(Math::Vector2 pos,UseType type,EnemyMoveTy
 			for (int i = 0; i < 4; i++)
 			{
 				m_addenemylist.emplace_back(std::make_shared<C_EnemyMove3>());
-				m_addenemylist.back()->SetOwner(m_owner);
+				if (auto o = m_owner.lock())
+				{
+					m_addenemylist.back()->SetOwner(o);
+				}
+				else if (auto o2 = m_owner2.lock())
+				{
+					m_addenemylist.back()->SetOwner(o2);
+				}
 				m_addenemylist.back()->SetHitManager(m_hitmanager);
 				m_addenemylist.back()->SetSkillManager(m_skillmanager);
 

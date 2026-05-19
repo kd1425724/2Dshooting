@@ -5,6 +5,7 @@
 #include"../../../Hit/HitManager.h"
 #include"../../../Info.h"
 #include"../../../Scenes/Game/Game.h"
+#include"../../../Scenes/Game2/Game2.h"
 #include"../../../Input/Input.h"
 #include"../../../Player/Player.h"
 #include"../../../Sound/Sound.h"
@@ -502,20 +503,43 @@ void C_Boss::p4_SpiralUpdate()
 			auto hm = m_hitmanager.lock();
 			auto o = m_owner.lock();
 
-			if (s && hm && o)
+			if (o)
 			{
-				s->SetHitManager(hm);
-				s->ShotManager(
-					ShotType::EnemyNormalShot,
-					ShotTextureType::Bolt,
-					{ 4,0 },
-					{ 48,32 },
-					m_pos,
-					angle,
-					7
-				);
+				if (s && hm)
+				{
+					s->SetHitManager(hm);
+					s->ShotManager(
+						ShotType::EnemyNormalShot,
+						ShotTextureType::Bolt,
+						{ 4,0 },
+						{ 48,32 },
+						m_pos,
+						angle,
+						7
+					);
 
-				o->SetShot(s);
+					o->SetShot(s);
+				}
+			}
+			else
+			{
+				if(auto o2= m_owner2.lock())
+				{
+					if (s && hm)
+					{
+						s->SetHitManager(hm);
+						s->ShotManager(
+							ShotType::EnemyNormalShot,
+							ShotTextureType::Bolt,
+							{ 4,0 },
+							{ 48,32 },
+							m_pos,
+							angle,
+							7
+						);
+						o2->SetShot(s);
+					}
+				}
 			}
 		}
 	
@@ -546,54 +570,107 @@ void C_Boss::p5_Shot2Update()
 	{
 		auto hm = m_hitmanager.lock();
 		auto o = m_owner.lock();
-		if (hm && o)
+		if (o)
 		{
-			auto p = o->GetPlayer();
-
-			if (p)
+			if (hm)
 			{
+				auto p = o->GetPlayer();
 
-				float startangle = 360.0f / 20.0f;
-
-				for (int i = 0; i < 20; i++)
+				if (p)
 				{
-					float angle = startangle * i;
 
-					auto s = std::make_shared<C_Shot>();
+					float startangle = 360.0f / 20.0f;
 
-					if (s)
+					for (int i = 0; i < 20; i++)
 					{
-						if (i % 2 == 0)
+						float angle = startangle * i;
+
+						auto s = std::make_shared<C_Shot>();
+
+						if (s)
 						{
-							s->SetHitManager(hm);
-							s->ShotManager(
-								ShotType::EnemyNormalShot,
-								ShotTextureType::Bolt,
-								{ 4,0 },
-								{ 48,32 },
-								m_pos,
-								DirectX::XMConvertToRadians(angle),
-								7
-							);
+							if (i % 2 == 0)
+							{
+								s->SetHitManager(hm);
+								s->ShotManager(
+									ShotType::EnemyNormalShot,
+									ShotTextureType::Bolt,
+									{ 4,0 },
+									{ 48,32 },
+									m_pos,
+									DirectX::XMConvertToRadians(angle),
+									7
+								);
 
-							o->SetShot(s);
+								o->SetShot(s);
+							}
+							else
+							{
+								s->SetHitManager(hm);
+								s->ShotManager(
+									ShotType::EnemyNormalShot,
+									ShotTextureType::Bolt,
+									{ 4,0 },
+									{ 48,32 },
+									m_pos,
+									DirectX::XMConvertToRadians(angle),
+									5.0f
+								);
+
+								o->SetShot(s);
+							}
+
 						}
-						else
+					}
+				}
+			}
+		}
+		else
+		{
+			if(auto o2 = m_owner2.lock())
+			{
+				if (hm)
+				{
+					auto p = o2->GetPlayer();
+					if (p)
+					{
+						float startangle = 360.0f / 20.0f;
+						for (int i = 0; i < 20; i++)
 						{
-							s->SetHitManager(hm);
-							s->ShotManager(
-								ShotType::EnemyNormalShot,
-								ShotTextureType::Bolt,
-								{ 4,0 },
-								{ 48,32 },
-								m_pos,
-								DirectX::XMConvertToRadians(angle),
-								5.0f
-							);
-
-							o->SetShot(s);
+							float angle = startangle * i;
+							auto s = std::make_shared<C_Shot>();
+							if (s)
+							{
+								if (i % 2 == 0)
+								{
+									s->SetHitManager(hm);
+									s->ShotManager(
+										ShotType::EnemyNormalShot,
+										ShotTextureType::Bolt,
+										{ 4,0 },
+										{ 48,32 },
+										m_pos,
+										DirectX::XMConvertToRadians(angle),
+										7
+									);
+									o2->SetShot(s);
+								}
+								else
+								{
+									s->SetHitManager(hm);
+									s->ShotManager(
+										ShotType::EnemyNormalShot,
+										ShotTextureType::Bolt,
+										{ 4,0 },
+										{ 48,32 },
+										m_pos,
+										DirectX::XMConvertToRadians(angle),
+										5.0f
+									);
+									o2->SetShot(s);
+								}
+							}
 						}
-
 					}
 				}
 			}
@@ -606,42 +683,83 @@ void C_Boss::p5_Shot2Update()
 	{
 		auto hm = m_hitmanager.lock();
 		auto o = m_owner.lock();
-		if (hm && o)
+
+		if (o)
 		{
-			auto p = o->GetPlayer();
-
-			if (p)
+			if (hm)
 			{
+				auto p = o->GetPlayer();
 
-				float startangle = 36;
-
-				for (int i = 0; i < 10; i++)
+				if (p)
 				{
-					float angle = startangle * i;
 
-					auto s = std::make_shared<C_Shot>();
+					float startangle = 36;
 
-					if (s)
+					for (int i = 0; i < 10; i++)
 					{
-						float a = cosf(DirectX::XMConvertToRadians(angle)) * 70;
-						float b = sinf(DirectX::XMConvertToRadians(angle)) * 70;
+						float angle = startangle * i;
 
-						float posX = m_pos.x + a;
-						float posY = m_pos.y + b;
+						auto s = std::make_shared<C_Shot>();
 
-						s->SetHitManager(hm);
-						s->ShotManager(
-							ShotType::EnemyNormalShot,
-							ShotTextureType::Bolt,
-							{ 4,0 },
-							{ 48,32 },
-							{ posX,posY },
-							p->GetPos(),
-							9
-						);
+						if (s)
+						{
+							float a = cosf(DirectX::XMConvertToRadians(angle)) * 70;
+							float b = sinf(DirectX::XMConvertToRadians(angle)) * 70;
 
-						o->SetShot(s);
+							float posX = m_pos.x + a;
+							float posY = m_pos.y + b;
 
+							s->SetHitManager(hm);
+							s->ShotManager(
+								ShotType::EnemyNormalShot,
+								ShotTextureType::Bolt,
+								{ 4,0 },
+								{ 48,32 },
+								{ posX,posY },
+								p->GetPos(),
+								9
+							);
+
+							o->SetShot(s);
+
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			if (auto o2 = m_owner2.lock())
+			{
+				if (hm)
+				{
+					auto p = o2->GetPlayer();
+					if (p)
+					{
+						float startangle = 36;
+						for (int i = 0; i < 10; i++)
+						{
+							float angle = startangle * i;
+							auto s = std::make_shared<C_Shot>();
+							if (s)
+							{
+								float a = cosf(DirectX::XMConvertToRadians(angle)) * 70;
+								float b = sinf(DirectX::XMConvertToRadians(angle)) * 70;
+								float posX = m_pos.x + a;
+								float posY = m_pos.y + b;
+								s->SetHitManager(hm);
+								s->ShotManager(
+									ShotType::EnemyNormalShot,
+									ShotTextureType::Bolt,
+									{ 4,0 },
+									{ 48,32 },
+									{ posX,posY },
+									p->GetPos(),
+									9
+								);
+								o2->SetShot(s);
+							}
+						}
 					}
 				}
 			}

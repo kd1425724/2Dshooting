@@ -8,6 +8,7 @@
 #include"../../../Skill/SkillManager.h"
 #include"../../../Hit/HitManager.h"
 #include"../../../Scenes/Game/Game.h"
+#include"../../../Scenes/Game2/Game2.h"
 #include"../../../Scenes/SceneManager.h"
 #include"../../../Effect/EffectManager.h"
 #include"../../../Sound/Sound.h"
@@ -152,14 +153,31 @@ void C_EnemyMove2::Update()
 
 			m_shotangle += DirectX::XMConvertToRadians(i * 45);
 
-			if (o && s && hm)
+			if (o)
 			{
-				s->SetHitManager(hm);
-				s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-					m_pos, m_shotangle, 6);
+				if (s && hm)
+				{
+					s->SetHitManager(hm);
+					s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+						m_pos, m_shotangle, 6);
 
-				o->SetShot(s);
-				m_shotangle = keep;
+					o->SetShot(s);
+					m_shotangle = keep;
+				}
+			}
+			else
+			{
+				if(auto o2=m_owner2.lock())
+				{
+					if (s && hm)
+					{
+						s->SetHitManager(hm);
+						s->ShotManager(ShotType::EnemyNormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+							m_pos, m_shotangle, 6);
+						o2->SetShot(s);
+						m_shotangle = keep;
+					}
+				}
 			}
 		}
 

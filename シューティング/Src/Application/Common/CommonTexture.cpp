@@ -27,6 +27,16 @@ C_CommonTexture::C_CommonTexture()
 	m_ESCtex.Load("Texture/Ui/HUD/ESC.png");
 	//Pause
 	m_Pauseicontex.Load("Texture/Ui/HUD/PauseIcon.png");
+
+	m_stage1tex.Load("Texture/Ui/StageSelect/Stage1.png");
+	m_stage2tex.Load("Texture/Ui/StageSelect/Stage2.png");
+	m_stage1frametex.Load("Texture/Ui/StageSelect/Stage1Frame.png");
+	m_stage2frametex.Load("Texture/Ui/StageSelect/Stage2Frame.png");
+	m_backbuttontex.Load("Texture/Ui/HUD/PAUSE/BACKNO.png");
+	m_backbuttonframetex.Load("Texture/Ui/HUD/PAUSE/BACKOK.png");
+	
+	m_StageSelectHUDtex.Load("Texture/Ui/StageSelect/StageSelectHUD.png");
+
 	//プレイヤーエンジン
 	std::shared_ptr<KdTexture> playerenginetex = std::make_shared<KdTexture>();
 	playerenginetex->Load("Texture/Player/PlayerEngine_01.png");
@@ -79,6 +89,59 @@ C_CommonTexture::C_CommonTexture()
 	m_skillicontexs.back()->Load("Texture/Ui/HUD/Barrier.png");
 	m_skillicontexs.push_back(std::make_shared<KdTexture>());
 	m_skillicontexs.back()->Load("Texture/Ui/HUD/Laser.png");
+
+	//ステージセレクト
+	//スコアアタック
+	m_ScoreAttackTextTex.Load("Texture/Ui/StageSelect/ScoreAttackText.png");
+	//タイムアタック
+	m_TimeAttackTextTex.Load("Texture/Ui/StageSelect/TimeAttackText.png");
+	//「以内にクリア」
+	m_ClearWithinTextTex.Load("Texture/Ui/StageSelect/ClearWithinText.png");
+	//「以上達成」
+	m_AchieveAboveTextTex.Load("Texture/Ui/StageSelect/AchieveAboveText.png");
+
+	//星獲得条件フレーム用
+	std::shared_ptr<KdTexture> starframetex1=std::make_shared<KdTexture>();
+	starframetex1->Load("Texture/Ui/StageSelect/StarGetConditionFrame1.png");
+	m_StarGetConditionFrameTex.push_back(starframetex1);
+	std::shared_ptr<KdTexture> starframetex2 = std::make_shared<KdTexture>();
+	starframetex2->Load("Texture/Ui/StageSelect/StarGetConditionFrame2.png");
+	m_StarGetConditionFrameTex.push_back(starframetex2);
+	std::shared_ptr<KdTexture> starframetex3 = std::make_shared<KdTexture>();
+	starframetex3->Load("Texture/Ui/StageSelect/StarGetConditionFrame3.png");
+	m_StarGetConditionFrameTex.push_back(starframetex3);
+
+	//タイムアタック条件
+	std::shared_ptr<KdTexture> timeattacktex1 = std::make_shared<KdTexture>();
+	timeattacktex1->Load("Texture/Ui/StageSelect/TimeAttackCondition1.png");
+	m_TimeAttackConditionTex.push_back(timeattacktex1);
+	std::shared_ptr<KdTexture> timeattacktex2 = std::make_shared<KdTexture>();
+	timeattacktex2->Load("Texture/Ui/StageSelect/TimeAttackCondition2.png");
+	m_TimeAttackConditionTex.push_back(timeattacktex2);
+	std::shared_ptr<KdTexture> timeattacktex3 = std::make_shared<KdTexture>();
+	timeattacktex3->Load("Texture/Ui/StageSelect/TimeAttackCondition3.png");
+	m_TimeAttackConditionTex.push_back(timeattacktex3);
+
+	//スコアアタック条件
+	std::shared_ptr<KdTexture> scoreattacktex1 = std::make_shared<KdTexture>();
+	scoreattacktex1->Load("Texture/Ui/StageSelect/ScoreAttackCondition1.png");
+	m_ScoreAttackConditionTex.push_back(scoreattacktex1);
+	std::shared_ptr<KdTexture> scoreattacktex2 = std::make_shared<KdTexture>();
+	scoreattacktex2->Load("Texture/Ui/StageSelect/ScoreAttackCondition2.png");
+	m_ScoreAttackConditionTex.push_back(scoreattacktex2);
+	std::shared_ptr<KdTexture> scoreattacktex3 = std::make_shared<KdTexture>();
+	scoreattacktex3->Load("Texture/Ui/StageSelect/ScoreAttackCondition3.png");
+	m_ScoreAttackConditionTex.push_back(scoreattacktex3);
+
+	//星フレーム
+	m_starframetex.Load("Texture/Ui/StageSelect/StarFrame.png");
+	//星
+	m_startex.Load("Texture/Ui/StageSelect/Star.png");
+
+	//「スキャン中」テキスト
+	m_ScaningTextTex.Load("Texture/Ui/Font/ScaningText.png");
+	//「スキャン完了」テキスト
+	m_ScanCompleteTextTex.Load("Texture/Ui/Font/ScanCompleteText.png");
 }
 //解放用
 C_CommonTexture::~C_CommonTexture()
@@ -129,5 +192,24 @@ C_CommonTexture::~C_CommonTexture()
 
 	m_lasertex.reset();
 	m_barriertex.reset();
+
+	m_stage1tex.Release();
+	m_stage2tex.Release();
+	m_stage1frametex.Release();
+	m_stage2frametex.Release();	
+	m_backbuttontex.Release();	
+	m_backbuttonframetex.Release();
+
+	m_StageSelectHUDtex.Release();
+	m_ScoreAttackTextTex.Release();
+	m_TimeAttackTextTex.Release();
+	m_ClearWithinTextTex.Release();
+	m_AchieveAboveTextTex.Release();
+
+	m_starframetex.Release();
+	m_startex.Release();
+
+	m_ScaningTextTex.Release();
+	m_ScanCompleteTextTex.Release();
 }
 

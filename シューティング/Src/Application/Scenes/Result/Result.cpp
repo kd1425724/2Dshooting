@@ -24,7 +24,7 @@ void C_Result::Update()
 
 	m_resultui->Update();
 
-	if (Input.GetUserKey(UserKeyType::ENTER) && !Input.GetUserKeyFlg(UserKeyType::ENTER))
+	if (Input.GetUserKey(UserKeyType::ZKey) && !Input.GetUserKeyFlg(UserKeyType::ZKey))
 	{
 		SCENEMANAGER.push(SceneType::Title, true);
 	}

@@ -78,7 +78,7 @@ void C_GamePauseUi::Update()
 		}
 	}
 	
-	if (Input.GetUserKey(UserKeyType::ENTER) && !Input.GetUserKeyFlg(UserKeyType::ENTER))
+	if (Input.GetUserKey(UserKeyType::ZKey) && !Input.GetUserKeyFlg(UserKeyType::ZKey))
 	{
 		ButtonUpdate((int)m_button);
 	}

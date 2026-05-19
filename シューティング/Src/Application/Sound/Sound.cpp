@@ -3,7 +3,7 @@
 void C_Sound::Init()
 {
 	m_sevol = 1.0f;
-	m_bgmvol = 0.1f;
+	m_bgmvol = 1.0f;
 
 	m_ses.resize((int)SEType::SENUM);
 
@@ -94,7 +94,7 @@ void C_Sound::SetPlaySE(SEType type)
 		multiplicationvol = 0.7f;
 		break;
 	case SEType::NormalExplosionSE:
-		multiplicationvol = 0.4f;
+		multiplicationvol = 0.2f;
 		break;
 	case SEType::BOSSExplosionSE:
 		multiplicationvol = 1.0f;
@@ -105,7 +105,9 @@ void C_Sound::SetPlaySE(SEType type)
 		break;
 	}
 
-	inst->SetVolume(m_sevol * multiplicationvol);
+	float finalvol = m_sevol * multiplicationvol;
+
+	inst->SetVolume(finalvol);
 	inst->Play(false);
 
 	m_playSEList.push_back(inst);
@@ -123,8 +125,31 @@ void C_Sound::SetPlayBGM(BGMType type)
 
 	if (!bgm) return;
 
+	float multiplicationvol = 1.0f;
+
+	switch (type)
+	{
+	case BGMType::NoneBGM:
+		break;
+	case BGMType::TitleBGM:
+		multiplicationvol = 0.1f;
+		break;
+	case BGMType::GameBGM:
+		multiplicationvol = 0.1f;
+		break;
+	case BGMType::ResultBGM:
+		multiplicationvol = 0.05f;
+		break;
+	case BGMType::BGMNUM:
+		break;
+	default:
+		break;
+	}
+
+	float finalvol = m_bgmvol * multiplicationvol;
+
 	bgm->Stop();
-	bgm->SetVolume(m_bgmvol);
+	bgm->SetVolume(finalvol);
 	bgm->Play(true);
 }
 

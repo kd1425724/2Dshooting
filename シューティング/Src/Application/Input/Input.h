@@ -17,8 +17,8 @@ enum class PlayerKeyDefaultType
     Bottom = VK_DOWN,
     Left = VK_LEFT,
     Right = VK_RIGHT,
-    NormalShot = VK_SPACE,
-    Skill = 'E',
+    NormalShot = 'Z',
+    Skill = 'X',
 };
 
 enum class UserKeyType
@@ -27,7 +27,7 @@ enum class UserKeyType
     Bottom ,
     Left ,
     Right,
-    ENTER ,
+    ZKey ,
     ESCAPE,
     UserKeyNum
 };
@@ -37,7 +37,7 @@ enum class UserKeyDefaultType
     Bottom = VK_DOWN,
     Left = VK_LEFT,
     Right = VK_RIGHT,
-    ENTER = VK_RETURN,
+    ZKey = 'Z',
     ESCAPE=VK_ESCAPE,
 };
 

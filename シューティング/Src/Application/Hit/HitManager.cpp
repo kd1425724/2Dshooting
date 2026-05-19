@@ -480,7 +480,7 @@ void C_HitManager::CopyHit()
 
 						if (sm)
 						{
-							sm->SetPlayerSkill(e->GetSkillType());
+							EFFECTMANAGER.CopyScanEffect(c_pos, sm, e);
 						}
 					}
 					++it;

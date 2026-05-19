@@ -7,6 +7,7 @@
 #include"../Effect/EffectManager.h"
 #include"../Common/CommonAPI.h"
 #include"../Scenes/Game/Game.h"
+#include"../Scenes/Game2/Game2.h"
 #include"../Sound/Sound.h"
 
 void C_Player::Release()
@@ -46,7 +47,7 @@ void C_Player::Init()
 
 	m_alive = true;
 
-	m_playerdebugdeathflg = false;
+	m_playerdebugdeathflg = true;
 
 }
 void C_Player::StartUpdate()
@@ -321,20 +322,39 @@ void C_Player::ShotUpdate()
 			auto s = std::make_shared<C_Shot>();
 			auto o = m_owner.lock();
 
-			if (s && o)
+			if (o)
 			{
+				if (s)
+				{
 
-				s->SetHitManager(m_hitmanager);
+					s->SetHitManager(m_hitmanager);
 
-				s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
-					m_pos, { m_pos.x + 100,m_pos.y + 5 }, 18);
-				s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
-					m_pos, { m_pos.x + 100,m_pos.y }, 18);
-				s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
-					m_pos, { m_pos.x + 100,m_pos.y - 5 }, 18);
-			
-				o->SetShot(s);
-				
+					s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
+						m_pos, { m_pos.x + 100,m_pos.y + 5 }, 18);
+					s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+						m_pos, { m_pos.x + 100,m_pos.y }, 18);
+					s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
+						m_pos, { m_pos.x + 100,m_pos.y - 5 }, 18);
+
+					o->SetShot(s);
+
+				}
+			}
+			else
+			{
+				if (auto o2 = m_owner2.lock())
+				{
+					s->SetHitManager(m_hitmanager);
+
+					s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
+						m_pos, { m_pos.x + 100,m_pos.y + 5 }, 18);
+					s->ShotManager(ShotType::NormalShot, ShotTextureType::Bolt, { 4,0 }, { 48,32 },
+						m_pos, { m_pos.x + 100,m_pos.y }, 18);
+					s->ShotManager(ShotType::NormalShot, ShotTextureType::Pulse, { 4,0 }, { 63,32 },
+						m_pos, { m_pos.x + 100,m_pos.y - 5 }, 18);
+
+					o2->SetShot(s);
+				}
 			}
 
 			m_shotinterval = (int)PlayerShotInterval::NormalShot;

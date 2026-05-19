@@ -11,6 +11,7 @@ enum class UseType;
 enum class SkillType;
 
 class C_Game;
+class C_Game2;
 
 enum class PosPattern
 {
@@ -115,6 +116,10 @@ public:
 	{
 		m_owner = owner;
 	}
+	void SetOwner(std::weak_ptr<C_Game2> owner)
+	{
+		m_owner2 = owner;
+	}
 
 	bool GetDeathFlg() { return m_deathflg; }
 
@@ -122,6 +127,7 @@ protected:
 
 	//オーナー
 	std::weak_ptr<C_Game> m_owner;
+	std::weak_ptr<C_Game2> m_owner2;
 
 	//解放処理
 	virtual void Release();

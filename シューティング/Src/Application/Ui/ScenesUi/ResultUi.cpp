@@ -168,16 +168,44 @@ void C_ResultUi::ScoreInit()
 
 	int total = score + clear + lifescore + time;
 
-	//¯‚Ì”§Œä—p
-	//‚T‚O–œ‚¸‚Âˆø‚­
-	//‚T‚O–œˆÈ‰º‚É‚È‚é‚©m_pickupstarnum‚ª‚R‚É‚È‚é‚Ü‚Åƒ‹[ƒv
-	while (total >= StarControlNum && m_pickstarnum < StarNum)
+	m_pickstarnum = 0;
+
+	if (SCENEMANAGER.GetOldSceneType() == SceneType::Game)
 	{
-		m_pickstarnum++;
+		//¯‚Ì”§Œä—p
+		//‚T‚O–œ‚¸‚Âˆø‚­
+		//‚T‚O–œˆÈ‰º‚É‚È‚é‚©m_pickupstarnum‚ª‚R‚É‚È‚é‚Ü‚Åƒ‹[ƒv
+		while (total >= StarControlNum && m_pickstarnum < StarNum)
+		{
+			m_pickstarnum++;
 
-		total -= StarControlNum;
+			total -= StarControlNum;
+		}
+
+		//¯‚Ì”‚ðƒCƒ“ƒtƒH‚É‘ã“ü
+		//ƒ†[ƒU[ƒXƒRƒA‚Ì¯‚Ì”‚æ‚è‘½‚¢ê‡‚ÍXV
+		if (m_pickstarnum > INFO.ScoreAttackUserStarInfo)
+		{
+			INFO.ScoreAttackUserStarInfo = m_pickstarnum;
+		}
 	}
+	else if(SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+	{
+		int time2 = s->time;
 
+		if(time2 <= TimeStarControlNum1)
+		{
+			m_pickstarnum = 3;
+		}
+		else if(time2 <= TimeStarControlNum2)
+		{
+			m_pickstarnum = 2;
+		}
+		else if(time2 <= TimeStarControlNum3)
+		{
+			m_pickstarnum = 1;
+		}
+	}
 }
 
 
@@ -200,7 +228,15 @@ void C_ResultUi::ScoreDraw()
 			Math::Matrix mat = s * t;
 
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TimeTextTex, rect, 1.0f);
+
+			Math::Color color = { 1.0f,1.0f,1.0f,1.0f };
+
+			if(SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+			{
+				color = { 1.0f,1.0f,0.0f,1.0f };
+			}
+
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TimeTextTex,0,0, &rect, &color);
 		}
 
 		//ƒNƒŠƒA
@@ -285,7 +321,13 @@ void C_ResultUi::ScoreDraw()
 		Math::Matrix mat = s * t;
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Color color = { 1.0f,1.0f,0,1.0f };
+		Math::Color color = { 1.0f,1.0f,0.0f,1.0f };
+
+		if(SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+		{
+			color = { 1.0f,1.0f,1.0f,1.0f };
+		}
+
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TotalTextTex, 0, 0, &rect, &color);
 	}
 
@@ -317,7 +359,13 @@ void C_ResultUi::ScoreDraw()
 		COMMONAPI.NumDraw(score, { 200,0 }, numscale);
 		COMMONAPI.NumDraw(lifescore, { 200,-60 }, numscale);
 		COMMONAPI.NumDraw(time, { 200,-120 }, numscale);
-		COMMONAPI.NumDraw(total, { 250,-200 }, { 0.35f,0.60f }, { 1.0f,1.0f,0.0f,1.0f });
+		Math::Color color = { 1.0f,1.0f,0.0f,1.0f };
+		if(SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+		{
+			color = { 1.0f,1.0f,1.0f,1.0f };
+		}
+
+		COMMONAPI.NumDraw(total, { 250,-200 }, { 0.35f,0.60f }, color);
 	}
 
 	{
@@ -338,6 +386,10 @@ void C_ResultUi::ScoreDraw()
 
 		Math::Vector2 scale = { 0.3f,0.35f };
 		Math::Color color = { 1,1,1,1 };
+		if (SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+		{
+			color = { 1.0f,1.0f,1.0f,1.0f };
+		}
 
 		Math::Vector2 pos1 = { 20,120 };
 		COMMONAPI.NumDraw(minute, pos1, scale, color, true, 2);
@@ -355,7 +407,7 @@ void C_ResultUi::ScoreDraw()
 
 		Math::Vector2 scale = { 0.3f,0.35f };
 
-		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);;
+		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 
 		for (int i = 0; i < 2; i++)
 		{
@@ -364,8 +416,14 @@ void C_ResultUi::ScoreDraw()
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 			Math::Matrix mat = s * t;
 
+			Math::Color color = { 1,1,1,1 };
+			if (SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+			{
+				color = { 1.0f,1.0f,0,1.0f };
+			}
+
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_colontex, colonrect, 1.0f);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_colontex, 0, 0, &colonrect, &color);
 		}
 	}
 }

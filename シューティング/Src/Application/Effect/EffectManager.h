@@ -1,6 +1,8 @@
 #pragma once
 
 class C_EffectBase;
+class C_SkillManager;
+class C_EnemyMoveBase;
 
 enum class EffectType
 {
@@ -31,10 +33,12 @@ public:
         Math::Vector2 pos={0,0},
         Math::Vector2 scale = { 1.0f, 1.0f },
         int time = 0);
-
+    
     void ScoreEffect(int value);
 
     void SetScoreUpPos(Math::Vector2 pos) { m_scoreeffectpos = pos; }
+
+    void CopyScanEffect(Math::Vector2 pos, std::shared_ptr<C_SkillManager> skillmanager, std::shared_ptr<C_EnemyMoveBase> enemy);
 
 private:
     // ===== エフェクト管理 =====

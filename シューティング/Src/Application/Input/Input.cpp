@@ -114,9 +114,10 @@ void C_Input::PlayerKeyLoad()
 		//OutputDebugStringA("CSV読み込み失敗\n");
 
 		//デフォルトキーセット
-		PlayerDefaultKeySet();
+	
 
 	}
+	PlayerDefaultKeySet();
 }
 
 void C_Input::PlayerKeySave()
@@ -172,7 +173,7 @@ void C_Input::UserDefaultKeySet()
 						(int)UserKeyDefaultType::Bottom,
 						(int)UserKeyDefaultType::Left,
 						(int)UserKeyDefaultType::Right,
-						(int)UserKeyDefaultType::ENTER,
+						(int)UserKeyDefaultType::ZKey,
 						(int)UserKeyDefaultType::ESCAPE};
 
 	for (int i = 0; i < num; i++)

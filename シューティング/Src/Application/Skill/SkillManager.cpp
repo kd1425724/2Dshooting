@@ -8,6 +8,7 @@
 #include"../Enemy/EnemyMoveBase.h"
 #include"../Ui/ScenesUi/GameUi.h"
 #include"../Scenes/Game/Game.h"
+#include"../Scenes/Game2/Game2.h"
 #include"../Common/CommonTexture.h"
 void C_SkillManager::Release()
 {
@@ -72,6 +73,34 @@ void C_SkillManager::Update()
 				{
 					SetPlayerSkill(SkillType::CopyShot);
 					return;
+				}
+			}
+		}
+	}
+	else
+	{
+		if (auto o2 = m_owner2.lock())
+		{
+			if (o2->GetGameMode() != GameMode2::Start)
+			{
+				if (m_playerskills)
+				{
+					//ƒXƒLƒ‹”­“®
+					if (Input.GetPlayerKeyDown(PlayerKeyType::Skill) &&
+						!m_playerskills->GetAlive())
+					{
+						m_playerskills->SkillActivate();
+					}
+
+					m_playerskills->Update();
+
+					bool finished = m_playerskills->GetFinishedFlg();
+
+					if (finished)
+					{
+						SetPlayerSkill(SkillType::CopyShot);
+						return;
+					}
 				}
 			}
 		}

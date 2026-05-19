@@ -5,7 +5,7 @@ class C_ScoreUp : public C_EffectBase
 {
 public:
 	C_ScoreUp() {}
-	~C_ScoreUp() {}
+	~C_ScoreUp() override { Release(); }
 
 	void Init(Math::Vector2 pos,int value) override;
 	void Update() override;
@@ -15,4 +15,5 @@ private:
 
 	int m_value = 0;
 
+	void Release() override;
 };

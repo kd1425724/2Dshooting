@@ -4,6 +4,7 @@
 #include"../../Common/CommonAPI.h"
 #include"../../Skill/SkillManager.h"
 #include"../../Scenes/Game/Game.h"
+#include"../../Scenes/Game2/Game2.h"
 #include"../../Player/Player.h"
 #include"../../Enemy/Boss/Boss/Boss.h"
 #include"../../Enemy/Boss/SubBoss/SubBoss.h"
@@ -186,8 +187,13 @@ void C_GameUi::ScoreHUDInit()
 
 void C_GameUi::ScoreHUDDraw()
 {
+	Math::Color color = { 1,1,0,1 };
+	if(SCENEMANAGER.GetNowSceneType() == SceneType::Game2)
+	{
+		color = { 1,1,1,1 };
+	}
 	//スコア表示
-	COMMONAPI.NumDraw(SCENEMANAGER.GetScore(), {-270,340}, {0.2f,0.3f});
+	COMMONAPI.NumDraw(SCENEMANAGER.GetScore(), {-270,340}, {0.2f,0.3f},color);
 
 	Math::Matrix s = Math::Matrix::CreateScale(m_scorescale.x, m_scorescale.y, 1);
 	Math::Matrix t = Math::Matrix::CreateTranslation(m_scorepos.x, m_scorepos.y, 0);
@@ -212,106 +218,213 @@ void C_GameUi::SkillHUDDraw()
 
 	auto o = m_owner.lock();
 
-	//スキルアイコン
+	if (o)
 	{
-		Math::Matrix s = Math::Matrix::CreateScale(m_skilliconscale.x, m_skilliconscale.y, 1);
-		Math::Matrix t = Math::Matrix::CreateTranslation(m_skilliconpos.x, m_skilliconpos.y, 0);
-		Math::Matrix mat = s * t;
-
-		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Rectangle rect = { 0,0,250,40 };
-
-		auto sm = o->GetSkillManager();
-
-		Math::Color color = { 1,1,1,1 };
-
-		if (sm)
+		//スキルアイコン
 		{
-			if (!sm->GetPlayerSkillFlg())
-			{
-				color = { 1,1,1,1 };
-			}
-			else
-			{
-				color = { 0.3f,0.3f,0.3f,1.0f };
-			}
-		}
+			Math::Matrix s = Math::Matrix::CreateScale(m_skilliconscale.x, m_skilliconscale.y, 1);
+			Math::Matrix t = Math::Matrix::CreateTranslation(m_skilliconpos.x, m_skilliconpos.y, 0);
+			Math::Matrix mat = s * t;
 
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_skillicontexs[m_skilliconindex].get(),0,0, &rect, &color);
-	}
-	
-	//スキル
-	{
-		Math::Matrix s = Math::Matrix::CreateScale(m_skillscale.x, m_skillscale.y, 1);
-		Math::Matrix t = Math::Matrix::CreateTranslation(m_skillpos.x, m_skillpos.y, 0);
-		Math::Matrix mat = s * t;
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			Math::Rectangle rect = { 0,0,250,40 };
 
-		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Rectangle rect = { 0,0,480,100 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSKILLTEXTtex(), rect, 1.0f);
-
-	}
-
-	//READY LOCK
-	{
-		if (o)
-		{
 			auto sm = o->GetSkillManager();
+
+			Math::Color color = { 1,1,1,1 };
 
 			if (sm)
 			{
-				Math::Rectangle rect = { 0,0,700,210 };
-				Math::Vector2 pos = { -10,340 };
-				Math::Vector2 scale = { 0.17f,0.17f };
-
-				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
-				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
-				Math::Matrix mat = s * t;
-
-				if (sm->GetPlayerSkillFlg())
+				if (!sm->GetPlayerSkillFlg())
 				{
-					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetLocktex(), rect, 1.0f);
+					color = { 1,1,1,1 };
 				}
 				else
 				{
-					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetReadytex(), rect, 1.0f);
+					color = { 0.3f,0.3f,0.3f,1.0f };
 				}
 			}
-		}
-	}
 
-	//OKNOアイコン
-	{
-		if (o)
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_skillicontexs[m_skilliconindex].get(), 0, 0, &rect, &color);
+		}
+
+		//スキル
 		{
-			auto sm = o->GetSkillManager();
+			Math::Matrix s = Math::Matrix::CreateScale(m_skillscale.x, m_skillscale.y, 1);
+			Math::Matrix t = Math::Matrix::CreateTranslation(m_skillpos.x, m_skillpos.y, 0);
+			Math::Matrix mat = s * t;
 
-			if (sm)
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			Math::Rectangle rect = { 0,0,480,100 };
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSKILLTEXTtex(), rect, 1.0f);
+
+		}
+
+		//READY LOCK
+		{
+			if (o)
 			{
-				Math::Rectangle rect = { 0,0,210,210 };
-				Math::Vector2 pos = { -70,340 };
-				Math::Vector2 scale = { 0.17f,0.17f };
+				auto sm = o->GetSkillManager();
 
-				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
-				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
-				Math::Matrix mat = s * t;
-
-				if (sm->GetPlayerSkillFlg())
+				if (sm)
 				{
-					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNOIcontex(), rect, 1.0f);
+					Math::Rectangle rect = { 0,0,700,210 };
+					Math::Vector2 pos = { -10,340 };
+					Math::Vector2 scale = { 0.17f,0.17f };
+
+					Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+					Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+					Math::Matrix mat = s * t;
+
+					if (sm->GetPlayerSkillFlg())
+					{
+						KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+						KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetLocktex(), rect, 1.0f);
+					}
+					else
+					{
+						KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+						KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetReadytex(), rect, 1.0f);
+					}
 				}
-				else
+			}
+		}
+
+		//OKNOアイコン
+		{
+			if (o)
+			{
+				auto sm = o->GetSkillManager();
+
+				if (sm)
 				{
-					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetOKIcontex(), rect, 1.0f);
+					Math::Rectangle rect = { 0,0,210,210 };
+					Math::Vector2 pos = { -70,340 };
+					Math::Vector2 scale = { 0.17f,0.17f };
+
+					Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+					Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+					Math::Matrix mat = s * t;
+
+					if (sm->GetPlayerSkillFlg())
+					{
+						KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+						KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNOIcontex(), rect, 1.0f);
+					}
+					else
+					{
+						KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+						KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetOKIcontex(), rect, 1.0f);
+					}
 				}
 			}
 		}
 	}
+	else
+	{
+		auto o2 = m_owner2.lock();
 
+		if (o2)
+		{
+			//スキルアイコン
+			{
+				Math::Matrix s = Math::Matrix::CreateScale(m_skilliconscale.x, m_skilliconscale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(m_skilliconpos.x, m_skilliconpos.y, 0);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				Math::Rectangle rect = { 0,0,250,40 };
+
+				auto sm = o2->GetSkillManager();
+
+				Math::Color color = { 1,1,1,1 };
+
+				if (sm)
+				{
+					if (!sm->GetPlayerSkillFlg())
+					{
+						color = { 1,1,1,1 };
+					}
+					else
+					{
+						color = { 0.3f,0.3f,0.3f,1.0f };
+					}
+				}
+
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(m_skillicontexs[m_skilliconindex].get(), 0, 0, &rect, &color);
+			}
+
+			//スキル
+			{
+				Math::Matrix s = Math::Matrix::CreateScale(m_skillscale.x, m_skillscale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(m_skillpos.x, m_skillpos.y, 0);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				Math::Rectangle rect = { 0,0,480,100 };
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSKILLTEXTtex(), rect, 1.0f);
+
+			}
+
+			//READY LOCK
+			{
+
+				auto sm = o2->GetSkillManager();
+
+				if (sm)
+				{
+					Math::Rectangle rect = { 0,0,700,210 };
+					Math::Vector2 pos = { -10,340 };
+					Math::Vector2 scale = { 0.17f,0.17f };
+
+					Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+					Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+					Math::Matrix mat = s * t;
+
+					if (sm->GetPlayerSkillFlg())
+					{
+						KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+						KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetLocktex(), rect, 1.0f);
+					}
+					else
+					{
+						KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+						KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetReadytex(), rect, 1.0f);
+					}
+				}
+
+			}
+
+			//OKNOアイコン
+			{
+
+				auto sm = o2->GetSkillManager();
+
+				if (sm)
+				{
+					Math::Rectangle rect = { 0,0,210,210 };
+					Math::Vector2 pos = { -70,340 };
+					Math::Vector2 scale = { 0.17f,0.17f };
+
+					Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+					Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+					Math::Matrix mat = s * t;
+
+					if (sm->GetPlayerSkillFlg())
+					{
+						KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+						KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNOIcontex(), rect, 1.0f);
+					}
+					else
+					{
+						KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+						KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetOKIcontex(), rect, 1.0f);
+					}
+				}
+
+			}
+		}
+	}
 }
 
 void C_GameUi::LifeHUDInit()
@@ -339,22 +452,47 @@ void C_GameUi::LifeDraw()
 	{
 		auto o = m_owner.lock();
 
-		float w = CommonTex.GetPlayerRect().width+20.0f;
-
-		Math::Matrix s = Math::Matrix::CreateScale(m_lifescale.x, m_lifescale.y, 1);
-
 		if (o)
 		{
-			for (int i = 0; i < o->GetPlayer()->GetHp(); i++)
+			float w = CommonTex.GetPlayerRect().width + 20.0f;
+
+			Math::Matrix s = Math::Matrix::CreateScale(m_lifescale.x, m_lifescale.y, 1);
+
+			
+				for (int i = 0; i < o->GetPlayer()->GetHp(); i++)
+				{
+					Math::Vector2 pos = { m_lifestartpos.x + w * m_lifescale.x * i,m_lifestartpos.y };
+
+					Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+					Math::Matrix mat = s * t;
+
+					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPlayerTex(),
+						CommonTex.GetPlayerRect(), 1.0f);
+				}
+			
+		}
+		else
+		{
+			auto o2 = m_owner2.lock();
+		
+			float w = CommonTex.GetPlayerRect().width + 20.0f;
+
+			Math::Matrix s = Math::Matrix::CreateScale(m_lifescale.x, m_lifescale.y, 1);
+
+			if (o2)
 			{
-				Math::Vector2 pos = { m_lifestartpos.x + w * m_lifescale.x * i,m_lifestartpos.y };
+				for (int i = 0; i < o2->GetPlayer()->GetHp(); i++)
+				{
+					Math::Vector2 pos = { m_lifestartpos.x + w * m_lifescale.x * i,m_lifestartpos.y };
 
-				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
-				Math::Matrix mat = s * t;
+					Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+					Math::Matrix mat = s * t;
 
-				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPlayerTex(),
-					CommonTex.GetPlayerRect(), 1.0f);
+					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetPlayerTex(),
+						CommonTex.GetPlayerRect(), 1.0f);
+				}
 			}
 		}
 	}
@@ -396,6 +534,10 @@ void C_GameUi::TimeDraw()
 		
 			Math::Vector2 scale = { 0.3f,0.5f };
 			Math::Color color = { 1,1,1,1 };
+			if(SCENEMANAGER.GetNowSceneType() == SceneType::Game2)
+			{
+				color = { 1.0f,1.0f,0,1.0f };
+			}
 
 			Math::Vector2 pos1 = { 350,315 };
 			COMMONAPI.NumDraw(minute, pos1, scale, color, true, 2);
@@ -405,6 +547,29 @@ void C_GameUi::TimeDraw()
 
 			Math::Vector2 pos3 = { 530,315 };
 			COMMONAPI.NumDraw(millisecond, pos3, scale,color, true, 2);
+		}
+		else
+		{
+			auto o2 = m_owner2.lock();
+
+			float time = o2->GetTime();
+
+			int minute = static_cast<int>(time / 60.0f);
+			int second = static_cast<int>(time) % 60;
+			int millisecond = static_cast<int>(time * 100.0f) % 100;
+
+
+			Math::Vector2 scale = { 0.3f,0.5f };
+			Math::Color color = { 1,1,1,1 };
+
+			Math::Vector2 pos1 = { 350,315 };
+			COMMONAPI.NumDraw(minute, pos1, scale, color, true, 2);
+
+			Math::Vector2 pos2 = { 440,315 };
+			COMMONAPI.NumDraw(second, pos2, scale, color, true, 2);
+
+			Math::Vector2 pos3 = { 530,315 };
+			COMMONAPI.NumDraw(millisecond, pos3, scale, color, true, 2);
 		}
 	}
 

@@ -26,9 +26,9 @@ void C_Title::Update()
 {
 	m_titleui->Update();
 
-	if (Input.GetUserKey(UserKeyType::ENTER) && !Input.GetUserKeyFlg(UserKeyType::ENTER))
+	if (Input.GetUserKey(UserKeyType::ZKey) && !Input.GetUserKeyFlg(UserKeyType::ZKey))
 	{
-		SCENEMANAGER.push(SceneType::Game, true);
+		SCENEMANAGER.NoFeedpush(SceneType::StageSelect, true);
 		return;
 	}
 
