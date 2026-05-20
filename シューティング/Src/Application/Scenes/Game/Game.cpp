@@ -69,6 +69,8 @@ void C_Game::Init()
 	m_enemymanager->SetOwner(shared_from_this());
 	m_player->SetOwner(shared_from_this());
 	m_skillmanager->SetOwner(shared_from_this());
+	EFFECTMANAGER.SetOwner(shared_from_this());
+	EFFECTMANAGER.SetHitManager(m_hitmanager);
 
 	//ƒXƒLƒ‹ŠÇ—æ“¾
 	m_hitmanager->SetSkillManager(m_skillmanager);

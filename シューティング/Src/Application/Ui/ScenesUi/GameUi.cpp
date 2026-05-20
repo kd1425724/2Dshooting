@@ -201,7 +201,7 @@ void C_GameUi::ScoreHUDDraw()
 
 	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 	Math::Rectangle rect = { 0,0,480,100 };
-	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSCORETEXTtex(), rect, 1.0f);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetSCORETEXTtex(),0,0, &rect, &color);
 }
 
 void C_GameUi::SkillHUDInit()
@@ -514,9 +514,15 @@ void C_GameUi::TimeDraw()
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 		Math::Matrix mat = s * t;
 
+		Math::Color color = { 1,1,1,1 };
+		if (SCENEMANAGER.GetNowSceneType() == SceneType::Game2)
+		{
+			color = { 1,1,0,1 };
+		}
+
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,480,100 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetTIMETEXTtex(), rect, 1.0f);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetTIMETEXTtex(),0,0, &rect, &color);
 	}
 
 	//ŽžŠÔ•\Ž¦
@@ -534,11 +540,6 @@ void C_GameUi::TimeDraw()
 		
 			Math::Vector2 scale = { 0.3f,0.5f };
 			Math::Color color = { 1,1,1,1 };
-			if(SCENEMANAGER.GetNowSceneType() == SceneType::Game2)
-			{
-				color = { 1.0f,1.0f,0,1.0f };
-			}
-
 			Math::Vector2 pos1 = { 350,315 };
 			COMMONAPI.NumDraw(minute, pos1, scale, color, true, 2);
 
@@ -560,7 +561,7 @@ void C_GameUi::TimeDraw()
 
 
 			Math::Vector2 scale = { 0.3f,0.5f };
-			Math::Color color = { 1,1,1,1 };
+			Math::Color color = { 1,1,0,1 };
 
 			Math::Vector2 pos1 = { 350,315 };
 			COMMONAPI.NumDraw(minute, pos1, scale, color, true, 2);
@@ -579,7 +580,13 @@ void C_GameUi::TimeDraw()
 
 		Math::Vector2 scale = { 0.5f,0.5f };
 
-		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);;
+		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+
+		Math::Color color = { 1,1,1,1 };
+		if (SCENEMANAGER.GetNowSceneType() == SceneType::Game2)
+		{
+			color = { 1,1,0,1 };
+		}
 
 		for (int i = 0; i < 2; i++)
 		{
@@ -589,7 +596,7 @@ void C_GameUi::TimeDraw()
 			Math::Matrix mat = s * t;
 
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetColontex(), rect, 1.0f);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetColontex(),0,0, &rect, &color);
 		}
 	}
 }

@@ -2,7 +2,10 @@
 #include"../../Enemy/EnemyMoveBase.h"
 #include"../../Skill/SkillManager.h"
 #include"../../Common/CommonTexture.h"
-
+#include"../../Effect/EffectManager.h"
+#include"../../Skill/Shot/Shot.h"
+#include"../../Scenes/Game/Game.h"
+#include"../../Scenes/Game2/Game2.h"
 void C_CopyScan::Release()
 {
 
@@ -28,17 +31,49 @@ void C_CopyScan::Update()
 
 	if(m_time <= 0)
 	{
-		auto e = m_enemy.lock();
+		EFFECTMANAGER.AddEffect(EffectType::CopyScanConplete, m_pos, { 1,1 });
 
-		if (e)
+		auto o = m_owner.lock();
+
+		if (o)
 		{
-			std::shared_ptr<C_SkillManager> sm = m_skillmanager.lock();
-
-			if (sm)
+			auto s = std::make_shared<C_Shot>();
+			if (s)
 			{
-				sm->SetPlayerSkill(e->GetSkillType());
+				auto hm = m_hitmanager.lock();
+				auto p = o->GetPlayer();
+				if (hm && p)
+				{
+					s->SetPlayer(p);
+					s->SetHitManager(hm);
+				}
+				s->ShotManager(ShotType::HomingShot, ShotTextureType::CopyBack, { 4,0 }, { 32,32 }, m_pos, 0, 10);
+				
+				o->SetShot(s);
 			}
 		}
+		else
+		{
+			auto o2 = m_owner2.lock();
+			if (o2)
+			{
+				auto s = std::make_shared<C_Shot>();
+				if (s)
+				{
+					auto hm = m_hitmanager.lock();
+					auto p = o->GetPlayer();
+					if (hm&&p)
+					{
+						s->SetPlayer(p);
+						s->SetHitManager(hm);
+					}
+					s->ShotManager(ShotType::HomingShot, ShotTextureType::CopyBack, { 5,0 }, { 32,32 }, m_pos, 0, 10);
+
+					o->SetShot(s);
+				}
+			}
+		}
+
 		Kill();
 	}
 
@@ -63,19 +98,20 @@ void C_CopyScan::Draw()
 		m_mat = m_scalemat * m_transmat;
 		Math::Rectangle rect = { (int)m_anim * (long)m_rect.x,0,(long)m_rect.x,(long)m_rect.y };
 		Math::Color color = { 1,1,1,m_alpha };
-		// é¿ç€ÇÕÇ®ëOÇÃä¬ã´ÇÃï`âÊAPIÇ…çáÇÌÇπÇƒèëÇ≠
+		
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(tex.get(), 0, 0, &rect, &color);
 	}
 
 	//ÉXÉLÉÉÉìíÜ
 	{
-		Math::Matrix scalemat = Math::Matrix::CreateScale(m_scale);
-		Math::Matrix transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
+		float scale = 0.3f;
+		Math::Matrix scalemat = Math::Matrix::CreateScale(scale);
+		Math::Matrix transmat = Math::Matrix::CreateTranslation(m_pos.x-100, m_pos.y, 0);
 		Math::Matrix mat = scalemat * transmat;
 		Math::Rectangle rect = { 0,0,480,100 };
 		Math::Color color = { 0,1,0,0.7f };
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetScaningTextTex(), 0, 0, &rect, &color);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetScaningTextTex().get(), 0, 0, &rect, &color);
 	}
 }

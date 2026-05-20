@@ -60,14 +60,9 @@ void C_SceneManager::ImGui()
 
 void C_SceneManager::push(SceneType type, bool popflg, bool Allpopflg)
 {
-	//前のシーンのタイプを保存
-	m_oldscenetype = m_nowscenetype;
-
-	//今のシーンのタイプを保存
-	m_nowscenetype = type;
-
     FEED.FeedOutInit(30, [this, type, popflg,Allpopflg]()
         {
+
             //前のシーンのタイプを保存
             m_oldscenetype = m_nowscenetype;
 
@@ -137,20 +132,20 @@ void C_SceneManager::NoFeedpush(SceneType type, bool popflg, bool Allpopflg)
         }
     }
 
-    //前のシーンのタイプを保存
-    m_oldscenetype = m_nowscenetype;
+    ////前のシーンのタイプを保存
+    //m_oldscenetype = m_nowscenetype;
 
-    //今のシーンのタイプを保存
-    m_nowscenetype = type;
+    ////今のシーンのタイプを保存
+    //m_nowscenetype = type;
 
     //指定したシーンを作りそれを格納する
-    auto scene = CreateScene(m_nowscenetype);
+    auto scene = CreateScene(type);
 
     //存在するか
     if (scene != nullptr)
     {
         //タイトルに戻る時
-        if (m_nowscenetype == SceneType::Title)
+        if (type == SceneType::Title)
         {
             //スコアリセット
             ResetScoreData();

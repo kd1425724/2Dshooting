@@ -145,7 +145,7 @@ void C_Player::Update()
 		if (m_Hp <= 0)
 		{
 			m_Hp = 0;
-			m_alive = false;
+			//m_alive = false;
 		}
 	}
 	else

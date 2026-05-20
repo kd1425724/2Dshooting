@@ -4,12 +4,15 @@
 using namespace std;
 
 class C_HitManager;
+class C_Player;
+
 
 enum class ShotType
 {
 	NormalShot,
 	EnemyNormalShot,
 	CopyShot,
+	HomingShot,
 	ShotNum	//数
 };
 
@@ -17,7 +20,8 @@ enum class ShotTextureType
 {
 	Bolt,
 	Pulse,
-	Copy
+	Copy,
+	CopyBack,
 };
 
 struct Shot : public std::enable_shared_from_this<Shot>
@@ -59,9 +63,9 @@ struct Shot : public std::enable_shared_from_this<Shot>
 	Math::Vector2 m_halfsize;
 
 	//初期化（targetpos指定バージョン）
-	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target,int movespeed);
+	void Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target = {0,0}, int movespeed = 0);
 	//初期化（angle指定バージョン）
-	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed);
+	void Init(ShotType a_type,ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle=0, int movespeed=0);
 	
 	//当たり管理用
 	std::weak_ptr<C_HitManager> m_hitmanager;
@@ -108,7 +112,11 @@ public:
 
 	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
 
+	void SetPlayer(std::shared_ptr<C_Player> player) { m_player = player; }
+
 private:
+
+	std::weak_ptr<C_Player> m_player;
 
 	void Release();
 
@@ -119,9 +127,13 @@ private:
 	KdTexture m_bolttex;
 	KdTexture m_pulsetex;
 	KdTexture m_copyshottex;
+	KdTexture m_copybackshottex;
 
 	//通常ショット（弾一発）
 	vector<std::shared_ptr<Shot>> m_normalshot;
+
+	//ホーミングショット（追尾弾）
+	vector<std::shared_ptr<Shot>> m_homingshot;
 
 	//一発発射
 	void NormalShotInit(ShotType shottype, ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, Math::Vector2 target, int movespeed);
@@ -129,6 +141,12 @@ private:
 	void NormalShotInit(ShotType shottype, ShotTextureType a_texturetype,Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, float a_angle, int movespeed);
 	void NormalShotUpdate();
 	void NormalShotDraw();
+
+	//ホーミングショット（追尾弾）
+	void HomingShotInit(ShotType shottype, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos, int movespeed);
+
+	void HomingShotUpdate();
+	void HomingShotDraw();
 
 	KdTexture* SetTextureType(ShotTextureType type);
 };

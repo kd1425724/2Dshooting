@@ -5,6 +5,9 @@
 #include"LaserStartEffect/LaserStartEffect.h"
 #include"WarningLine/WarningLine.h"
 #include"ScoreUp/ScoreUp.h"
+#include"CopyScan/CopyScan.h"
+#include"ScanCompleteText/ScanCompleteText.h"
+#include"../Common/CommonTexture.h"
 
 void C_EffectManager::Init()
 {
@@ -176,7 +179,16 @@ void C_EffectManager::AddEffect(EffectType type, Math::Vector2 pos,Math::Vector2
 		m_addbottomdraweffects.back()->SetTexture(m_warninglinetex);
 		m_addbottomdraweffects.back()->Init(pos,scale,time);
 		break;
-	
+	case EffectType::CopyScanConplete:
+		m_addtopdraweffects.push_back(std::make_shared<C_ScanCompleteText>());
+		m_addtopdraweffects.back()->SetTexture(CommonTex.GetScanCompleteTextTex());
+		m_addtopdraweffects.back()->Init(pos, {0,1,0,1});
+		break;
+	case EffectType::CopyScanMiss:
+		m_addtopdraweffects.push_back(std::make_shared<C_ScanCompleteText>());
+		m_addtopdraweffects.back()->SetTexture(CommonTex.GetScanMissTextTex());
+		m_addtopdraweffects.back()->Init(pos, {1,1,1,1});
+		break;
 	default:
 		break;
 	}
@@ -184,9 +196,28 @@ void C_EffectManager::AddEffect(EffectType type, Math::Vector2 pos,Math::Vector2
 
 void C_EffectManager::CopyScanEffect(Math::Vector2 pos, std::shared_ptr<C_SkillManager> skillmanager, std::shared_ptr<C_EnemyMoveBase> enemy)
 {
-	m_addeffects.push_back(std::make_shared<C_CopyHitEffect>());
-	m_addeffects.back()->SetTexture(m_copyhiteffecttex);
-	m_addeffects.back()->Init(pos, skillmanager, enemy);
+	m_addtopdraweffects.push_back(std::make_shared<C_CopyScan>());
+	m_addtopdraweffects.back()->SetTexture(m_copyhiteffecttex);
+	
+	auto o = m_owner.lock();
+	if(o)
+	{
+		m_addtopdraweffects.back()->SetOwner(m_owner);
+	}
+	else
+	{
+		auto o2 = m_owner2.lock();
+		if (o2)
+		{
+			m_addtopdraweffects.back()->SetOwner(m_owner2);
+		}
+	}
+	auto hm = m_hitmanager.lock();
+	if (hm)
+	{
+		m_addtopdraweffects.back()->SetHitManager(hm);
+	}
+	m_addtopdraweffects.back()->Init(pos, skillmanager, enemy);
 }
 
 void C_EffectManager::ScoreEffect(int value)

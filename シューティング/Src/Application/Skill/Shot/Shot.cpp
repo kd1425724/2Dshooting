@@ -1,12 +1,14 @@
 #include "Shot.h"
 #include"Application/Common/CommonAPI.h"
 #include"../../Hit/HitManager.h"
+#include"../../Player/Player.h"
 
 C_Shot::C_Shot()
 {
 	m_bolttex.Load("Texture/Skill/Attack/Bolt.png");
 	m_pulsetex.Load("Texture/Skill/Attack/Pulse.png");
 	m_copyshottex.Load("Texture/Skill/Attack/CopyShot.png");
+	m_copybackshottex.Load("Texture/Skill/Attack/CopyBackShot.png");
 }
 void C_Shot::Release()
 {
@@ -24,6 +26,10 @@ void C_Shot::ShotManager(ShotType a_type,ShotTextureType a_texturetype, Math::Ve
 		//初期化
 		NormalShotInit(a_type,a_texturetype,a_animmaxnum, a_rect, a_pos, target,movespeed);
 		break;
+	case ShotType::HomingShot:
+		//初期化
+		HomingShotInit(a_type, a_texturetype, a_animmaxnum, a_rect, a_pos, movespeed);
+		break;
 	case ShotType::ShotNum:
 		break;
 	default:
@@ -40,6 +46,10 @@ void C_Shot::ShotManager(ShotType a_type, ShotTextureType a_texturetype, Math::V
 	case ShotType::CopyShot:
 		//初期化
 		NormalShotInit(a_type,a_texturetype, a_animmaxnum, a_rect, a_pos, a_angle,movespeed);
+		break;
+	case ShotType::HomingShot:
+		//初期化
+		HomingShotInit(a_type, a_texturetype, a_animmaxnum, a_rect, a_pos, movespeed);
 		break;
 	case ShotType::ShotNum:
 		break;
@@ -153,6 +163,39 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 			hm->SetCopyShot(shared_from_this());
 		}
 		break;
+		case ShotType::HomingShot:
+			//初期化
+			//画像設定セット
+			SetTextureSetting(a_texturetype);
+
+			rect = a_rect;
+			speed = movespeed;
+			pos = a_pos;
+			angle = 0;
+			move.x = 0;
+			move.y = 0;
+			color = { 1,1,1,1 };
+			alive = true;
+			scale = { 2,2 };
+
+			//アニメーション用
+			anim = { 0,0 };
+			animmaxnum = a_animmaxnum;
+
+			scalemat = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+			rotatemat = Math::Matrix::CreateRotationZ(angle + texangle);
+			transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+			mat = scalemat * rotatemat * transmat;
+
+			//半径
+			m_halfsize = rect * scale / 2;
+			m_radius = rect.x * scale.x / 2;
+
+			if (auto hm = m_hitmanager.lock())
+			{
+				hm->SetCopyBackShot(shared_from_this());
+			}
+			break;
 	case ShotType::ShotNum:
 		break;
 	default:
@@ -264,6 +307,36 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 		}
 
 		break;
+		case ShotType::HomingShot:
+			//初期化
+			//画像設定セット
+			SetTextureSetting(a_texturetype);
+			rect = a_rect;
+			speed = movespeed;
+			pos = a_pos;
+			angle = 0;
+			move.x =0;
+			move.y =0;
+			color = { 1,1,1,1 };
+			alive = true;
+			scale = { 2,2 };
+			//アニメーション用
+			anim = { 0,0 };
+			animmaxnum = a_animmaxnum;
+			scalemat = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+			rotatemat = Math::Matrix::CreateRotationZ(angle + texangle);
+			transmat = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+			mat = scalemat * rotatemat * transmat;
+
+			//半径
+			m_halfsize = rect * scale / 2;
+			m_radius = rect.x * scale.x / 2;
+
+			if (auto hm = m_hitmanager.lock())
+			{
+				hm->SetCopyBackShot(shared_from_this());
+			}
+			break;
 	case ShotType::ShotNum:
 		break;
 	default:
@@ -279,6 +352,12 @@ void C_Shot::Update()
 	{
 		NormalShotUpdate();
 	}
+
+	//空じゃなければ
+	if(!m_homingshot.empty())
+	{
+		HomingShotUpdate();
+	}
 }
 
 void C_Shot::Draw()
@@ -287,6 +366,12 @@ void C_Shot::Draw()
 	if (!m_normalshot.empty())
 	{
 		NormalShotDraw();
+	}
+
+	//空じゃなければ
+	if (!m_homingshot.empty())
+	{
+		HomingShotDraw();
 	}
 }
 
@@ -374,6 +459,94 @@ void C_Shot::NormalShotDraw()
 	}
 }
 
+void C_Shot::HomingShotInit(ShotType shottype, ShotTextureType a_texturetype, Math::Vector2 a_animmaxnum, Math::Vector2 a_rect, Math::Vector2 a_pos,int movespeed)
+{
+	m_homingshot.emplace_back(std::make_shared<Shot>());
+	m_homingshot.back()->SetHitManager(m_hitmanager);
+	m_homingshot.back()->SetTexture(SetTextureType(a_texturetype));
+	m_homingshot.back()->Init(shottype, a_texturetype, a_animmaxnum, a_rect, a_pos, {0,0}, movespeed);
+}
+
+void C_Shot::HomingShotUpdate()
+{
+	for (int i = 0; i < m_homingshot.size(); i++)
+	{
+		auto p = m_player.lock();
+
+		if (p)
+		{
+			m_homingshot[i]->move = p->GetPos() - m_homingshot[i]->pos;
+
+			m_homingshot[i]->move.Length();	//長さを求める
+
+			//ベクトルの正規化（長さを１にする）
+			m_homingshot[i]->move.Normalize();
+
+			m_homingshot[i]->pos += m_homingshot[i]->move * m_homingshot[i]->speed;
+
+		}
+		
+		m_homingshot[i]->anim.x += 0.1f;
+		//マックス以上になったら,4コマなら4
+		if (m_homingshot[i]->anim.x >= m_homingshot[i]->animmaxnum.x)
+		{
+			m_homingshot[i]->anim.x = 0;
+			if (m_homingshot[i]->animmaxnum.y != 0)
+			{
+				m_homingshot[i]->anim.y++;
+			}
+
+		}
+		if (m_homingshot[i]->animmaxnum.y != 0)
+		{
+			if (m_homingshot[i]->anim.y > m_homingshot[i]->animmaxnum.y)
+			{
+				m_homingshot[i]->anim = { 0,0 };
+			}
+		}
+
+		m_homingshot[i]->scalemat = Math::Matrix::CreateScale(m_homingshot[i]->scale.x, m_homingshot[i]->scale.y, 1);
+		m_homingshot[i]->rotatemat = Math::Matrix::CreateRotationZ(m_homingshot[i]->angle + m_homingshot[i]->texangle);
+		m_homingshot[i]->transmat = Math::Matrix::CreateTranslation(m_homingshot[i]->pos.x, m_homingshot[i]->pos.y, 0);
+		m_homingshot[i]->mat = m_homingshot[i]->scalemat * m_homingshot[i]->rotatemat * m_homingshot[i]->transmat;
+	}
+
+
+	//削除
+	for (int i = 0; i < m_homingshot.size(); )
+	{
+		if (COMMONAPI.OutOfScreenPlusMargin(m_homingshot[i]->pos, m_homingshot[i]->rect / 2))
+		{
+			m_homingshot[i]->alive = false;
+		}
+
+		if (!m_homingshot[i]->alive)
+		{
+			m_homingshot.erase(m_homingshot.begin() + i);
+			continue;
+		}
+		else
+		{
+			i++;
+		}
+	}
+}
+
+void C_Shot::HomingShotDraw()
+{
+	for (int i = 0; i < m_homingshot.size(); i++)
+	{
+		//発生中なら
+		if (m_homingshot[i]->alive)
+		{
+			SHADER.m_spriteShader.SetMatrix(m_homingshot[i]->mat);
+			SHADER.m_spriteShader.DrawTex(m_homingshot[i]->tex, 0, 0,
+				&Math::Rectangle((int)m_homingshot[i]->anim.x * m_homingshot[i]->rect.x, (int)m_homingshot[i]->anim.y * m_homingshot[i]->rect.y, m_homingshot[i]->rect.x, m_homingshot[i]->rect.y),
+				&m_homingshot[i]->color);
+		}
+	}
+}
+
 KdTexture* C_Shot::SetTextureType(ShotTextureType type)
 {
 	switch (type)
@@ -384,6 +557,8 @@ KdTexture* C_Shot::SetTextureType(ShotTextureType type)
 		return &m_pulsetex;
 	case ShotTextureType::Copy:
 		return &m_copyshottex;
+	case ShotTextureType::CopyBack:
+		return &m_copybackshottex;
 	default:
 		break;
 	}
@@ -404,6 +579,9 @@ void Shot::SetTextureSetting(ShotTextureType type)
 		angle = TextureAngle::Right;
 		break;
 	case ShotTextureType::Copy:
+		angle = TextureAngle::Right;
+		break;
+	case ShotTextureType::CopyBack:
 		angle = TextureAngle::Right;
 		break;
 	default:

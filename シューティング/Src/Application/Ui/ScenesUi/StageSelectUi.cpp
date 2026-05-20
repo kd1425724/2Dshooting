@@ -84,22 +84,22 @@ void C_StageSelectUi::Update()
 	{
 		if (m_button == StageSelectButton::Stage1)
 		{
-			m_button = static_cast<StageSelectButton>(static_cast<int>(m_button) -2);
+			m_button = static_cast<StageSelectButton>(static_cast<int>(m_button) +2);
 		}
 		else
 		{
-			m_button = static_cast<StageSelectButton>(static_cast<int>(m_button) + 1);
+			m_button = static_cast<StageSelectButton>(static_cast<int>(m_button) - 1);
 		}
 	}
 	if (Input.GetUserKey(UserKeyType::Bottom) && !Input.GetUserKeyFlg(UserKeyType::Bottom))
 	{
 		if (m_button == StageSelectButton::BACK)
 		{
-			m_button = static_cast<StageSelectButton>(static_cast<int>(m_button) + 2);
+			m_button = static_cast<StageSelectButton>(static_cast<int>(m_button) - 2);
 		}
 		else
 		{
-			m_button = static_cast<StageSelectButton>(static_cast<int>(m_button) - 1);
+			m_button = static_cast<StageSelectButton>(static_cast<int>(m_button) + 1);
 		}
 	}
 
@@ -169,12 +169,11 @@ void C_StageSelectUi::StageInfoDraw()
 					Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 					Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 					Math::Matrix mat = s * t;
-
 					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 					Math::Rectangle rect = { 0,0,700,210 };
 					KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetStarGetConditionFrameTex(i).get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 
-					//以上達成
+					//以上でクリア
 					pos = { 300,startposY - i * 80.0f };
 					s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 					t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -215,7 +214,7 @@ void C_StageSelectUi::StageInfoDraw()
 				{
 					for (int i = 0; i < INFO.ScoreAttackUserStarInfo; i++)
 					{
-						Math::Vector2 pos = { 0,startposY - i * 80.0f };
+						Math::Vector2 pos = { 0,-200 + i * 80.0f };
 						Math::Vector2 scale = { 0.23f,0.23f };
 						Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 						Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -239,7 +238,7 @@ void C_StageSelectUi::StageInfoDraw()
 				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 				Math::Matrix mat = s * t;
 				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-				Math::Rectangle rect = { 0,0,1534,1080 };
+				Math::Rectangle rect = { 0,0,1534,1024 };
 				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetTimeAttackTextTex(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 			}
 
@@ -259,14 +258,15 @@ void C_StageSelectUi::StageInfoDraw()
 					Math::Rectangle rect = { 0,0,700,210 };
 					KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetStarGetConditionFrameTex(i).get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 
-					//以上達成
+					//以内にクリア
 					pos = { 300,startposY - i * 80.0f };
+					scale = { 0.2f,0.2f };
 					s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 					t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 					mat = s * t;
 					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					rect = { 0,0,210,210 };
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetAchieveAboveTextTex(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
+					rect = { 0,0,1536,1024 };
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetClearWithinTextTex(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 
 					//条件
 					pos = { 200,startposY - i * 80.0f };
@@ -278,7 +278,6 @@ void C_StageSelectUi::StageInfoDraw()
 					rect = { 0,0,1000,100 };
 					KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetScoreAttackConditionTex(i).get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 				}
-
 
 				//星フレーム
 				{
@@ -299,7 +298,7 @@ void C_StageSelectUi::StageInfoDraw()
 				{
 					for (int i = 0; i < INFO.TimeAttackUserStarInfo; i++)
 					{
-						Math::Vector2 pos = { 0,startposY - i * 80.0f };
+						Math::Vector2 pos = { 0,-200 + i * 80.0f };
 						Math::Vector2 scale = { 0.23f,0.23f };
 						Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 						Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);

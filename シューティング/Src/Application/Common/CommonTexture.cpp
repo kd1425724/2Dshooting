@@ -139,9 +139,14 @@ C_CommonTexture::C_CommonTexture()
 	m_startex.Load("Texture/Ui/StageSelect/Star.png");
 
 	//「スキャン中」テキスト
-	m_ScaningTextTex.Load("Texture/Ui/Font/ScaningText.png");
+	m_ScaningTextTex = std::make_shared<KdTexture>();
+	m_ScaningTextTex->Load("Texture/Ui/Font/ScaningText.png");
 	//「スキャン完了」テキスト
-	m_ScanCompleteTextTex.Load("Texture/Ui/Font/ScanCompleteText.png");
+	m_ScanCompleteTextTex = std::make_shared<KdTexture>();
+	m_ScanCompleteTextTex->Load("Texture/Ui/Font/ScanCompleteText.png");
+	//「スキャン失敗」テキスト
+	m_ScanMissTextTex = std::make_shared<KdTexture>();
+	m_ScanMissTextTex->Load("Texture/Ui/Font/ScanMissText.png");
 }
 //解放用
 C_CommonTexture::~C_CommonTexture()
@@ -209,7 +214,8 @@ C_CommonTexture::~C_CommonTexture()
 	m_starframetex.Release();
 	m_startex.Release();
 
-	m_ScaningTextTex.Release();
-	m_ScanCompleteTextTex.Release();
+	m_ScaningTextTex.reset();
+	m_ScanCompleteTextTex.reset();
+	m_ScanMissTextTex.reset();
 }
 

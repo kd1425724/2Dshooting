@@ -3,6 +3,10 @@
 class C_EffectBase;
 class C_SkillManager;
 class C_EnemyMoveBase;
+class C_HitManager;
+
+class C_Game;
+class C_Game2;
 
 enum class EffectType
 {
@@ -13,7 +17,9 @@ enum class EffectType
     BoltHitBlue,
     BoltHitGreen,
     CopyHit,
-    WarningLine
+    WarningLine,
+	CopyScanConplete,
+	CopyScanMiss
 };
 
 class C_EffectManager
@@ -40,7 +46,20 @@ public:
 
     void CopyScanEffect(Math::Vector2 pos, std::shared_ptr<C_SkillManager> skillmanager, std::shared_ptr<C_EnemyMoveBase> enemy);
 
+	//オーナーセット
+	void SetOwner(std::shared_ptr<C_Game> owner) { m_owner = owner; }
+	void SetOwner(std::shared_ptr<C_Game2> owner) { m_owner2 = owner; }
+
+	//当たり判定管理セット
+	void SetHitManager(std::shared_ptr<C_HitManager> hitmanager) { m_hitmanager = hitmanager; }
+
 private:
+
+	// ===== 管理 =====
+	std::weak_ptr<C_Game> m_owner = {};
+	std::weak_ptr<C_Game2> m_owner2 = {};
+	std::weak_ptr<C_HitManager> m_hitmanager = {};
+
     // ===== エフェクト管理 =====
     std::vector<std::shared_ptr<C_EffectBase>> m_effects;
     std::vector<std::shared_ptr<C_EffectBase>> m_topdraweffects;

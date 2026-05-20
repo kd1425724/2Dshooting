@@ -48,7 +48,7 @@ void C_ScoreUp::Draw()
 		m_mat = m_scalemat * m_transmat;
 
 		Math::Rectangle rect = { 0,0,(long)m_rect.x,(long)m_rect.y };
-		Math::Color color = { 1,1,1,m_alpha };
+		
 
 		// ÀÛ‚Í‚¨‘O‚ÌŠÂ‹«‚Ì•`‰æAPI‚É‡‚í‚¹‚Ä‘‚­
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);

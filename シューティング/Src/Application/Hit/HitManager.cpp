@@ -105,7 +105,7 @@ void C_HitManager::PlayerHit()
 				it = m_enemys.erase(it);
 			}
 		}
-		
+
 		//敵の弾との当たり判定
 		for (auto it = m_enemyshot.begin(); it != m_enemyshot.end(); )
 		{
@@ -143,7 +143,7 @@ void C_HitManager::PlayerHit()
 					it = m_enemylaser.erase(it);
 					continue;
 				}
-				if (IsHitLaser(l->GetStart(),l->GetEnd(),l->GetThick(), p->GetPos(), p->GetRadius()))
+				if (IsHitLaser(l->GetStart(), l->GetEnd(), l->GetThick(), p->GetPos(), p->GetRadius()))
 				{
 					p->Damage();
 				}
@@ -154,8 +154,36 @@ void C_HitManager::PlayerHit()
 				it = m_enemylaser.erase(it);
 			}
 		}
-	}
 
+		//コピーバック弾との当たり判定
+		for (auto it = m_copybackshot.begin(); it != m_copybackshot.end(); )
+		{
+			std::shared_ptr<Shot> cb = it->lock();
+			if (cb)
+			{
+				if (!cb->GetAlive())
+				{
+					it = m_copybackshot.erase(it);
+					continue;
+				}
+				if (IsHit(p_pos, p_radius, cb->GetPos(), cb->GetRadius()))
+				{
+					EFFECTMANAGER.AddEffect(EffectType::CopyHit, cb->GetPos());
+					auto sm = m_skillmanager.lock();
+					if(sm)
+					{
+						sm->SetPlayerSkill(m_skilltype);
+					}
+					cb->SetAlive(false);
+				}
+				++it;
+			}
+			else
+			{
+				it = m_copybackshot.erase(it);
+			}
+		}
+	}
 }
 
 void C_HitManager::PlayerShotHit()
@@ -443,9 +471,9 @@ void C_HitManager::PlayerShotHit()
 
 void C_HitManager::CopyHit()
 {
-	for (auto it = m_copyshot.begin(); it != m_copyshot.end();)
+	for (auto coit = m_copyshot.begin(); coit != m_copyshot.end();)
 	{
-		std::shared_ptr<Shot> c = it->lock();
+		std::shared_ptr<Shot> c = coit->lock();
 
 		if (c)
 		{
@@ -455,7 +483,7 @@ void C_HitManager::CopyHit()
 
 			if (!c->GetAlive())
 			{
-				it = m_copyshot.erase(it);
+				coit = m_copyshot.erase(coit);
 				continue;
 			}
 
@@ -476,11 +504,29 @@ void C_HitManager::CopyHit()
 					{
 						c->SetAlive(false);
 						EFFECTMANAGER.AddEffect(EffectType::CopyHit, c_pos);
-						std::shared_ptr<C_SkillManager> sm = m_skillmanager.lock();
-
-						if (sm)
+						
+						if (e->GetSkillType() == SkillType::None)
 						{
-							EFFECTMANAGER.CopyScanEffect(c_pos, sm, e);
+							//スキャン失敗
+							EFFECTMANAGER.AddEffect(EffectType::CopyScanMiss, c_pos);
+
+							std::shared_ptr<C_SkillManager> sm = m_skillmanager.lock();
+
+							if (sm)
+							{
+								sm->SetPlayerSkill(e->GetSkillType());
+							}
+						}
+						else
+						{
+							m_skilltype = e->GetSkillType();
+							//スキャン可能
+							std::shared_ptr<C_SkillManager> sm = m_skillmanager.lock();
+
+							if (sm)
+							{
+								EFFECTMANAGER.CopyScanEffect(c_pos, sm, e);
+							}
 						}
 					}
 					++it;
@@ -491,11 +537,11 @@ void C_HitManager::CopyHit()
 				}
 			}
 
-			++it;
+			++coit;
 		}
 		else
 		{
-			it = m_copyshot.erase(it);
+			coit = m_copyshot.erase(coit);
 			continue;
 		}
 

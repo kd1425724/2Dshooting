@@ -10,6 +10,8 @@ class C_Barrier;
 class C_SkillManager;
 class C_Boss;
 
+enum class SkillType;
+
 enum class HitType
 {
 	Player,
@@ -68,6 +70,8 @@ public:
 	//コピー
 	void SetCopyShot(std::shared_ptr<Shot> copyshot) { m_copyshot.push_back(copyshot); }
 
+	void SetCopyBackShot(std::shared_ptr<Shot> copybackshot) { m_copybackshot.push_back(copybackshot); }
+
 	//ボス用
 	void SetBoss(std::shared_ptr<C_Boss> boss) { m_boss = boss; }
 
@@ -75,6 +79,8 @@ public:
 	void DrawCircle(Math::Vector2 pos, float radius, Math::Color col);
 
 private:
+
+	SkillType m_skilltype = (SkillType)0;
 
 	void Release();
 
@@ -121,6 +127,8 @@ private:
 
 	//コピー
 	std::vector<std::weak_ptr<Shot>> m_copyshot;
+	//コピー変換
+	std::vector<std::weak_ptr<Shot>> m_copybackshot;
 
 	//プレイヤースキル設定用
 	std::weak_ptr<C_SkillManager> m_skillmanager;

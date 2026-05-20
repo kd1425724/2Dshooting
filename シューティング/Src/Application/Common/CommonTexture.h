@@ -106,21 +106,21 @@ public:
 	//星獲得条件フレーム
 	const std::shared_ptr<KdTexture>& GetStarGetConditionFrameTex(int index)const 
 	{
-		if (index >= m_StarGetConditionFrameTex.size())return m_StarGetConditionFrameTex[0];
+		if (index < 0 || index >= m_StarGetConditionFrameTex.size())return m_StarGetConditionFrameTex[0];
 		return m_StarGetConditionFrameTex[index]; 
 	}
 
 	//タイムアタック条件
 	const std::shared_ptr<KdTexture>& GetTimeAttackConditionTex(int index)const
 	{
-		if (index >= m_TimeAttackConditionTex.size())return m_TimeAttackConditionTex[0];
+		if (index < 0 || index >= m_TimeAttackConditionTex.size())return m_TimeAttackConditionTex[0];
 		return m_TimeAttackConditionTex[index];
 	}
 
 	//スコアアタック条件
 	const std::shared_ptr<KdTexture>& GetScoreAttackConditionTex(int index)const
 	{
-		if (index >= m_ScoreAttackConditionTex.size())return m_ScoreAttackConditionTex[0];
+		if (index<0||index >= m_ScoreAttackConditionTex.size())return m_ScoreAttackConditionTex[0];
 		return m_ScoreAttackConditionTex[index];
 	}
 
@@ -130,9 +130,11 @@ public:
 	const KdTexture& GetStarTex()const { return m_startex; }
 
 	//「スキャン中」テキスト
-	const KdTexture& GetScaningTextTex()const { return m_ScaningTextTex; }
+	const std::shared_ptr<KdTexture>& GetScaningTextTex()const { return m_ScaningTextTex; }
 	//「スキャン完了」テキスト
-	const KdTexture& GetScanCompleteTextTex()const { return m_ScanCompleteTextTex; }
+	const std::shared_ptr<KdTexture>& GetScanCompleteTextTex()const { return m_ScanCompleteTextTex; }
+	//「スキャン失敗」テキスト
+	const std::shared_ptr<KdTexture>& GetScanMissTextTex()const { return m_ScanMissTextTex; }
 
 private:
 
@@ -255,10 +257,11 @@ private:
 
 
 	//「スキャン中」テキスト
-	KdTexture m_ScaningTextTex = {};
+	std::shared_ptr<KdTexture> m_ScaningTextTex = {};
 	//「スキャン完了」テキスト
-	KdTexture m_ScanCompleteTextTex = {};
-
+	std::shared_ptr<KdTexture> m_ScanCompleteTextTex = {};
+	//「スキャン失敗」テキスト
+	std::shared_ptr<KdTexture> m_ScanMissTextTex = {};
 //シングルトン
 private:
 

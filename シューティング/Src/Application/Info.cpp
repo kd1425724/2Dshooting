@@ -27,7 +27,7 @@ void C_Info::UserStarInfoLoad()
 	if (fopen_s(&fp, "Data/UserData/UserStarData.csv", "r") == 0)
 	{
 		char dummy[255];
-		//fgets(dummy, 255, fp);				//1çsîÚÇŒÇ∑
+		fgets(dummy, 255, fp);				//1çsîÚÇŒÇ∑
 		fscanf_s(fp, "%*[^,],%d", &ScoreAttackUserStarInfo);
 		fscanf_s(fp, "%*[^,],%d", &TimeAttackUserStarInfo);
 		fclose(fp);

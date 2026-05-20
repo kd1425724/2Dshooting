@@ -8,7 +8,7 @@ public:
 	C_ScanCompleteText() {}
 	~C_ScanCompleteText() override { Release(); }
 
-	void Init(Math::Vector2 pos) override;
+	void Init(Math::Vector2 pos, Math::Color color) override;
 	void Update() override;
 	void Draw() override;
 
@@ -16,4 +16,4 @@ private:
 
 	void Release() override;
 
-}
+};

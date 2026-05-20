@@ -170,6 +170,9 @@ void C_ResultUi::ScoreInit()
 
 	m_pickstarnum = 0;
 
+	//クリアしていない場合は星の数制御しない
+	if (!s->clear)return;
+
 	if (SCENEMANAGER.GetOldSceneType() == SceneType::Game)
 	{
 		//星の数制御用
@@ -205,6 +208,13 @@ void C_ResultUi::ScoreInit()
 		{
 			m_pickstarnum = 1;
 		}
+
+		//星の数をインフォに代入
+		//ユーザースコアの星の数より多い場合は更新
+		if (m_pickstarnum > INFO.TimeAttackUserStarInfo)
+		{
+			INFO.TimeAttackUserStarInfo = m_pickstarnum;
+		}
 	}
 }
 
@@ -222,20 +232,22 @@ void C_ResultUi::ScoreDraw()
 		//TIME
 		{
 			Math::Vector2 pos = { -200,120 };
+			Math::Color color = { 1.0f,1.0f,1.0f,1.0f };
+			Math::Vector2 timescale = scale;
+			if (SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+			{
+				color = { 1.0f,1.0f,0.0f,1.0f };
+				pos = { -200,-200 };
+				timescale = { 0.45f,0.60f };
+			}
 
 			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
-
-			Math::Matrix mat = s * t;
+			Math::Matrix ts = Math::Matrix::CreateScale(timescale.x, timescale.y, 1);
+			Math::Matrix mat = ts * t;
 
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 
-			Math::Color color = { 1.0f,1.0f,1.0f,1.0f };
-
-			if(SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
-			{
-				color = { 1.0f,1.0f,0.0f,1.0f };
-			}
-
+		
 			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TimeTextTex,0,0, &rect, &color);
 		}
 
@@ -312,21 +324,26 @@ void C_ResultUi::ScoreDraw()
 
 	//トータル
 	{
-		Math::Vector2 scale = { 0.5f,0.5f };
-		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 
+		Math::Color color = { 1.0f,1.0f,0.0f,1.0f };
 		Math::Vector2 pos = { -200,-200 };
+		Math::Vector2 scale = { 0.5f,0.5f };
+		if (SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+		{
+			color = { 1.0f,1.0f,1.0f,1.0f };
+			pos = { -200,120 };
+			scale = { 0.3f,0.35f };
+		}
+
+		
+		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+		
 		Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 
 		Math::Matrix mat = s * t;
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Color color = { 1.0f,1.0f,0.0f,1.0f };
-
-		if(SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
-		{
-			color = { 1.0f,1.0f,1.0f,1.0f };
-		}
+		
 
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_TotalTextTex, 0, 0, &rect, &color);
 	}
@@ -363,9 +380,14 @@ void C_ResultUi::ScoreDraw()
 		if(SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
 		{
 			color = { 1.0f,1.0f,1.0f,1.0f };
+			COMMONAPI.NumDraw(total, { 200,120 }, { 0.35f,0.35f }, color);
+		}
+		else
+		{
+			COMMONAPI.NumDraw(total, { 250,-200 }, { 0.35f,0.60f }, color);
 		}
 
-		COMMONAPI.NumDraw(total, { 250,-200 }, { 0.35f,0.60f }, color);
+		
 	}
 
 	{
@@ -386,18 +408,26 @@ void C_ResultUi::ScoreDraw()
 
 		Math::Vector2 scale = { 0.3f,0.35f };
 		Math::Color color = { 1,1,1,1 };
+		Math::Vector2 pos1 = { 20,120 };
+		Math::Vector2 pos2 = { 110,120 };
+		Math::Vector2 pos3 = { 200,120 };
 		if (SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
 		{
-			color = { 1.0f,1.0f,1.0f,1.0f };
+			color = { 1.0f,1.0f,0.0f,1.0f };
+			scale = { 0.35f,0.60f };
+
+			pos1 = { 20,-200 };
+			pos2 = { 110,-200 };
+			pos3 = { 200,-200 };
 		}
 
-		Math::Vector2 pos1 = { 20,120 };
+		
 		COMMONAPI.NumDraw(minute, pos1, scale, color, true, 2);
 
-		Math::Vector2 pos2 = { 110,120 };
+	
 		COMMONAPI.NumDraw(second, pos2, scale, color, true, 2);
 
-		Math::Vector2 pos3 = { 200,120 };
+		
 		COMMONAPI.NumDraw(millisecond, pos3, scale, color, true, 2);
 	}
 
@@ -406,21 +436,27 @@ void C_ResultUi::ScoreDraw()
 		Math::Rectangle colonrect = { 0,0,100,100 };
 
 		Math::Vector2 scale = { 0.3f,0.35f };
+		if (SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
+		{
+			scale = { 0.55f,0.60f };
+		}
 
 		Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 
 		for (int i = 0; i < 2; i++)
 		{
-			Math::Vector2 pos = { 50.0f + (i * 90),120 };
-
-			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
-			Math::Matrix mat = s * t;
-
+			Math::Vector2 pos = { 45.0f + (i * 90),120 };
 			Math::Color color = { 1,1,1,1 };
 			if (SCENEMANAGER.GetOldSceneType() == SceneType::Game2)
 			{
 				color = { 1.0f,1.0f,0,1.0f };
+				pos = { 50.0f + (i * 90),-200 };
 			}
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+			Math::Matrix mat = s * t;
+
+			
 
 			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_colontex, 0, 0, &colonrect, &color);
