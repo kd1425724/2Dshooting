@@ -124,8 +124,8 @@ void C_GamePauseUi::Release()
 	m_BACKNOtex.Release();
 	m_BACKOKtex.Release();
 	m_ArrowKeyTex.Release();
-	m_SpaceKeyTex.Release();
-	m_EKeyTex.Release();
+	m_ZKeyTex.Release();
+	m_XKeyTex.Release();
 	m_ShotTextTex.Release();
 	m_EscKeyTex.Release();
 }
@@ -147,8 +147,8 @@ void C_GamePauseUi::PAUSEDraw()
 void C_GamePauseUi::KeyInit()
 {
 	m_ArrowKeyTex.Load("Texture/Ui/Button/ArrowKey.png");
-	m_SpaceKeyTex.Load("Texture/Ui/Button/SPACEKey.png");
-	m_EKeyTex.Load("Texture/Ui/Button/EKey.png");
+	m_ZKeyTex.Load("Texture/Ui/Button/ZKey.png");
+	m_XKeyTex.Load("Texture/Ui/Button/XKey.png");
 	m_ShotTextTex.Load("Texture/Ui/Font/SHOT.png");
 	m_MoveTextTex.Load("Texture/Ui/Font/MOVE.png");
 	m_EscKeyTex.Load("Texture/Ui/Button/ESCKey.png");
@@ -208,8 +208,8 @@ void C_GamePauseUi::KeyDraw()
 		Math::Matrix mat = s * t;
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-		Math::Rectangle rect = { 0,0,373,80 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_SpaceKeyTex, 0, 0, &rect, &color);
+		Math::Rectangle rect = { 0,0,72,80 };
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_ZKeyTex, 0, 0, &rect, &color);
 	}
 	//SKILL
 	{
@@ -235,7 +235,7 @@ void C_GamePauseUi::KeyDraw()
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		Math::Rectangle rect = { 0,0,72,80 };
-		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_EKeyTex, 0, 0, &rect, &color);
+		KdShaderManager::GetInstance().m_spriteShader.DrawTex(&m_XKeyTex, 0, 0, &rect, &color);
 	}
 	//PAUSE
 	{

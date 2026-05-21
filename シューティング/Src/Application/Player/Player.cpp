@@ -46,9 +46,6 @@ void C_Player::Init()
 	m_engineanim = 0;
 
 	m_alive = true;
-
-	m_playerdebugdeathflg = true;
-
 }
 void C_Player::StartUpdate()
 {
@@ -145,7 +142,7 @@ void C_Player::Update()
 		if (m_Hp <= 0)
 		{
 			m_Hp = 0;
-			//m_alive = false;
+			m_alive = false;
 		}
 	}
 	else

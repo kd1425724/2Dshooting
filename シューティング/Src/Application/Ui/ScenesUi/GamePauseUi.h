@@ -55,8 +55,8 @@ private:
 	void KeyInit();
 	void KeyDraw();
 	KdTexture m_ArrowKeyTex;
-	KdTexture m_SpaceKeyTex;
-	KdTexture m_EKeyTex;
+	KdTexture m_ZKeyTex;
+	KdTexture m_XKeyTex;
 	KdTexture m_EscKeyTex;
 	KdTexture m_ShotTextTex;
 	KdTexture m_MoveTextTex;

@@ -9,8 +9,7 @@ void C_ScanCompleteText::Init(Math::Vector2 pos, Math::Color color)
 {
 	//ç¿ïWë„ì¸
 	m_pos = pos;
-	m_scale = 0.3f;
-	m_rect = { 256,64 };
+	m_scale = 0.1f;
 	m_color = color;
 	m_alive = true;
 	m_alpha = 1;
@@ -37,11 +36,10 @@ void C_ScanCompleteText::Draw()
 	{
 		//çsóÒ
 		m_scalemat = Math::Matrix::CreateScale(m_scale);
-		m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
+		m_transmat = Math::Matrix::CreateTranslation(m_pos.x-50, m_pos.y+20, 0);
 		m_mat = m_scalemat * m_transmat;
 
-		Math::Rectangle rect = { 0,0,480,100 };
-	
+		Math::Rectangle rect = { 0,0,1536,1024 };
 
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(tex.get(), 0, 0, &rect, &m_color);

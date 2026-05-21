@@ -30,6 +30,9 @@ private:
 
 	StageSelectButton m_button = StageSelectButton::Stage1;
 
+	//ƒ{ƒ^ƒ“
+	void ButtonFrameDraw();
+
 	//î•ñ
 	void StageInfoDraw();
 

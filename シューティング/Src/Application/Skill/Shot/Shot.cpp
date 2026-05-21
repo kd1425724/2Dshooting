@@ -174,7 +174,7 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 			angle = 0;
 			move.x = 0;
 			move.y = 0;
-			color = { 1,1,1,1 };
+			color = { 0,1,0,1 };
 			alive = true;
 			scale = { 2,2 };
 
@@ -317,7 +317,7 @@ void Shot::Init(ShotType a_type, ShotTextureType a_texturetype, Math::Vector2 a_
 			angle = 0;
 			move.x =0;
 			move.y =0;
-			color = { 1,1,1,1 };
+			color = { 0,1,0,1 };
 			alive = true;
 			scale = { 2,2 };
 			//アニメーション用

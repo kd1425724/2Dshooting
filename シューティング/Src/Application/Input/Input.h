@@ -154,7 +154,7 @@ private:
     bool m_debugkeyflg[(int)DebugKeyType::DebugKeyNum] = { false };
 
     //デバッグキーが使えるかどうかのフラグ
-	bool m_olldebugkeyflg = true;
+	bool m_olldebugkeyflg = false;
 
 private:
     C_Input() {}

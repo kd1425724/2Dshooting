@@ -147,6 +147,19 @@ C_CommonTexture::C_CommonTexture()
 	//「スキャン失敗」テキスト
 	m_ScanMissTextTex = std::make_shared<KdTexture>();
 	m_ScanMissTextTex->Load("Texture/Ui/Font/ScanMissText.png");
+
+	//「星獲得条件」テキスト
+	m_StarRequirementsTextTex = std::make_shared<KdTexture>();
+	m_StarRequirementsTextTex->Load("Texture/Ui/Font/StarRequirementsText.png");
+
+	//「コピー！」テキスト
+	m_CopyTextTex = std::make_shared<KdTexture>();
+	m_CopyTextTex->Load("Texture/Ui/Font/CopyText.png");
+
+	//OKフレーム
+	m_OKFrameTex.Load("Texture/Ui/HUD/OKFrame.png");
+	//NOフレーム
+	m_NOFrameTex.Load("Texture/Ui/HUD/NOFrame.png");
 }
 //解放用
 C_CommonTexture::~C_CommonTexture()
@@ -217,5 +230,12 @@ C_CommonTexture::~C_CommonTexture()
 	m_ScaningTextTex.reset();
 	m_ScanCompleteTextTex.reset();
 	m_ScanMissTextTex.reset();
+
+	m_StarRequirementsTextTex.reset();
+
+	m_CopyTextTex.reset();
+
+	m_OKFrameTex.Release();
+	m_NOFrameTex.Release();
 }
 

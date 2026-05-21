@@ -168,7 +168,8 @@ void C_HitManager::PlayerHit()
 				}
 				if (IsHit(p_pos, p_radius, cb->GetPos(), cb->GetRadius()))
 				{
-					EFFECTMANAGER.AddEffect(EffectType::CopyHit, cb->GetPos());
+					//EFFECTMANAGER.AddEffect(EffectType::CopyHit, cb->GetPos());
+					EFFECTMANAGER.AddEffect(EffectType::CopyText, { p->GetPos().x + 30,p->GetPos().y });
 					auto sm = m_skillmanager.lock();
 					if(sm)
 					{

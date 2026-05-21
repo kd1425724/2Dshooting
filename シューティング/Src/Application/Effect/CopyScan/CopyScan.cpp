@@ -22,7 +22,8 @@ void C_CopyScan::Init(Math::Vector2 pos, std::shared_ptr<C_SkillManager> skillma
 	m_skillmanager = skillmanager;
 	m_enemy = enemy;
 	m_alpha = 1;
-	m_time = 60;
+	m_time = Time;
+	m_notgreenalpha = 1;
 }
 
 void C_CopyScan::Update()
@@ -61,7 +62,7 @@ void C_CopyScan::Update()
 				if (s)
 				{
 					auto hm = m_hitmanager.lock();
-					auto p = o->GetPlayer();
+					auto p = o2->GetPlayer();
 					if (hm&&p)
 					{
 						s->SetPlayer(p);
@@ -69,7 +70,7 @@ void C_CopyScan::Update()
 					}
 					s->ShotManager(ShotType::HomingShot, ShotTextureType::CopyBack, { 5,0 }, { 32,32 }, m_pos, 0, 10);
 
-					o->SetShot(s);
+					o2->SetShot(s);
 				}
 			}
 		}
@@ -84,6 +85,12 @@ void C_CopyScan::Update()
 	{
 		m_anim = 0;
 	}
+
+	m_notgreenalpha -= 0.7f / Time;
+	if (m_notgreenalpha <= 0)
+	{
+		m_notgreenalpha = 0;
+	}
 }
 
 void C_CopyScan::Draw()
@@ -97,7 +104,7 @@ void C_CopyScan::Draw()
 		m_transmat = Math::Matrix::CreateTranslation(m_pos.x, m_pos.y, 0);
 		m_mat = m_scalemat * m_transmat;
 		Math::Rectangle rect = { (int)m_anim * (long)m_rect.x,0,(long)m_rect.x,(long)m_rect.y };
-		Math::Color color = { 1,1,1,m_alpha };
+		Math::Color color = { m_notgreenalpha,1,m_notgreenalpha,m_alpha };
 		
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mat);
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(tex.get(), 0, 0, &rect, &color);
@@ -105,12 +112,12 @@ void C_CopyScan::Draw()
 
 	//ƒXƒLƒƒƒ“’†
 	{
-		float scale = 0.3f;
+		float scale = 0.1f;
 		Math::Matrix scalemat = Math::Matrix::CreateScale(scale);
-		Math::Matrix transmat = Math::Matrix::CreateTranslation(m_pos.x-100, m_pos.y, 0);
+		Math::Matrix transmat = Math::Matrix::CreateTranslation(m_pos.x - 50, m_pos.y+20 , 0);
 		Math::Matrix mat = scalemat * transmat;
-		Math::Rectangle rect = { 0,0,480,100 };
-		Math::Color color = { 0,1,0,0.7f };
+		Math::Rectangle rect = { 0,0,1536,1024 };
+		Math::Color color = { m_notgreenalpha,1,m_notgreenalpha,0.5f };
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 		KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetScaningTextTex().get(), 0, 0, &rect, &color);
 	}

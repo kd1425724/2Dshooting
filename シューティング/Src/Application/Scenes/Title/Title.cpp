@@ -15,7 +15,7 @@ void C_Title::Init()
 	m_titleui = std::make_shared<C_TitleUi>();
 
 	m_starttex = std::make_shared<KdTexture>();
-	m_starttex->Load("Texture/Ui/Font/PRESSENTERTOSTART.png");
+	m_starttex->Load("Texture/Ui/Font/PRESSZTOSTART.png");
 
 	m_titleui->SetStartTex(m_starttex);
 

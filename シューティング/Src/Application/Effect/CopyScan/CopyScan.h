@@ -19,5 +19,9 @@ private:
 
 	float m_anim = 0;
 
+	static const int Time = 60;
+
 	int m_time = 0;
+
+	float m_notgreenalpha = 1;
 };

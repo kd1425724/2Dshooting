@@ -136,6 +136,17 @@ public:
 	//「スキャン失敗」テキスト
 	const std::shared_ptr<KdTexture>& GetScanMissTextTex()const { return m_ScanMissTextTex; }
 
+	//「星獲得条件」テキスト
+	const std::shared_ptr<KdTexture>& GetStarRequirementsTextTex()const { return m_StarRequirementsTextTex; }
+
+	//「コピー！」テキスト
+	const std::shared_ptr<KdTexture>& GetCopyTextTex()const { return m_CopyTextTex; }
+
+	//OKフレーム
+	const KdTexture& GetOKFrameTex()const { return m_OKFrameTex; }
+	//NOフレーム
+	const KdTexture& GetNOFrameTex()const { return m_NOFrameTex; }
+
 private:
 
 	//フェード用
@@ -262,6 +273,18 @@ private:
 	std::shared_ptr<KdTexture> m_ScanCompleteTextTex = {};
 	//「スキャン失敗」テキスト
 	std::shared_ptr<KdTexture> m_ScanMissTextTex = {};
+
+	//「星獲得条件」テキスト
+	std::shared_ptr<KdTexture> m_StarRequirementsTextTex = {};
+
+	//「コピー！」テキスト
+	std::shared_ptr<KdTexture> m_CopyTextTex = {};
+
+	//OKフレーム
+	KdTexture m_OKFrameTex;
+	//NOフレーム
+	KdTexture m_NOFrameTex;
+
 //シングルトン
 private:
 

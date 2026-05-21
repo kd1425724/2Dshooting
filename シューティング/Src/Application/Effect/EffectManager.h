@@ -19,7 +19,8 @@ enum class EffectType
     CopyHit,
     WarningLine,
 	CopyScanConplete,
-	CopyScanMiss
+	CopyScanMiss,
+    CopyText
 };
 
 class C_EffectManager

@@ -182,12 +182,17 @@ void C_EffectManager::AddEffect(EffectType type, Math::Vector2 pos,Math::Vector2
 	case EffectType::CopyScanConplete:
 		m_addtopdraweffects.push_back(std::make_shared<C_ScanCompleteText>());
 		m_addtopdraweffects.back()->SetTexture(CommonTex.GetScanCompleteTextTex());
-		m_addtopdraweffects.back()->Init(pos, {0,1,0,1});
+		m_addtopdraweffects.back()->Init(pos, { 0,1,0,0.5f });
 		break;
 	case EffectType::CopyScanMiss:
 		m_addtopdraweffects.push_back(std::make_shared<C_ScanCompleteText>());
 		m_addtopdraweffects.back()->SetTexture(CommonTex.GetScanMissTextTex());
-		m_addtopdraweffects.back()->Init(pos, {1,1,1,1});
+		m_addtopdraweffects.back()->Init(pos, {1,1,1,0.5f});
+		break;
+	case EffectType::CopyText:
+		m_addtopdraweffects.push_back(std::make_shared<C_ScanCompleteText>());
+		m_addtopdraweffects.back()->SetTexture(CommonTex.GetCopyTextTex());
+		m_addtopdraweffects.back()->Init(pos, { 0,1,0,0.5f });
 		break;
 	default:
 		break;

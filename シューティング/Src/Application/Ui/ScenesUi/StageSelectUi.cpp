@@ -18,7 +18,7 @@ void C_StageSelectUi::Init()
 
 	//stage1
 	CreateSpriteItemInit(
-		{ -200,100 },
+		{ -520,100 },
 		{ 0,0,210,210 },
 		{ 0.3f,0.3f },
 		&CommonTex.GetStage1tex(),
@@ -36,7 +36,7 @@ void C_StageSelectUi::Init()
 	float scale = 210.0f * 0.3f / 1254.0f;
 	//stage2
 	CreateSpriteItemInit(
-		{ -200,-100 },
+		{ -520,-100 },
 		{ 0,0,1254,1254 },
 		{ scale,scale },
 		&CommonTex.GetStage2tex(),
@@ -106,6 +106,14 @@ void C_StageSelectUi::Update()
 	if (Input.GetUserKey(UserKeyType::ZKey) && !Input.GetUserKeyFlg(UserKeyType::ZKey))
 	{
 		ButtonUpdate((int)m_button);
+		return;
+	}
+
+	if (Input.GetUserKey(UserKeyType::ESCAPE) && !Input.GetUserKeyFlg(UserKeyType::ESCAPE))
+	{
+		//タイトルに遷移
+		SCENEMANAGER.NoFeedpush(SceneType::Title, true);
+		return;
 	}
 }
 
@@ -116,11 +124,164 @@ void C_StageSelectUi::Draw()
 
 	PlayerDraw();
 
+	ButtonFrameDraw();
+
 	CreateSpriteItemDraw();
 
 	ButtonDraw((int)m_button);
 
 	StageInfoDraw();
+}
+
+void C_StageSelectUi::ButtonFrameDraw()
+{
+	{
+		Math::Rectangle rect = { 0,0,700,210 };
+		Math::Vector3 scale = { 0.55f,0.3f,1 };
+
+		float PosX = -350;
+
+		Math::Matrix s = Math::Matrix::CreateScale(scale);
+
+		switch (m_button)
+		{
+		case StageSelectButton::Stage1:
+
+			
+			//スコアアタックフレーム
+			{
+				Math::Vector3 pos = { PosX,100,0 };
+
+				Math::Color color = { 1,1,0,1 };
+
+				Math::Matrix t = Math::Matrix::CreateTranslation(pos);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetOKFrameTex(), 0, 0, &rect, &color);
+
+			}
+			//タイムアタックフレーム
+			{
+				Math::Vector3 pos = { PosX,-100,0 };
+
+				Math::Color color = { 1,1,1,1 };
+
+
+				Math::Matrix t = Math::Matrix::CreateTranslation(pos);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNOFrameTex(), 0, 0, &rect, &color);
+			}
+			break;
+		case StageSelectButton::Stage2:
+
+		//スコアアタックフレーム
+		{
+			Math::Vector3 pos = { PosX,100,0 };
+
+			Math::Color color = { 1,1,1,1 };
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos);
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNOFrameTex(), 0, 0, &rect, &color);
+
+		}
+		//タイムアタックフレーム
+		{
+			Math::Vector3 pos = { PosX,-100,0 };
+
+			Math::Color color = { 1,1,0,1 };
+
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos);
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetOKFrameTex(), 0, 0, &rect, &color);
+		}
+		break;
+		case StageSelectButton::BACK:
+
+			//スコアアタックフレーム
+			{
+				Math::Vector3 pos = { PosX,100,0 };
+
+				Math::Color color = { 1,1,1,1 };
+
+				Math::Matrix t = Math::Matrix::CreateTranslation(pos);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNOFrameTex(), 0, 0, &rect, &color);
+
+			}
+			//タイムアタックフレーム
+			{
+				Math::Vector3 pos = { PosX,-100,0 };
+
+				Math::Color color = { 1,1,1,1 };
+
+
+				Math::Matrix t = Math::Matrix::CreateTranslation(pos);
+				Math::Matrix mat = s * t;
+
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetNOFrameTex(), 0, 0, &rect, &color);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	{
+
+		Math::Vector3 scale = { 0.2f,0.2f,1 };
+		Math::Matrix s = Math::Matrix::CreateScale(scale);
+		Math::Rectangle rect = {0,0, 1536,1024 };
+
+		float PosX = -330;
+
+		//スコアアタックテキスト
+		{
+			Math::Vector3 pos = { PosX,95,0 };
+			Math::Color color = { 1,1,1,1 };
+			if (m_button == StageSelectButton::Stage1)
+			{
+				color = { 1,1,0,1 };
+			}
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos);
+
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetScoreAttackTextTex(), 0, 0, &rect, &color);
+		}
+
+		//タイムアタックテキスト
+		{
+			Math::Vector3 pos = { PosX,-105,0 };
+			Math::Color color = { 1,1,1,1 };
+			if (m_button == StageSelectButton::Stage2)
+			{
+				color = { 1,1,0,1 };
+			}
+
+			Math::Matrix t = Math::Matrix::CreateTranslation(pos);
+
+			Math::Matrix mat = s * t;
+
+			KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetTimeAttackTextTex(), 0, 0, &rect, &color);
+
+		}
+
+	}
 }
 
 void C_StageSelectUi::StageInfoDraw()
@@ -147,7 +308,7 @@ void C_StageSelectUi::StageInfoDraw()
 			//スコアアタック
 			{
 				Math::Vector2 pos = { 200,200 };
-				Math::Vector2 scale = { 0.2f,0.2f };
+				Math::Vector2 scale = { 0.3f,0.3f };
 				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 				Math::Matrix mat = s * t;
@@ -155,6 +316,18 @@ void C_StageSelectUi::StageInfoDraw()
 				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 				Math::Rectangle rect = { 0,0,1534,1080 };
 				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetScoreAttackTextTex(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
+			}
+
+			//「星獲得条件」テキスト
+			{
+				Math::Vector2 pos = { 200,50 };
+				Math::Vector2 scale = { 0.25f,0.25f };
+				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+				Math::Matrix mat = s * t;
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				Math::Rectangle rect = { 0,0,1536,1024 };
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetStarRequirementsTextTex().get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 			}
 
 			//星獲得条件フレーム用
@@ -174,17 +347,18 @@ void C_StageSelectUi::StageInfoDraw()
 					KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetStarGetConditionFrameTex(i).get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 
 					//以上でクリア
-					pos = { 300,startposY - i * 80.0f };
+					pos = { 350,startposY - i * 80.0f-10.0f };
+					scale = { 0.2f,0.2f };
 					s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 					t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 					mat = s * t;
 
 					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
-					rect = { 0,0,210,210 };
+					rect = { 0,0,1536,1024 };
 					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetAchieveAboveTextTex(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 
 					//条件
-					pos = { 200,startposY - i * 80.0f };
+					pos = { 140,startposY - i * 80.0f };
 					scale = { 0.3f,0.3f };
 					s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 					t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -233,13 +407,25 @@ void C_StageSelectUi::StageInfoDraw()
 			//タイムアタック
 			{
 				Math::Vector2 pos = { 200,200 };
-				Math::Vector2 scale = { 0.2f,0.2f };
+				Math::Vector2 scale = { 0.3f,0.3f };
 				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 				Math::Matrix mat = s * t;
 				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 				Math::Rectangle rect = { 0,0,1534,1024 };
 				KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetTimeAttackTextTex(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
+			}
+
+			//「星獲得条件」テキスト
+			{
+				Math::Vector2 pos = { 200,50 };
+				Math::Vector2 scale = { 0.25f,0.25f };
+				Math::Matrix s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
+				Math::Matrix t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
+				Math::Matrix mat = s * t;
+				KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
+				Math::Rectangle rect = { 0,0,1536,1024 };
+				KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetStarRequirementsTextTex().get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 			}
 
 			//星獲得条件フレーム用
@@ -259,7 +445,7 @@ void C_StageSelectUi::StageInfoDraw()
 					KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetStarGetConditionFrameTex(i).get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 
 					//以内にクリア
-					pos = { 300,startposY - i * 80.0f };
+					pos = { 350,startposY - i * 80.0f - 10.0f };
 					scale = { 0.2f,0.2f };
 					s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 					t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
@@ -269,14 +455,14 @@ void C_StageSelectUi::StageInfoDraw()
 					KdShaderManager::GetInstance().m_spriteShader.DrawTex(&CommonTex.GetClearWithinTextTex(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 
 					//条件
-					pos = { 200,startposY - i * 80.0f };
+					pos = { 150,startposY - i * 80.0f };
 					scale = { 0.3f,0.3f };
 					s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 					t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 					mat = s * t;
 					KdShaderManager::GetInstance().m_spriteShader.SetMatrix(mat);
 					rect = { 0,0,1000,100 };
-					KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetScoreAttackConditionTex(i).get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
+					KdShaderManager::GetInstance().m_spriteShader.DrawTex(CommonTex.GetTimeAttackConditionTex(i).get(), 0, 0, &rect, &Math::Color(1, 1, 1, 1));
 				}
 
 				//星フレーム
